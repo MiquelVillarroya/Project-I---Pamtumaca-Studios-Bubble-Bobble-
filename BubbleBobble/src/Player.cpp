@@ -23,7 +23,7 @@ AppStatus Player::Initialise()
 	const int n = PLAYER_FRAME_SIZE;
 
 	ResourceManager& data = ResourceManager::Instance();
-	if (data.LoadTexture(Resource::IMG_PLAYER, "images/eric.png") != AppStatus::OK)
+	if (data.LoadTexture(Resource::IMG_PLAYER, "images/bubMove.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
 	}
@@ -38,10 +38,12 @@ AppStatus Player::Initialise()
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetNumberAnimations((int)PlayerAnim::NUM_ANIMATIONS);
 	
-	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT, { 0, 0, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { 0, 0, -n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_RIGHT, ANIM_IDLE_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT, { 0, 0, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT, { n, 0, -n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_LEFT, ANIM_IDLE_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { 0, 0, n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { n, 0, n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 8; ++i)

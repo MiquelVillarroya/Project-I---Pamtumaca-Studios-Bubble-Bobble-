@@ -2,15 +2,18 @@
 #include "Entity.h"
 #include "TileMap.h"
 
-//Representation model size: 32x32
-#define PLAYER_FRAME_SIZE		32
+//Representation model size: 16x16
+#define PLAYER_FRAME_SIZE		16
 
 //Logical model size: 12x28
 #define PLAYER_PHYSICAL_WIDTH	12
-#define PLAYER_PHYSICAL_HEIGHT	28
+#define PLAYER_PHYSICAL_HEIGHT	14
 
 //Horizontal speed and vertical speed while falling down
-#define PLAYER_SPEED			2
+#define PLAYER_SPEED			1
+
+//Frame animation delay while idle
+#define ANIM_IDLE_DELAY			(4*ANIM_DELAY)
 
 //Vertical speed while on a ladder
 #define PLAYER_LADDER_SPEED		1
