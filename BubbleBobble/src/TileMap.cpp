@@ -34,6 +34,7 @@ void TileMap::InitTileDictionary()
 	const int sy = SHADOW_OFFSET_Y;
 
 	dict_rect[(int)Tile::BLOCK_LVL1] = { 0,  0, n + sx, n + sy};
+	dict_rect[(int)Tile::PLAT_LVL1] = { 0,  0, n + sx, n + sy};
 	dict_rect[(int)Tile::BLOCK_SQUARE1_TR] = { 0, 0, n, n };
 	dict_rect[(int)Tile::BLOCK_SQUARE1_BL] = { 0, 0, n, n };
 	dict_rect[(int)Tile::BLOCK_SQUARE1_BR] = { 0, 0, n, n };
@@ -129,6 +130,9 @@ bool TileMap::IsTileSolid(Tile tile) const
 {
 	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST);
 }
+bool TileMap::IsTilePlat(Tile tile) const {
+	return (Tile::PLAT_FIRST <= tile && tile <= Tile::PLAT_LAST);
+}
 bool TileMap::IsTileLadderTop(Tile tile) const
 {
 	return tile == Tile::LADDER_TOP_L || tile == Tile::LADDER_TOP_R;
@@ -197,7 +201,7 @@ bool TileMap::CollisionY(const Point& p, int distance) const
 		tile = GetTileIndex(x, y);
 
 		//One solid or laddertop tile is sufficient
-		if (IsTileSolid(tile) || IsTileLadderTop(tile))
+		if (IsTileSolid(tile) || IsTilePlat(tile))
 			return true;
 	}
 	return false;

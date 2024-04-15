@@ -14,7 +14,7 @@ enum class Tile {
 	AIR = 0,
 
 	// 0 < id < 50: static tiles
-	BLOCK_LVL1 = 1, BLOCK_SQUARE1_TR, BLOCK_SQUARE1_BL, BLOCK_SQUARE1_BR,
+	BLOCK_LVL1 = 1, PLAT_LVL1 = 2, BLOCK_SQUARE1_TR, BLOCK_SQUARE1_BL, BLOCK_SQUARE1_BR,
 	BLOCK_SQUARE2_TL, BLOCK_SQUARE2_TR, BLOCK_SQUARE2_BL, BLOCK_SQUARE2_BR,
 	BLOCK_VERT2_T, BLOCK_VERT2_B, BLOCK_HORIZ2_L, BLOCK_HORIZ2_R, BLOCK_BLUE,
 	BLOCK_HORIZ3_L, BLOCK_HORIZ3_M, BLOCK_HORIZ3_R,
@@ -36,7 +36,9 @@ enum class Tile {
 	STATIC_FIRST = BLOCK_LVL1,
 	STATIC_LAST = LASER_R,
 	SOLID_FIRST = BLOCK_LVL1,
-	SOLID_LAST = BLOCK_BEAM_R,
+	SOLID_LAST = BLOCK_LVL1,
+	PLAT_FIRST = PLAT_LVL1,
+	PLAT_LAST = PLAT_LVL1,
 	SPECIAL_FIRST = DOOR,
 	SPECIAL_LAST = LASER,
 	ENTITY_FIRST = PLAYER,
@@ -78,6 +80,7 @@ private:
 
 	Tile GetTileIndex(int x, int y) const;
 	bool IsTileSolid(Tile tile) const;
+	bool IsTilePlat(Tile tile) const;
 	bool IsTileLadderTop(Tile tile) const;
 	bool IsTileLadder(Tile tile) const;
 	bool CollisionX(const Point& p, int distance) const;
