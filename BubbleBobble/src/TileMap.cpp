@@ -35,38 +35,12 @@ void TileMap::InitTileDictionary()
 
 	dict_rect[(int)Tile::BLOCK_LVL1] = { 0,  0, n + sx, n + sy};
 	dict_rect[(int)Tile::PLAT_LVL1] = { 0,  0, n + sx, n + sy};
-	dict_rect[(int)Tile::BLOCK_SQUARE1_TR] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE1_BL] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE1_BR] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE2_TL] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE2_TR] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE2_BL] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE2_BR] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_VERT2_T] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_VERT2_B] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_HORIZ2_L]  = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_HORIZ2_R]  = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_BLUE] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_HORIZ3_L]  = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_HORIZ3_M]  = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_HORIZ3_R]  = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_BEAM_L] = { 0, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_BEAM_R] = { 0, 0, n, n };
-
-	dict_rect[(int)Tile::LADDER_L]  = { 0, 0, n, n };
-	dict_rect[(int)Tile::LADDER_R]  = { 0, 0, n, n };
-	dict_rect[(int)Tile::LADDER_TOP_L]  = { 0, 0, n, n };
-	dict_rect[(int)Tile::LADDER_TOP_R]  = { 0, 0, n, n };
-
-	dict_rect[(int)Tile::LOCK_RED] = { 0, 0, n, n };
-	dict_rect[(int)Tile::LOCK_YELLOW] = { 0, 0, n, n };
-
-	dict_rect[(int)Tile::LASER_L] = { 0, 0, n, n };
-	dict_rect[(int)Tile::LASER_R] = { 0, 0, n, n };
-
-	dict_rect[(int)Tile::LASER_FRAME0]  = { 0, 0, n, n };
-	dict_rect[(int)Tile::LASER_FRAME1]  = { 0, 0, n, n };
-	dict_rect[(int)Tile::LASER_FRAME2]  = { 0, 0, n, n };
+	dict_rect[(int)Tile::FOOD_MUSHROOM] = { 0,  0, n + sx, n + sy};
+	dict_rect[(int)Tile::FOOD_BANANA] = { 0,  0, n + sx, n + sy};
+	dict_rect[(int)Tile::FOOD_CHERRY] = { 0,  0, n + sx, n + sy};
+	dict_rect[(int)Tile::FOOD_ICE_CREAM] = { 0,  0, n + sx, n + sy};
+	dict_rect[(int)Tile::FOOD_FLAM] = { 0,  0, n + sx, n + sy};
+	dict_rect[(int)Tile::FOOD_CAKE] = { 0,  0, n + sx, n + sy};
 
 }
 AppStatus TileMap::Initialise()
@@ -85,12 +59,12 @@ AppStatus TileMap::Initialise()
 		LOG("Failed to allocate memory for laser sprite");
 		return AppStatus::ERROR;
 	}
-	laser->SetNumberAnimations(1);
-	laser->SetAnimationDelay(0, ANIM_DELAY);
-	laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME0]);
-	laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME1]);
-	laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME2]);
-	laser->SetAnimation(0);
+	//laser->SetNumberAnimations(1);
+	//laser->SetAnimationDelay(0, ANIM_DELAY);
+	//laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME0]);
+	//laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME1]);
+	//laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME2]);
+	//laser->SetAnimation(0);
 
 	return AppStatus::OK;
 }
@@ -132,14 +106,6 @@ bool TileMap::IsTileSolid(Tile tile) const
 }
 bool TileMap::IsTilePlat(Tile tile) const {
 	return (Tile::PLAT_FIRST <= tile && tile <= Tile::PLAT_LAST);
-}
-bool TileMap::IsTileLadderTop(Tile tile) const
-{
-	return tile == Tile::LADDER_TOP_L || tile == Tile::LADDER_TOP_R;
-}
-bool TileMap::IsTileLadder(Tile tile) const
-{
-	return tile == Tile::LADDER_L || tile == Tile::LADDER_R;
 }
 bool TileMap::TestCollisionWallLeft(const AABB& box) const
 {
@@ -206,74 +172,7 @@ bool TileMap::CollisionY(const Point& p, int distance) const
 	}
 	return false;
 }
-bool TileMap::TestOnLadder(const AABB& box, int* px) const
-{
-	int left, right, bottom;
-	int tx1, tx2, ty;
-	Tile tile1, tile2;
-	
-	//Control points
-	left = box.pos.x;
-	right = box.pos.x + box.width-1;
-	bottom = box.pos.y + box.height-1;
 
-	//Calculate the tile coordinates
-	tx1 = left / TILE_SIZE;
-	tx2 = right / TILE_SIZE;
-	ty = bottom / TILE_SIZE;
-
-	//To be able to climb up or down, both control points must be on ladder
-	tile1 = GetTileIndex(tx1, ty);
-	tile2 = GetTileIndex(tx2, ty);
-	if (IsTileLadder(tile1) && IsTileLadder(tile2))
-	{
-		*px = GetLadderCenterPos(left, bottom) - box.width/2;
-		return true;
-	}
-	return false;
-}
-bool TileMap::TestOnLadderTop(const AABB& box, int* px) const
-{
-	int left, right, bottom;
-	int tx1, tx2, ty;
-	Tile tile1, tile2;
-
-	//Control points
-	left = box.pos.x;
-	right = box.pos.x + box.width - 1;
-	bottom = box.pos.y + box.height - 1;
-
-	//Calculate the tile coordinates
-	tx1 = left / TILE_SIZE;
-	tx2 = right / TILE_SIZE;
-	ty = bottom / TILE_SIZE;
-
-	//To be able to climb up or down, both control points must be on ladder
-	tile1 = GetTileIndex(tx1, ty);
-	tile2 = GetTileIndex(tx2, ty);
-	if (IsTileLadderTop(tile1) && IsTileLadderTop(tile2))
-	{
-		*px = GetLadderCenterPos(left, bottom) - box.width / 2;
-		return true;
-	}
-	return false;
-}
-int TileMap::GetLadderCenterPos(int pixel_x, int pixel_y) const
-{
-	int tx, ty;
-	
-	tx = pixel_x / TILE_SIZE;
-	ty = pixel_y / TILE_SIZE;
-	Tile tile = GetTileIndex(tx, ty);
-
-	if (tile == Tile::LADDER_L || tile == Tile::LADDER_TOP_L)		return tx * TILE_SIZE + TILE_SIZE;
-	else if (tile == Tile::LADDER_R || tile == Tile::LADDER_TOP_R)	return tx * TILE_SIZE;
-	else
-	{
-		LOG("Internal error, tile should be a LADDER, coord: (%d,%d), tile type: %d", pixel_x, pixel_y, (int)tile);
-		return 0;
-	}
-}
 void TileMap::Render()
 {
 	Tile tile;
@@ -290,15 +189,15 @@ void TileMap::Render()
 				pos.x = (float)j * TILE_SIZE;
 				pos.y = (float)i * TILE_SIZE;
 
-				if (tile != Tile::LASER)
-				{
+				//if (tile != Tile::LASER)
+				//{
 					rc = dict_rect[(int)tile];
 					DrawTextureRec(*img_tiles, rc, pos, WHITE);
-				}
-				else
-				{
-					laser->Draw((int)pos.x, (int)pos.y);
-				}
+				//}
+				//else
+				//{
+				//	laser->Draw((int)pos.x, (int)pos.y);
+				//}
 			}
 		}
 	}
