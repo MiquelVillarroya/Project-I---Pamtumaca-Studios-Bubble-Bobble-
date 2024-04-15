@@ -113,7 +113,7 @@ AppStatus Scene::LoadLevel(int stage)
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
-			 1,   1,   0, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
+			 1,   1,   0, 100,   0,   0,   0,  50,  51,  52,  53,  54,  55,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1
 		};
 		player->InitScore();
@@ -148,19 +148,51 @@ AppStatus Scene::LoadLevel(int stage)
 				player->SetPos(pos);
 				map[i] = 0;
 			}
-			else if (tile == Tile::ITEM_APPLE)
+			else if (tile == Tile::FOOD_MUSHROOM)
 			{
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				obj = new Object(pos, ObjectType::APPLE);
+				obj = new Object(pos, ObjectType::MUSHROOM);
 				objects.push_back(obj);
 				map[i] = 0;
 			}
-			else if (tile == Tile::ITEM_CHILI)
+			else if (tile == Tile::FOOD_BANANA)
 			{
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				obj = new Object(pos, ObjectType::CHILI);
+				obj = new Object(pos, ObjectType::BANANA);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
+			else if (tile == Tile::FOOD_CHERRY)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::CHERRY);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
+			else if (tile == Tile::FOOD_ICE_CREAM)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::ICE_CREAM);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
+			else if (tile == Tile::FOOD_FLAM)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::FLAM);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
+			else if (tile == Tile::FOOD_CAKE)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::CAKE);
 				objects.push_back(obj);
 				map[i] = 0;
 			}

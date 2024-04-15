@@ -116,14 +116,6 @@ bool Player::IsDescending() const
 {
 	return dir.y > PLAYER_LEVITATING_SPEED;
 }
-bool Player::IsInFirstHalfTile() const
-{
-	return pos.y % TILE_SIZE < TILE_SIZE / 2;
-}
-bool Player::IsInSecondHalfTile() const
-{
-	return pos.y % TILE_SIZE >= TILE_SIZE/2;
-}
 void Player::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -167,20 +159,6 @@ void Player::StartJumping()
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
 	jump_delay = PLAYER_JUMP_DELAY;
-}
-void Player::StartClimbingUp()
-{
-	state = State::CLIMBING;
-	SetAnimation((int)PlayerAnim::CLIMBING);
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetManualMode();
-}
-void Player::StartClimbingDown()
-{
-	state = State::CLIMBING;
-	SetAnimation((int)PlayerAnim::CLIMBING_TOP);
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetManualMode();
 }
 void Player::ChangeAnimRight()
 {
@@ -267,10 +245,6 @@ void Player::MoveY()
 	{
 		LogicJumping();
 	}
-	else if (state == State::CLIMBING)
-	{
-		LogicClimbing();
-	}
 	else //idle, walking, falling
 	{
 		pos.y += PLAYER_SPEED;
@@ -278,26 +252,6 @@ void Player::MoveY()
 		if (map->TestCollisionGround(box, &pos.y))
 		{
 			if (state == State::FALLING) Stop();
-
-			if (IsKeyDown(KEY_UP))
-			{
-				box = GetHitbox();
-				if (map->TestOnLadder(box, &pos.x))
-					StartClimbingUp();
-			}
-			else if (IsKeyDown(KEY_DOWN))
-			{
-				//To climb up the ladder, we need to check the control point (x, y)
-				//To climb down the ladder, we need to check pixel below (x, y+1) instead
-				box = GetHitbox();
-				box.pos.y++;
-				if (map->TestOnLadderTop(box, &pos.x))
-				{
-					StartClimbingDown();
-					pos.y += PLAYER_LADDER_SPEED;
-				}
-					
-			}
 			else if (IsKeyPressed(KEY_SPACE))
 			{
 				StartJumping();
@@ -364,51 +318,6 @@ void Player::LogicJumping()
 				Stop();
 			}
 		}
-	}
-}
-void Player::LogicClimbing()
-{
-	AABB box;
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	int tmp;
-
-	if (IsKeyDown(KEY_UP))
-	{
-		pos.y -= PLAYER_LADDER_SPEED;
-		sprite->NextFrame();
-	}
-	else if (IsKeyDown(KEY_DOWN))
-	{
-		pos.y += PLAYER_LADDER_SPEED;
-		sprite->PrevFrame();
-	}
-
-	//It is important to first check LadderTop due to its condition as a collision ground.
-	//By doing so, we ensure that we don't stop climbing down immediately after starting the descent.
-	box = GetHitbox();
-	if (map->TestOnLadderTop(box, &tmp))
-	{
-		if (IsInSecondHalfTile())		SetAnimation((int)PlayerAnim::CLIMBING_PRE_TOP);
-		else if (IsInFirstHalfTile())	SetAnimation((int)PlayerAnim::CLIMBING_TOP);
-		else					LOG("Internal error, tile should be a LADDER_TOP, coord: (%d,%d)", box.pos.x, box.pos.y);
-	}
-	else if (map->TestCollisionGround(box, &pos.y))
-	{
-		//Case leaving the ladder descending.
-		Stop();
-		sprite->SetAutomaticMode();
-	}
-	else if (!map->TestOnLadder(box, &tmp))
-	{
-		//Case leaving the ladder ascending.
-		//If we are not in a LadderTop, colliding ground or in the Ladder it means we are leaving
-		//ther ladder ascending.
-		Stop();
-		sprite->SetAutomaticMode();
-	}
-	else
-	{
-		if (GetAnimation() != PlayerAnim::CLIMBING)	SetAnimation((int)PlayerAnim::CLIMBING);
 	}
 }
 void Player::DrawDebug(const Color& col) const

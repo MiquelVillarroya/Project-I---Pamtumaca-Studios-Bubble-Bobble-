@@ -75,7 +75,6 @@ private:
 	void MoveX();
 	void MoveY();
 	void LogicJumping();
-	void LogicClimbing();
 
 	//Animation management
 	void SetAnimation(int id);
@@ -85,8 +84,6 @@ private:
 	void StartWalkingRight();
 	void StartFalling();
 	void StartJumping();
-	void StartClimbingUp();
-	void StartClimbingDown();
 	void ChangeAnimRight();
 	void ChangeAnimLeft();
 
@@ -94,10 +91,6 @@ private:
 	bool IsAscending() const;
 	bool IsLevitating() const;
 	bool IsDescending() const;
-
-	//Ladder get in/out steps
-	bool IsInFirstHalfTile() const;
-	bool IsInSecondHalfTile() const;
 
 	State state;
 	Look look;

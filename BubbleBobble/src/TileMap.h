@@ -14,33 +14,24 @@ enum class Tile {
 	AIR = 0,
 
 	// 0 < id < 50: static tiles
-	BLOCK_LVL1 = 1, PLAT_LVL1 = 2, BLOCK_SQUARE1_TR, BLOCK_SQUARE1_BL, BLOCK_SQUARE1_BR,
-	BLOCK_SQUARE2_TL, BLOCK_SQUARE2_TR, BLOCK_SQUARE2_BL, BLOCK_SQUARE2_BR,
-	BLOCK_VERT2_T, BLOCK_VERT2_B, BLOCK_HORIZ2_L, BLOCK_HORIZ2_R, BLOCK_BLUE,
-	BLOCK_HORIZ3_L, BLOCK_HORIZ3_M, BLOCK_HORIZ3_R,
-	BLOCK_BEAM_L, BLOCK_BEAM_R,
-
-	LADDER_L = 20, LADDER_R, LADDER_TOP_L, LADDER_TOP_R,
-	LOCK_RED = 30, LOCK_YELLOW,
-	LASER_L = 40, LASER_R,
+	BLOCK_LVL1 = 1, PLAT_LVL1 = 2,
 
 	// 50 <= id < 100: special tiles
-	DOOR = 50,
-	KEY_RED = 60, YELLOW_KEY, ITEM_APPLE, ITEM_CHILI,
-	LASER = 70, LASER_FRAME0, LASER_FRAME1, LASER_FRAME2,
+	FOOD_MUSHROOM = 50, FOOD_BANANA, FOOD_CHERRY, FOOD_ICE_CREAM, FOOD_FLAM, FOOD_CAKE,
+
 
 	// id >= 100: entities' initial locations
 	PLAYER = 100,
 
 	//Intervals
 	STATIC_FIRST = BLOCK_LVL1,
-	STATIC_LAST = LASER_R,
+	STATIC_LAST = PLAT_LVL1,
 	SOLID_FIRST = BLOCK_LVL1,
 	SOLID_LAST = BLOCK_LVL1,
 	PLAT_FIRST = PLAT_LVL1,
 	PLAT_LAST = PLAT_LVL1,
-	SPECIAL_FIRST = DOOR,
-	SPECIAL_LAST = LASER,
+	SPECIAL_FIRST = FOOD_MUSHROOM ,
+	SPECIAL_LAST = FOOD_CAKE ,
 	ENTITY_FIRST = PLAYER,
 	ENTITY_LAST = PLAYER
 };
@@ -68,12 +59,6 @@ public:
 	
 	//Test if there is a ground tile one pixel below the given box
 	bool TestFalling(const AABB& box) const;
-	
-	//Test if box is on ladder and update 'px' with the x-center position of the ladder
-	bool TestOnLadder(const AABB& box, int* px) const;
-	
-	//Test if box is on ladder top and update 'px' with the x-center position of the ladder
-	bool TestOnLadderTop(const AABB& box, int* px) const;
 
 private:
 	void InitTileDictionary();
@@ -81,11 +66,8 @@ private:
 	Tile GetTileIndex(int x, int y) const;
 	bool IsTileSolid(Tile tile) const;
 	bool IsTilePlat(Tile tile) const;
-	bool IsTileLadderTop(Tile tile) const;
-	bool IsTileLadder(Tile tile) const;
 	bool CollisionX(const Point& p, int distance) const;
 	bool CollisionY(const Point& p, int distance) const;
-	int GetLadderCenterPos(int pixel_x, int pixel_y) const;
 
 	//Tile map
 	Tile *map;
