@@ -22,19 +22,19 @@
 #define ANIM_LADDER_DELAY		(2*ANIM_DELAY)
 
 //When jumping, initial jump speed and maximum falling speed
-#define PLAYER_JUMP_FORCE		10
+#define PLAYER_JUMP_FORCE		9
 
 //Frame delay for updating the jump velocity
 #define PLAYER_JUMP_DELAY		2
 
 //Player is levitating when abs(speed) <= this value
-#define PLAYER_LEVITATING_SPEED	4
+#define PLAYER_LEVITATING_SPEED	0.75
 
 //Gravity affects jumping velocity when jump_delay is 0
 #define GRAVITY_FORCE			1
 
 //Logic states
-enum class State { IDLE, WALKING, JUMPING, FALLING, CLIMBING, DEAD };
+enum class State { IDLE, WALKING, JUMPING, FALLING, DEAD };
 enum class Look { RIGHT, LEFT };
 
 //Rendering states
@@ -44,7 +44,6 @@ enum class PlayerAnim {
 	JUMPING_LEFT, JUMPING_RIGHT,
 	LEVITATING_LEFT, LEVITATING_RIGHT,
 	FALLING_LEFT, FALLING_RIGHT,
-	CLIMBING, CLIMBING_PRE_TOP, CLIMBING_TOP,
 	SHOCK_LEFT, SHOCK_RIGHT,
 	TELEPORT_LEFT, TELEPORT_RIGHT,
 	NUM_ANIMATIONS

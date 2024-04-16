@@ -53,28 +53,23 @@ AppStatus Player::Initialise()
 		sprite->AddKeyFrame((int)PlayerAnim::WALKING_LEFT, { (float)i*n, n, n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 0*n, 6*n, -n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 1*n, 6*n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 0, 7*n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { n, 7*n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 0, 6*n, n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { n, 6*n, n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 0, 7*n, n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { n, 7*n, n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { 0, 7*n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { 0, 6*n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { n, 6*n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { 0, 7*n, n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { 0, 6*n, n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { n, 6*n, n, n });
+
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_RIGHT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { n, 7*n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { n, 7*n, n, n });
-
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING, ANIM_LADDER_DELAY);
-	for (i = 0; i < 4; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING, { (float)i * n, 6 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_PRE_TOP, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_PRE_TOP, { 4 * n, 6 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_TOP, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_TOP, { 5 * n, 6 * n, n, n });
 		
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
@@ -196,9 +191,6 @@ void Player::MoveX()
 {
 	AABB box;
 	int prev_x = pos.x;
-
-	//We can only go up and down while climbing
-	if (state == State::CLIMBING)	return;
 
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 	{
