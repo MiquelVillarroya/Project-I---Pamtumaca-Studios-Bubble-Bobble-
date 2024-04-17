@@ -5,7 +5,7 @@
 
 
 Sound musics[10];
-
+Music sounds[10];
 Game::Game()
 {
     state = GameState::MAIN_MENU;

@@ -5,6 +5,9 @@
 #include "Globals.h"
 #include <raymath.h>
 
+Sound playersound[10];
+
+
 Player::Player(const Point& p, State s, Look view) :
 	Entity(p, PLAYER_PHYSICAL_WIDTH, PLAYER_PHYSICAL_HEIGHT, PLAYER_FRAME_SIZE, PLAYER_FRAME_SIZE)
 {
@@ -13,6 +16,7 @@ Player::Player(const Point& p, State s, Look view) :
 	jump_delay = PLAYER_JUMP_DELAY;
 	map = nullptr;
 	score = 0;
+	
 }
 Player::~Player()
 {
@@ -149,6 +153,8 @@ void Player::StartFalling()
 }
 void Player::StartJumping()
 {
+	playersound[0] = LoadSound("audio/FX/Characters/BubbleJumpSFX.wav");
+	PlaySound(playersound[0]);
 	dir.y = -PLAYER_JUMP_FORCE;
 	state = State::JUMPING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
@@ -246,6 +252,7 @@ void Player::MoveY()
 			if (state == State::FALLING) Stop();
 			else if (IsKeyPressed(KEY_SPACE))
 			{
+				
 				StartJumping();
 			}
 		}
@@ -263,6 +270,7 @@ void Player::LogicJumping()
 	jump_delay--;
 	if (jump_delay == 0)
 	{
+		
 		prev_y = pos.y;
 		prev_box = GetHitbox();
 
