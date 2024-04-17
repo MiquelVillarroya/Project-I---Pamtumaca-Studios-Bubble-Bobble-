@@ -3,6 +3,9 @@
 #include "ResourceManager.h"
 #include <stdio.h>
 
+
+Sound musics[10];
+
 Game::Game()
 {
     state = GameState::MAIN_MENU;
@@ -71,6 +74,11 @@ AppStatus Game::LoadResources()
 AppStatus Game::BeginPlay()
 {
     scene = new Scene();
+
+    musics[0] = LoadSound("audio/Music/1_Introduction_Main_Theme.ogg");
+    PlaySound(musics[0]);
+
+
     if (scene == nullptr)
     {
         LOG("Failed to allocate memory for Scene");

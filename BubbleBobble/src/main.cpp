@@ -11,6 +11,7 @@ int main()
     int main_return = EXIT_SUCCESS;
 
     LOG("Application start");
+    InitAudioDevice();
     game = new Game();
     status = game->Initialise(GAME_SCALE_FACTOR);
     if (status != AppStatus::OK)
@@ -32,7 +33,9 @@ int main()
     }
 
     LOG("Application finish");
+    
     game->Cleanup();
+    CloseAudioDevice();
  
     LOG("Bye :)");
     delete game;
