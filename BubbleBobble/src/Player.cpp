@@ -153,7 +153,7 @@ void Player::StartFalling()
 }
 void Player::StartJumping()
 {
-	playersound[0] = LoadSound("audio/FX/Characters/BubbleJumpSFX.wav");
+	playersound[0] = LoadSound("audio/FX/Characters/JumpSFX.wav");
 	PlaySound(playersound[0]);
 	dir.y = -PLAYER_JUMP_FORCE;
 	state = State::JUMPING;
