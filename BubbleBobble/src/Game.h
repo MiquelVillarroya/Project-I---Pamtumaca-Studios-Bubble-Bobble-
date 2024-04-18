@@ -3,7 +3,17 @@
 #include "Scene.h"
 
 enum class GameState { INTRO, MAIN_MENU, PLAYING, SETTINGS, CREDITS };
-
+enum  MusicTrack {
+    GAME_MUS,
+    HURRY_MUS,
+    BONUS_MUS,
+    SECRET_ROOM_MUS,
+    FALSE_ENDING_MUS,
+    SUPER_DRUNK_MUS,
+    REAL_ENDING_MUS,
+    NAME_REGISTER_MUS,
+    GAME_OVER
+};
 class Game
 {
 public:
@@ -14,6 +24,13 @@ public:
     AppStatus Update();
     void Render();
     void Cleanup();
+    
+    Music GetCurrentTrack() const;
+    void ChangeTrack(MusicTrack track);
+
+    Music tracks[10];
+    Music currentTrack;
+    Music trackTimer;
 
 private:
     AppStatus BeginPlay();
@@ -26,6 +43,7 @@ private:
     Scene *scene;
     const Texture2D *img_menu, *img_intro1, *img_intro2;
     double startTime;
+
 
 
     //To work with original game units and then scale the result
