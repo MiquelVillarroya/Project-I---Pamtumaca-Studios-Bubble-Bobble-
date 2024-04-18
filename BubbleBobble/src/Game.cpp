@@ -3,14 +3,17 @@
 #include "ResourceManager.h"
 #include <stdio.h>
 
-
 Sound musics[10];
 Music sounds[10];
+
 Game::Game()
 {
-    state = GameState::MAIN_MENU;
+    state = GameState::INTRO;
     scene = nullptr;
     img_menu = nullptr;
+    img_intro1 = nullptr;
+    img_intro2 = nullptr;
+    startTime = 0;
 
     target = {};
     src = {};
@@ -56,6 +59,7 @@ AppStatus Game::Initialise(float scale)
     SetTargetFPS(60);
     //Disable the escape key to quit functionality
     SetExitKey(0);
+    startTime = GetTime();
 
     return AppStatus::OK;
 }
@@ -63,11 +67,22 @@ AppStatus Game::LoadResources()
 {
     ResourceManager& data = ResourceManager::Instance();
     
-    if (data.LoadTexture(Resource::IMG_MENU, "images/intro.png") != AppStatus::OK)
+    if (data.LoadTexture(Resource::IMG_MENU, "images/menu.png") != AppStatus::OK)
     {
         return AppStatus::ERROR;
     }
     img_menu = data.GetTexture(Resource::IMG_MENU);
+    if (data.LoadTexture(Resource::IMG_INTRO1, "images/intro_yapping1.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro1 = data.GetTexture(Resource::IMG_INTRO1);
+
+    if (data.LoadTexture(Resource::IMG_INTRO2, "images/intro_yapping2.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro2 = data.GetTexture(Resource::IMG_INTRO2);
     
     return AppStatus::OK;
 }
@@ -105,6 +120,13 @@ AppStatus Game::Update()
 
     switch (state)
     {
+    case GameState::INTRO:
+            {
+            double time = GetTime() - startTime;
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            if (time > 9) state = GameState::MAIN_MENU;
+            break;
+            }
         case GameState::MAIN_MENU: 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (IsKeyPressed(KEY_SPACE))
@@ -137,6 +159,25 @@ void Game::Render()
     
     switch (state)
     {
+         case GameState::INTRO:
+            {
+            double time = GetTime();
+            if (time > 1 && time <= 2) {
+                DrawTexture(*img_intro1, 0, 0, { 255, 255, 255, 255 });
+            }
+            else if (time > 2 && time < 5) {
+                unsigned char trans = 410 - 82 * time;
+                DrawTexture(*img_intro1, 0, 0, { 255, 255, 255, trans });
+            }
+            else if (time >= 5 && time < 6) {
+                DrawTexture(*img_intro2, 0, 0, { 255, 255, 255, 255 });
+            }
+            else if (time > 6 && time <= 9) {
+                unsigned char trans = 745 - 82 * time;
+                DrawTexture(*img_intro2, 0, 0, {255, 255, 255, trans});
+            }
+            break;
+            }
         case GameState::MAIN_MENU:
             DrawTexture(*img_menu, 0, 0, WHITE);
             break;
