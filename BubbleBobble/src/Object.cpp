@@ -11,12 +11,12 @@ Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, O
 	const int n = 2*TILE_SIZE;
 	switch (type)
 	{
-		case ObjectType::MUSHROOM: rc = { 5*n, 0, n, n}; break;
-		case ObjectType::BANANA: rc = { 5*n, n, n, n }; break;
-		case ObjectType::CHERRY: rc = { 5*n, 2*n, n, n }; break;
-		case ObjectType::ICE_CREAM: rc = { 5*n, 3*n, n, n }; break;
-		case ObjectType::FLAM: rc = { 5*n, 4*n, n, n }; break;
-		case ObjectType::CAKE: rc = { 5*n, 5*n, n, n }; break;
+		case ObjectType::MUSHROOM: rc = { 8*n, 0, n, n}; break;
+		case ObjectType::BANANA: rc = { 8*n, n, n, n }; break;
+		case ObjectType::CHERRY: rc = { 8*n, 5*n, n, n }; break;
+		case ObjectType::ICE_CREAM: rc = { 8*n, 2*n, n, n }; break;
+		case ObjectType::FLAM: rc = { 8*n, 3*n, n, n }; break;
+		case ObjectType::CAKE: rc = { 8*n, 4*n, n, n }; break;
 
 		default: LOG("Internal error: object creation of invalid type");
 	}
