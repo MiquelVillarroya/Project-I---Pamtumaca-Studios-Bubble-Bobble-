@@ -24,6 +24,8 @@ void Entity::SetPos(const Point& p)
 void Entity::Update()
 {
 	pos += dir;
+
+
 }
 AABB Entity::GetHitbox() const
 {
@@ -63,4 +65,19 @@ void Entity::DrawHitbox(int x, int y, int w, int h, const Color& col) const
 
 	render->DrawBox(x, y-(h-1), w, h, c);
 	render->DrawCorners(x, y-(h-1), w, h);
+
+
+}
+
+void Entity::Warp() {
+
+	if (pos.y > WINDOW_HEIGHT) {
+
+		pos.y = -TILE_SIZE;
+
+
+	}
+
+
+
 }

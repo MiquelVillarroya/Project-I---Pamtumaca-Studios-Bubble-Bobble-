@@ -150,7 +150,9 @@ void Player::StartFalling()
 	state = State::FALLING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
+	
 }
+
 void Player::StartJumping()
 {
 	playersound[0] = LoadSound("audio/FX/Characters/JumpSFX.wav");
@@ -192,6 +194,7 @@ void Player::Update()
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
+	Warp();
 }
 void Player::MoveX()
 {
