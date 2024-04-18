@@ -35,8 +35,16 @@ void TileMap::InitTileDictionary()
 
 	dict_rect[(int)Tile::BLOCK_LVL1] = { 0,  0, n + sx, n + sy};
 	dict_rect[(int)Tile::PLAT_LVL1] = { 0,  0, n + sx, n + sy};
-
 	dict_rect[(int)Tile::NUMBER_BLOCK_LVL1_1] = { 2*n,  0, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOCK_LVL1_2] = { 4 * n,  0, n + sx, n + sy };
+
+	dict_rect[(int)Tile::BLOCK_LVL2] = { 0,  2*n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_LVL2] = { 0,  2*n, n + sx, n + sy };
+	dict_rect[(int)Tile::WALL_LVL2_1] = { 2*n,  2*n, n + sx, n + sy };
+	dict_rect[(int)Tile::WALL_LVL2_2] = {3*n,  2*n, n + sx, n + sy};
+	dict_rect[(int)Tile::WALL_LVL2_3] = { 5 * n,  2 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::WALL_LVL2_4] = { 6 * n,  2 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOCK_LVL1_1] = { 2 * n,  0, n + sx, n + sy };
 	dict_rect[(int)Tile::NUMBER_BLOCK_LVL1_2] = { 4 * n,  0, n + sx, n + sy };
 
 	dict_rect[(int)Tile::FOOD_MUSHROOM] = { 0,  0, n + sx, n + sy};
