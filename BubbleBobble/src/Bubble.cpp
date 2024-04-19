@@ -83,13 +83,22 @@ void Bubble::MoveX()
 		}
 	}
 	else if (state != BubbleState::SHOT && pos.y <= MAX_HEIGHT) {
-		if (WINDOW_WIDTH / 2 - 7 <= pos.x)
+		//left movement
+		if (WINDOW_WIDTH / 2 - PHYSICAL_OFFSET + TOP_OFFSET <= pos.x)
 		{
 			pos.x -= HORIZONTAL_ADVANCE_TOP;
+			direction = BubbleDirection::LEFT; 
 		}
-		else if (WINDOW_WIDTH / 2 - 7 >= pos.x)
+		//right movement
+		else if (WINDOW_WIDTH / 2 - PHYSICAL_OFFSET - TOP_OFFSET >= pos.x)
 		{
 			pos.x += HORIZONTAL_ADVANCE_TOP;
+			direction = BubbleDirection::RIGHT;
+		}
+		else
+		{
+			if (direction == BubbleDirection::LEFT) pos.x -= HORIZONTAL_ADVANCE_TOP;
+			if (direction == BubbleDirection::RIGHT) pos.x += HORIZONTAL_ADVANCE_TOP;
 		}
 		forceDelay = BUBBLE_FORCE_DELAY * 2;
 	}

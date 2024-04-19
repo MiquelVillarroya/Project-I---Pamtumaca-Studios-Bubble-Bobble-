@@ -10,6 +10,7 @@
 //Logical model size 16x16
 #define BUBBLE_PHYSICAL_WIDTH	14
 #define BUBBLE_PHYSICAL_HEIGHT	14
+#define PHYSICAL_OFFSET			7
 
 //Bubble speed
 #define BUBBLE_SPEED			1
@@ -20,12 +21,13 @@
 //Update bubble impulse delay
 #define BUBBLE_FORCE_DELAY		2
 
-//Max Height
+//Max Height & Top Offset
 #define MAX_HEIGHT				40
+#define TOP_OFFSET				20
 
 //Movement advance
 #define HORIZONTAL_ADVANCE		10
-#define HORIZONTAL_ADVANCE_TOP	8
+#define HORIZONTAL_ADVANCE_TOP	1
 #define VERTICAL_ADVANCE		1
 
 
