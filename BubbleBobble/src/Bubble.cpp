@@ -11,6 +11,8 @@ Bubble::Bubble(const Point& p, BubbleDirection bd) :
 	state = BubbleState::SHOT;
 	direction = bd;
 	alive = true;
+	forceDelay = BUBBLE_FORCE_DELAY;
+	forceMax = 0;
 }
 Bubble::~Bubble()
 {
@@ -61,11 +63,44 @@ bool Bubble::IsAlive() const
 }
 void Bubble::Update()
 {
-	//MoveX();
-	//MoveY();
-	pos.x += 1;
+	MoveX();
+	MoveY();
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
+}
+void Bubble::MoveX()
+{
+	forceDelay--;
+	if (forceDelay == 0 && state == BubbleState::SHOT)
+	{
+		if (direction == BubbleDirection::LEFT) pos.x -= HORIZONTAL_ADVANCE;
+		if (direction == BubbleDirection::RIGHT) pos.x += HORIZONTAL_ADVANCE;
+		forceDelay = BUBBLE_FORCE_DELAY;
+		forceMax++;
+		if (forceMax == BUBBLE_MAX_FORCE) {
+			forceDelay = BUBBLE_FORCE_DELAY * 2;
+			state = BubbleState::NORMAL;
+		}
+	}
+	else if (state != BubbleState::SHOT && pos.y <= MAX_HEIGHT) {
+		if (WINDOW_WIDTH / 2 - 7 <= pos.x)
+		{
+			pos.x -= HORIZONTAL_ADVANCE_TOP;
+		}
+		else if (WINDOW_WIDTH / 2 - 7 >= pos.x)
+		{
+			pos.x += HORIZONTAL_ADVANCE_TOP;
+		}
+		forceDelay = BUBBLE_FORCE_DELAY * 2;
+	}
+
+}
+void Bubble::MoveY()
+{
+	if (state != BubbleState::SHOT && pos.y > MAX_HEIGHT)
+	{
+		pos.y -= VERTICAL_ADVANCE; 
+	}
 }
 void Bubble::DrawDebug(const Color& col) const
 {

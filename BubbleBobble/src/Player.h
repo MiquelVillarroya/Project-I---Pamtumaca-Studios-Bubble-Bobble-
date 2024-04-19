@@ -100,6 +100,7 @@ private:
 	int jump_delay;
 
 	std::vector<Bubble*> bubbles;
+	float elapsedTimeBubble;
 
 	TileMap *map;
 

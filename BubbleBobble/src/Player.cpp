@@ -15,6 +15,7 @@ Player::Player(const Point& p, State s, Look view) :
 	look = view;
 	jump_delay = PLAYER_JUMP_DELAY;
 	map = nullptr;
+	elapsedTimeBubble = 0;
 	score = 0;
 	lives = 3;
 	
@@ -276,15 +277,21 @@ void Player::MoveY()
 	}
 }
 void Player::BubbleShot() {
-	if (IsKeyPressed(KEY_SPACE) && GetFrameTime() < 0.4)
+	
+ 	elapsedTimeBubble += GetFrameTime();
+	if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .2)
 	{
-		BubbleDirection temp = BubbleDirection::LEFT;
-		if (IsLookingLeft())		temp = BubbleDirection::LEFT;
-		else if (IsLookingRight())	temp = BubbleDirection::RIGHT;
-
-		Bubble* bubl = new Bubble(pos, temp);
-		bubl->Initialise();
-		bubbles.push_back(bubl);
+		if (IsLookingLeft()) {
+			Bubble* bubl = new Bubble({ pos.x - PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::LEFT);
+			bubl->Initialise();
+			bubbles.push_back(bubl);
+		}
+		else if (IsLookingRight()) {
+			Bubble* bubl = new Bubble({ pos.x + PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::RIGHT);
+			bubl->Initialise();
+			bubbles.push_back(bubl);
+		}
+		elapsedTimeBubble = 0;
 	}
 }
 void Player::LogicJumping()

@@ -14,6 +14,20 @@
 //Bubble speed
 #define BUBBLE_SPEED			1
 
+//Initial bubble impulse
+#define BUBBLE_MAX_FORCE		4
+
+//Update bubble impulse delay
+#define BUBBLE_FORCE_DELAY		2
+
+//Max Height
+#define MAX_HEIGHT				40
+
+//Movement advance
+#define HORIZONTAL_ADVANCE		10
+#define HORIZONTAL_ADVANCE_TOP	8
+#define VERTICAL_ADVANCE		1
+
 
 enum class BubbleState { SHOT, NORMAL, ENEMY};
 enum class BubbleDirection {LEFT, RIGHT};
@@ -35,8 +49,9 @@ public:
 
 private:
 
-	BubbleState state;
-	BubbleDirection direction;
+	//Bubble Mechanics
+	void MoveX();
+	void MoveY();
 
 	//Animations
 	void SetAnimation(int id);
@@ -45,4 +60,10 @@ private:
 	//
 	bool IsAlive() const;
 	bool alive;
+
+	BubbleState state;
+	BubbleDirection direction;
+
+	int forceDelay;
+	int forceMax;
 };
