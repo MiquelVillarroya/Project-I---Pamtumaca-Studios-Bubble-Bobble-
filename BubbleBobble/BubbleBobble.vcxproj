@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\noapo\Desktop\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\Keli\Desktop\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Keli\Desktop\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;C:\Users\noapo\Desktop\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\noapm\Documents\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\noapo\Desktop\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\Keli\Desktop\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\noapm\Documents\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;C:\Users\Keli\Desktop\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;C:\Users\noapo\Desktop\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
