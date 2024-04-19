@@ -219,7 +219,7 @@ void TileMap::Release()
 	ResourceManager& data = ResourceManager::Instance(); 
 	data.ReleaseTexture(Resource::IMG_TILES);
 	
-	laser->Release();
+	//laser->Release();
 
 	dict_rect.clear();
 }

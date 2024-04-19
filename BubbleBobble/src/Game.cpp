@@ -3,8 +3,8 @@
 #include "ResourceManager.h"
 #include <stdio.h>
 
-Sound musics[10];
-Music sounds[10];
+
+Sound sounds[10];
 
 Game::Game()
 {
@@ -14,6 +14,18 @@ Game::Game()
     img_intro1 = nullptr;
     img_intro2 = nullptr;
     startTime = 0;
+
+    tracks[GAME_MUS] = LoadMusicStream("audio/music/1_Introduction_Main_Theme.ogg");
+    tracks[GAME_MUS] = LoadMusicStream("audio/music/1_Introduction_Main_Theme.ogg");
+    tracks[HURRY_MUS] = LoadMusicStream("audio/music/2_Hurry!_Main Theme__faster.ogg");
+    tracks[BONUS_MUS] = LoadMusicStream("audio/music/3_Extend_Bonus_Music.ogg");
+    tracks[SECRET_ROOM_MUS] = LoadMusicStream("audio/music/4_Secret_Room.ogg");
+    tracks[FALSE_ENDING_MUS] = LoadMusicStream("audio/music/5_False_Ending.ogg");
+    tracks[SUPER_DRUNK_MUS] = LoadMusicStream("audio/music/6_Super_Drunk.ogg");
+    tracks[REAL_ENDING_MUS] = LoadMusicStream("audio/music/7_Real_Ending.ogg");
+    tracks[NAME_REGISTER_MUS] = LoadMusicStream("audio/music/8_Name_Register.ogg");
+    tracks[GAME_OVER] = LoadMusicStream("audio/music/9_Game_Over.ogg");
+    currentTrack = LoadMusicStream("audio/music/1_Introduction_Main_Theme.ogg");
 
     target = {};
     src = {};
@@ -27,6 +39,7 @@ Game::~Game()
         delete scene;
         scene = nullptr;
     }
+
 }
 AppStatus Game::Initialise(float scale)
 {
@@ -35,7 +48,7 @@ AppStatus Game::Initialise(float scale)
     h = WINDOW_HEIGHT * scale;
 
     //Initialise window
-    InitWindow((int)w, (int)h, "Vikings");
+    InitWindow((int)w, (int)h, "Bubble Bobble");
 
     //Render texture initialisation, used to hold the rendering result so we can easily resize it
     target = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -83,17 +96,16 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_intro2 = data.GetTexture(Resource::IMG_INTRO2);
-    
+  
+    tracks[GAME_MUS].looping = true;
+
     return AppStatus::OK;
 }
 AppStatus Game::BeginPlay()
-{
+{    
     scene = new Scene();
-
-    musics[0] = LoadSound("audio/Music/1_Introduction_Main_Theme.ogg");
-    PlaySound(musics[0]);
-
-
+    currentTrack = tracks[GAME_MUS];
+    PlayMusicStream(currentTrack);
     if (scene == nullptr)
     {
         LOG("Failed to allocate memory for Scene");
@@ -124,6 +136,7 @@ AppStatus Game::Update()
             {
             double time = GetTime() - startTime;
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            if (IsKeyPressed(KEY_SPACE)) state = GameState::MAIN_MENU;
             if (time > 9) state = GameState::MAIN_MENU;
             break;
             }
@@ -184,6 +197,9 @@ void Game::Render()
 
         case GameState::PLAYING:
             scene->Render();
+            if (GetMusicTimePlayed(currentTrack) >= 99) SeekMusicStream(currentTrack, 45);
+            printf("%f \n",GetMusicTimePlayed(currentTrack));
+            UpdateMusicStream(currentTrack);
             break;
     }
     
@@ -196,6 +212,9 @@ void Game::Render()
 }
 void Game::Cleanup()
 {
+    for (int i = 0; i < GAME_OVER; ++i) {
+        UnloadMusicStream(tracks[i]);
+    }
     UnloadResources();
     CloseWindow();
 }
@@ -203,6 +222,14 @@ void Game::UnloadResources()
 {
     ResourceManager& data = ResourceManager::Instance();
     data.ReleaseTexture(Resource::IMG_MENU);
+    data.ReleaseTexture(Resource::IMG_INTRO1);
+    data.ReleaseTexture(Resource::IMG_INTRO2);
 
     UnloadRenderTexture(target);
+}
+Music Game::GetCurrentTrack() const {
+    return currentTrack;
+}
+void Game::ChangeTrack(MusicTrack track) {
+    currentTrack = tracks[track];
 }
