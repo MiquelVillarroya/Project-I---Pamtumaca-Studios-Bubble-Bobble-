@@ -30,7 +30,6 @@ public:
 
     Music tracks[10];
     Music currentTrack;
-    Music trackTimer;
 
 private:
     AppStatus BeginPlay();

@@ -5,9 +5,11 @@
 #include "raymath.h"
 
 
-Bubble::Bubble(const Point& p) :
+Bubble::Bubble(const Point& p, BubbleDirection bd) :
 	Entity(p, BUBBLE_PHYSICAL_WIDTH, BUBBLE_PHYSICAL_HEIGHT, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE)
 {
+	state = BubbleState::SHOT;
+	direction = bd;
 	alive = true;
 }
 Bubble::~Bubble()
@@ -34,11 +36,23 @@ AppStatus Bubble::Initialise()
 	sprite->SetNumberAnimations((int)BubbleAnim::NUM_ANIMATIONS);
 	
 	//Set Animations
+	sprite->SetAnimationDelay((int)BubbleAnim::INITIAL, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::INITIAL, { 0, 0, n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::INITIAL, { n, 0, n, n });
+
+
+	SetAnimation((int)BubbleAnim::INITIAL);
 
 }
-void Bubble::SetTileMap(TileMap* tilemap)
+void Bubble::SetAnimation(int id)
 {
-	map = tilemap;
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetAnimation(id);
+}
+BubbleAnim Bubble::GetAnimation()
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	return (BubbleAnim)sprite->GetAnimation();
 }
 bool Bubble::IsAlive() const
 {
@@ -49,15 +63,13 @@ void Bubble::Update()
 {
 	//MoveX();
 	//MoveY();
-
+	pos.x += 1;
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 }
 void Bubble::DrawDebug(const Color& col) const
 {
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
-	DrawText(TextFormat("Position: (%d,%d)\nSize: %dx%d\nFrame: %dx%d", pos.x, pos.y, width, height, frame_width, frame_height), 18 * 16, 0, 8, LIGHTGRAY);
-	DrawPixel(pos.x, pos.y, WHITE);
 }
 void Bubble::Release()
 {

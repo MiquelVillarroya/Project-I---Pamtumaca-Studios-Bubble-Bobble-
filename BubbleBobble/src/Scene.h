@@ -24,7 +24,6 @@ private:
     void ClearLevel();
     void RenderObjects() const;
     void RenderObjectsDebug(const Color& col) const;
-
     void RenderGUI() const;
 
     Player *player;

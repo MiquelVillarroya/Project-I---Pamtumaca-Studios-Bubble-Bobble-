@@ -21,6 +21,11 @@ Player::Player(const Point& p, State s, Look view) :
 }
 Player::~Player()
 {
+	for (Bubble* bubl : bubbles)
+	{
+		delete bubl;
+	}
+	bubbles.clear();
 }
 AppStatus Player::Initialise()
 {
@@ -190,6 +195,13 @@ void Player::Update()
 	//Instead, uses an independent behaviour for each axis.
 	MoveX();
 	MoveY();
+	BubbleShot();
+	auto it = bubbles.begin();
+	while (it != bubbles.end())
+	{
+		(*it)->Update();
+		++it;
+	}
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
@@ -251,7 +263,7 @@ void Player::MoveY()
 		if (map->TestCollisionGround(box, &pos.y))
 		{
 			if (state == State::FALLING) Stop();
-			else if (IsKeyPressed(KEY_SPACE))
+			else if (IsKeyPressed(KEY_UP))
 			{
 				
 				StartJumping();
@@ -261,6 +273,18 @@ void Player::MoveY()
 		{
 			if (state != State::FALLING) StartFalling();
 		}
+	}
+}
+void Player::BubbleShot() {
+	if (IsKeyPressed(KEY_SPACE) && GetFrameTime() < 0.4)
+	{
+		BubbleDirection temp = BubbleDirection::LEFT;
+		if (IsLookingLeft())		temp = BubbleDirection::LEFT;
+		else if (IsLookingRight())	temp = BubbleDirection::RIGHT;
+
+		Bubble* bubl = new Bubble(pos, temp);
+		bubl->Initialise();
+		bubbles.push_back(bubl);
 	}
 }
 void Player::LogicJumping()
@@ -324,14 +348,43 @@ void Player::LogicJumping()
 void Player::DrawDebug(const Color& col) const
 {	
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
+	auto it = bubbles.begin();
+	while (it != bubbles.end())
+	{
+		(*it)->DrawDebug(PURPLE);
+		++it;
+	}
 	
 	DrawText(TextFormat("Position: (%d,%d)\nSize: %dx%d\nFrame: %dx%d", pos.x, pos.y, width, height, frame_width, frame_height), 18*16, 0, 8, LIGHTGRAY);
 	DrawPixel(pos.x, pos.y, WHITE);
 }
+ void Player::DrawBubbles()
+ {
+	 auto it = bubbles.begin();
+	 while (it != bubbles.end())
+	 {
+	 	(*it)->Draw();
+		++it;
+	 }
+}
+ void Player::ClearBubbles()
+ {
+	 for (Bubble* bubl : bubbles)
+	 {
+		 delete bubl;
+	 }
+	 bubbles.clear();
+ }
 void Player::Release()
 {
 	ResourceManager& data = ResourceManager::Instance();
 	data.ReleaseTexture(Resource::IMG_PLAYER);
 
 	render->Release();
+	auto it = bubbles.begin();
+	while (it != bubbles.end())
+	{
+		(*it)->Release();
+		++it;
+	}
 }

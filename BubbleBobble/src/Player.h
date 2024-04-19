@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "TileMap.h"
+#include "Bubble.h"
 
 //Representation model size: 16x16
 #define PLAYER_FRAME_SIZE		16
@@ -64,6 +65,8 @@ public:
 
 	void Update();
 	void DrawDebug(const Color& col) const;
+	void DrawBubbles();
+	void ClearBubbles();
 	void Release();
 
 private:
@@ -74,6 +77,7 @@ private:
 	void MoveX();
 	void MoveY();
 	void LogicJumping();
+	void BubbleShot();
 
 	//Animation management
 	void SetAnimation(int id);
@@ -94,6 +98,8 @@ private:
 	State state;
 	Look look;
 	int jump_delay;
+
+	std::vector<Bubble*> bubbles;
 
 	TileMap *map;
 

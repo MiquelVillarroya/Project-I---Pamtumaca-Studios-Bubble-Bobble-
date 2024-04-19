@@ -145,7 +145,7 @@ AppStatus Scene::LoadLevel(int stage)
 			 5,   6,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  10,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   5,   6,
 			 3,   4,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   3,   4,
 			 5,   6,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   5,   6,
-			 3,   4,   0, 100,   0,   0,   0,  50,   0,  51,   0,  52,   0,  53,   0,  54,   0,  55,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   3,   4,
+			 3,   4,   0, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   3,   4,
 			 5,   6,   2,   2,   2,   2,   2,   2,   2,   0,   0,   0,   0,   2,   2,   2,   2,   2,   2,   0,   0,   0,   0,   2,   2,   2,   2,   2,   2,   2,   5,   6
 
 
@@ -264,6 +264,7 @@ void Scene::Render()
 	{
 		RenderObjects(); 
 		player->Draw();
+		player->DrawBubbles();
 	}
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
 	{
@@ -313,6 +314,7 @@ void Scene::ClearLevel()
 		delete obj;
 	}
 	objects.clear();
+	player->ClearBubbles();
 }
 void Scene::RenderObjects() const
 {
