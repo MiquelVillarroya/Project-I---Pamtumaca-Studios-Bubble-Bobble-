@@ -192,6 +192,7 @@ void Player::Update()
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
+	Warp();
 }
 void Player::MoveX()
 {

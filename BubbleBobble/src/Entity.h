@@ -24,6 +24,7 @@ public:
 	//Draw logical/physical model (hitbox)
 	void DrawHitbox(const Color& col) const;
 	void DrawHitbox(int x, int y, int w, int h, const Color& col) const;
+	void Warp();
 
 protected:
 	Point GetRenderingPosition() const;
