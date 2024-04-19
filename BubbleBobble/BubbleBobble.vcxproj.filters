@@ -60,6 +60,9 @@
     <ClCompile Include="src\Player.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bubble.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity.h">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="src\ResourceManager.h">
       <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bubble.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

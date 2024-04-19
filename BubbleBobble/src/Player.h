@@ -98,5 +98,6 @@ private:
 	TileMap *map;
 
 	int score;
+	int lives;
 };
 
