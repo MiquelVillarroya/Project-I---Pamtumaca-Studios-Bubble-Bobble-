@@ -12,7 +12,10 @@ enum class Resource {
     IMG_PLAYER, 
     IMG_TILES,
     IMG_ITEMS,
-    GAME_OVER
+    GAME_OVER,
+    TRANSITION,
+    STAGE2,
+    STAGE1
 };
 
 class ResourceManager {

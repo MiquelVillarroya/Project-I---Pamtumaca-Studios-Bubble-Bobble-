@@ -103,6 +103,18 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     game_over = data.GetTexture(Resource::GAME_OVER);
+
+    if (data.LoadTexture(Resource::STAGE1, "images/level1.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    stage1 = data.GetTexture(Resource::STAGE1);
+    if (data.LoadTexture(Resource::STAGE2, "images/level13.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    stage2 = data.GetTexture(Resource::STAGE2);
+
   
     tracks[GAME_MUS].looping = true;
 
@@ -172,6 +184,14 @@ AppStatus Game::Update()
                
                 state = GameState::GAME_OVER;
             }
+            if (IsKeyPressed(KEY_N)) {
+
+
+                state = GameState::TRANSITION;
+
+            }
+        
+            
     }
     return AppStatus::OK;
 }
@@ -213,17 +233,49 @@ void Game::Render()
             UpdateMusicStream(currentTrack);
             break;
 
+
+
+
         case GameState::GAME_OVER:
             tracks[GAME_OVER_MUS].stream;
-            double time = GetTime() - startTime;
+
             if (IsKeyPressed(KEY_ESCAPE)) state = GameState::MAIN_MENU;
-            if (time > 9) state = GameState::MAIN_MENU;
+
             DrawTexture(*game_over, 0, 0, WHITE);
-           
+
             //ChangeTrack(GAME_OVER_MUS);
            // currentTrack.stream;
           //  tracks[GAME_OVER_MUS].stream; //Nose pq no funciona la musica wtf
             break;
+
+        case GameState::TRANSITION:
+
+            float transition = timeSpent / totalTime;
+            float stage2_position = 224.0 * -transition;
+
+            if (timeSpent <= totalTime) {
+
+
+                DrawTexture(*stage1, 0, stage2_position, WHITE);
+                DrawTexture(*stage2, 0, stage2_position+224.0, WHITE);
+                timeSpent += GetFrameTime();
+                
+            }
+            else {
+
+                scene->LoadLevel(2);
+                timeSpent = 0;
+                state = GameState::PLAYING;
+                
+
+
+            }
+            
+            break;
+
+
+
+     
 
 
     }

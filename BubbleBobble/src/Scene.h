@@ -16,9 +16,10 @@ public:
     void Update();
     void Render();
     void Release();
+    AppStatus LoadLevel(int stage);
 
 private:
-    AppStatus LoadLevel(int stage);
+  
     
     void CheckCollisions(); 
     void ClearLevel();
