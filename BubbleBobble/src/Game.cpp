@@ -167,7 +167,7 @@ AppStatus Game::Update()
                 //Game logic
                 scene->Update();
             }
-            if (IsKeyPressed(KEY_SPACE))
+            if (IsKeyPressed(KEY_P))
             {
                
                 state = GameState::GAME_OVER;
@@ -214,10 +214,15 @@ void Game::Render()
             break;
 
         case GameState::GAME_OVER:
+            tracks[GAME_OVER_MUS].stream;
             double time = GetTime() - startTime;
             if (IsKeyPressed(KEY_ESCAPE)) state = GameState::MAIN_MENU;
             if (time > 9) state = GameState::MAIN_MENU;
             DrawTexture(*game_over, 0, 0, WHITE);
+           
+            //ChangeTrack(GAME_OVER_MUS);
+           // currentTrack.stream;
+          //  tracks[GAME_OVER_MUS].stream; //Nose pq no funciona la musica wtf
             break;
 
 
