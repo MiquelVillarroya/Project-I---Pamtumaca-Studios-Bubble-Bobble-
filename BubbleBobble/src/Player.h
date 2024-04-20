@@ -45,8 +45,7 @@ enum class PlayerAnim {
 	JUMPING_LEFT, JUMPING_RIGHT,
 	LEVITATING_LEFT, LEVITATING_RIGHT,
 	FALLING_LEFT, FALLING_RIGHT,
-	SHOCK_LEFT, SHOCK_RIGHT,
-	TELEPORT_LEFT, TELEPORT_RIGHT,
+	DEATH,
 	NUM_ANIMATIONS
 };
 
@@ -62,6 +61,9 @@ public:
 	void InitScore();
 	void IncrScore(int n);
 	int GetScore();
+	int GetLives() const;
+	State GetState() const;
+	void MinusLife();
 
 	void Update();
 	void DrawDebug(const Color& col) const;

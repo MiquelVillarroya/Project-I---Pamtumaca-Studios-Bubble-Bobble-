@@ -94,15 +94,30 @@ void Bubble::Update()
 void Bubble::MoveX()
 {
 	AABB box;
+	int prev_x = pos.x;
 	if (move == true) {
 		forceDelay--;
 		if (forceDelay == 0 && state == BubbleState::SHOT)
 		{
 			if (direction == BubbleDirection::LEFT) pos.x -= HORIZONTAL_ADVANCE;
-			if (direction == BubbleDirection::RIGHT) pos.x += HORIZONTAL_ADVANCE;
+			else if (direction == BubbleDirection::RIGHT) pos.x += HORIZONTAL_ADVANCE;
 			forceDelay = BUBBLE_FORCE_DELAY;
 			forceMax++;
 			box = GetHitbox();
+			if (pos.x < 19)
+			{
+				pos.x = 19;
+				forceDelay = BUBBLE_FORCE_DELAY * 2;
+				state = BubbleState::NORMAL;
+				SetAnimation((int)BubbleAnim::IDLE);
+			}
+			else if (pos.x > 226)
+			{
+				pos.x = 226;
+				forceDelay = BUBBLE_FORCE_DELAY * 2;
+				state = BubbleState::NORMAL;
+				SetAnimation((int)BubbleAnim::IDLE);
+			}
 			if (forceMax == BUBBLE_MAX_FORCE) {
 				forceDelay = BUBBLE_FORCE_DELAY * 2;
 				state = BubbleState::NORMAL;

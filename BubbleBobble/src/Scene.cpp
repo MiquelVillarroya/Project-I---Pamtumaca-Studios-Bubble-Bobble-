@@ -317,27 +317,37 @@ void Scene::Release()
 }
 void Scene::CheckCollisions()
 {
-	AABB player_box, obj_box;
+	AABB player_box, obj_box, enemy_box;
 	
 	player_box = player->GetHitbox();
-	auto it = objects.begin();
-	while (it != objects.end())
+	auto itObj = objects.begin();
+	while (itObj != objects.end())
 	{
-		obj_box = (*it)->GetHitbox();
+		obj_box = (*itObj)->GetHitbox();
 		if(player_box.TestAABB(obj_box))
 		{
-			player->IncrScore((*it)->Points());
+			player->IncrScore((*itObj)->Points());
 			
 			//Delete the object
-			delete* it; 
-			//Erase the object from the vector and get the iterator to the next valid element
-			it = objects.erase(it); 
+			delete* itObj; 
+			//Erase the object from the vector and get the itObjerator to the next valid element
+			itObj = objects.erase(itObj); 
 		}
 		else
 		{
 			//Move to the next object
-			++it; 
+			++itObj; 
 		}
+	}
+	auto itEnem = enemies.begin();
+	while ( itEnem != enemies.end())
+	{
+		enemy_box = (*itEnem)->GetHitbox();
+		if (player_box.TestAABB(enemy_box) && player->GetState() != State::DEAD)  
+		{
+			player->MinusLife();
+		}
+		++itEnem;
 	}
 }
 void Scene::ClearLevel()
@@ -385,5 +395,6 @@ void Scene::RenderEnemiesDebug(const Color& col) const
 void Scene::RenderGUI() const
 {
 	//Temporal approach
-	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 10, 8, LIGHTGRAY);
+	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 5, 8, LIGHTGRAY);
+	DrawText(TextFormat("LIVES : %d", player->GetLives()), 150, 5, 8, LIGHTGRAY);
 }

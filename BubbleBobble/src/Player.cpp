@@ -81,6 +81,11 @@ AppStatus Player::Initialise()
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { n, 7*n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { n, 7*n, n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::DEATH, ANIM_DELAY);
+	for (i = 0; i < 13; ++i) {
+		sprite->AddKeyFrame((int)PlayerAnim::DEATH, {(float)i*n, 13*n, n, n, });
+	}
 		
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
@@ -97,6 +102,20 @@ void Player::IncrScore(int n)
 int Player::GetScore()
 {
 	return score;
+}
+int Player::GetLives() const
+{
+	return lives;
+}
+State Player::GetState() const
+{
+	return state;
+}
+void Player::MinusLife()
+{
+	lives--;
+	state = State::DEAD;
+	SetAnimation((int)PlayerAnim::DEATH);
 }
 void Player::SetTileMap(TileMap* tilemap)
 {
@@ -194,25 +213,28 @@ void Player::Update()
 {
 	//Player doesn't use the "Entity::Update() { pos += dir; }" default behaviour.
 	//Instead, uses an independent behaviour for each axis.
-	MoveX();
-	MoveY();
-	BubbleShot();
-	auto it = bubbles.begin();
-	while (it != bubbles.end())
-	{
-		if ((*it)->IsAlive() == false)
-		{
-			delete* it;
-			it = bubbles.erase(it);
-		}
-		else
-		{
-			(*it)->Update();
-			++it;
-		}
-
+	if (false) {
 	}
+	else {
+		MoveX();
+		MoveY();
+		BubbleShot();
+		auto it = bubbles.begin();
+		while (it != bubbles.end())
+		{
+			if ((*it)->IsAlive() == false)
+			{
+				delete* it;
+				it = bubbles.erase(it);
+			}
+			else
+			{
+				(*it)->Update();
+				++it;
+			}
 
+		}
+	}
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 }
