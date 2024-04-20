@@ -200,8 +200,17 @@ void Player::Update()
 	auto it = bubbles.begin();
 	while (it != bubbles.end())
 	{
-		(*it)->Update();
-		++it;
+		if ((*it)->IsAlive() == false)
+		{
+			delete* it;
+			it = bubbles.erase(it);
+		}
+		else
+		{
+			(*it)->Update();
+			++it;
+		}
+
 	}
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -284,11 +293,13 @@ void Player::BubbleShot() {
 		if (IsLookingLeft()) {
 			Bubble* bubl = new Bubble({ pos.x - PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::LEFT);
 			bubl->Initialise();
+			bubl->SetTileMap(map);
 			bubbles.push_back(bubl);
 		}
 		else if (IsLookingRight()) {
 			Bubble* bubl = new Bubble({ pos.x + PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::RIGHT);
 			bubl->Initialise();
+			bubl->SetTileMap(map);
 			bubbles.push_back(bubl);
 		}
 		elapsedTimeBubble = 0;
@@ -355,13 +366,7 @@ void Player::LogicJumping()
 void Player::DrawDebug(const Color& col) const
 {	
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
-	auto it = bubbles.begin();
-	while (it != bubbles.end())
-	{
-		(*it)->DrawDebug(PURPLE);
-		++it;
-	}
-	
+
 	DrawText(TextFormat("Position: (%d,%d)\nSize: %dx%d\nFrame: %dx%d", pos.x, pos.y, width, height, frame_width, frame_height), 18*16, 0, 8, LIGHTGRAY);
 	DrawPixel(pos.x, pos.y, WHITE);
 }
@@ -374,6 +379,15 @@ void Player::DrawDebug(const Color& col) const
 		++it;
 	 }
 }
+ void Player::DrawBubblesDebug(const Color& col) const
+ {
+	 auto it = bubbles.begin();
+	 while (it != bubbles.end())
+	 {
+		 (*it)->DrawDebug(col);
+		 ++it;
+	 }
+ }
  void Player::ClearBubbles()
  {
 	 for (Bubble* bubl : bubbles)

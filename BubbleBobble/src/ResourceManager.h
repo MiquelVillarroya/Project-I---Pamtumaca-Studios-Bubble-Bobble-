@@ -9,10 +9,11 @@ enum class Resource {
     IMG_MENU,
     IMG_INTRO1,
     IMG_INTRO2,
-    IMG_PLAYER, 
+    IMG_PLAYER,
     IMG_TILES,
     IMG_ITEMS,
-    IMG_BUBBLE
+    IMG_BUBBLE,
+    IMG_ZENCHAN
 };
 
 class ResourceManager {

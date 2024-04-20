@@ -33,6 +33,11 @@ Scene::~Scene()
 		delete obj;
 	}
 	objects.clear();
+	for (Enemy* enemy : enemies)
+	{
+		delete enemy;
+	}
+	enemies.clear();
 }
 AppStatus Scene::Init()
 {
@@ -82,6 +87,7 @@ AppStatus Scene::LoadLevel(int stage)
 	Point pos;
 	int *map = nullptr;
 	Object *obj;
+	Enemy *enemy;
 	
 	ClearLevel();
 
@@ -98,7 +104,7 @@ AppStatus Scene::LoadLevel(int stage)
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
-			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
+			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 101,   0,   0, 102,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   9,   9,   0,   0,   0,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,	  9,   9,   9,   9,   0,   0,   0,   9,   9,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
@@ -228,6 +234,24 @@ AppStatus Scene::LoadLevel(int stage)
 				objects.push_back(obj);
 				map[i] = 0;
 			}
+			else if (tile == Tile::ZENCHAN_LEFT)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT);
+				enemy->Initialise();
+				enemies.push_back(enemy);
+				map[i] = 0;
+			}
+			else if (tile == Tile::ZENCHAN_RIGHT)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::RIGHT);
+				enemy->Initialise();
+				enemies.push_back(enemy);
+				map[i] = 0;
+			}
 			++i;
 		}
 	}
@@ -253,6 +277,12 @@ void Scene::Update()
 
 	level->Update();
 	player->Update();
+	auto it = enemies.begin();
+	while (it != enemies.end())
+	{
+		(*it)->Update();
+		++it;
+	}
 	CheckCollisions();
 }
 void Scene::Render()
@@ -262,14 +292,17 @@ void Scene::Render()
     level->Render();
 	if (debug == DebugMode::OFF || debug == DebugMode::SPRITES_AND_HITBOXES)
 	{
-		RenderObjects(); 
+		RenderObjects();
 		player->Draw();
 		player->DrawBubbles();
+		RenderEnemies();
 	}
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
 	{
 		RenderObjectsDebug(YELLOW);
 		player->DrawDebug(GREEN);
+		player->DrawBubblesDebug(PURPLE);
+		RenderEnemiesDebug(RED);
 	}
 
 	EndMode2D();
@@ -314,6 +347,11 @@ void Scene::ClearLevel()
 		delete obj;
 	}
 	objects.clear();
+	for (Enemy* enemy : enemies)
+	{
+		delete enemy;
+	}
+	enemies.clear();
 	player->ClearBubbles();
 }
 void Scene::RenderObjects() const
@@ -328,6 +366,20 @@ void Scene::RenderObjectsDebug(const Color& col) const
 	for (Object* obj : objects)
 	{
 		obj->DrawDebug(col);
+	}
+}
+void Scene::RenderEnemies()
+{
+	for (Enemy* enemy : enemies)
+	{
+		enemy->Draw();
+	}
+}
+void Scene::RenderEnemiesDebug(const Color& col) const
+{
+	for (Enemy* enemy : enemies)
+	{
+		enemy->DrawDebug(col);
 	}
 }
 void Scene::RenderGUI() const

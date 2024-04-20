@@ -30,12 +30,20 @@
 #define HORIZONTAL_ADVANCE_TOP	1
 #define VERTICAL_ADVANCE		1
 
+//Bubble control
+#define RED_TIME				7		
+#define BLINK_TIME				10
+#define POP_TIME				12
 
-enum class BubbleState { SHOT, NORMAL, ENEMY};
+
+enum class BubbleState { SHOT, NORMAL, RED_END, BLINK_END, ENEMY};
 enum class BubbleDirection {LEFT, RIGHT};
 enum class BubbleAnim {
 	INITIAL,
 	IDLE,
+	RED_START,
+	RED_BLINK,
+	POP,
 	NUM_ANIMATIONS
 };
 
@@ -45,27 +53,38 @@ public:
 	~Bubble();
 
 	AppStatus Initialise();
+	void SetTileMap(TileMap* tilemap);
+
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void Release();
+
+	bool IsAlive() const;
 
 private:
 
 	//Bubble Mechanics
 	void MoveX();
 	void MoveY();
+	void BubbleCounter();
+
+	//Bubble destruction;
+	bool alive;
+	bool move;
+
+	//BubbleTimer
+	float bubbleTimer;
 
 	//Animations
 	void SetAnimation(int id);
 	BubbleAnim GetAnimation();
 
-	//
-	bool IsAlive() const;
-	bool alive;
 
 	BubbleState state;
 	BubbleDirection direction;
+	TileMap* map;
 
+	//Bubble shot variables
 	int forceDelay;
 	int forceMax;
 };

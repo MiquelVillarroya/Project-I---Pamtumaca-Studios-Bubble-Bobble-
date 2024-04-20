@@ -3,15 +3,27 @@
 #include "TileMap.h"
 
 //Representation model size: 16x16
-#define ENEMY_PLAYER_SIZE
+#define ENEMY_FRAME_SIZE		16
 
 //Logical model size
 #define	ENEMY_PHYSICAL_WIDTH	14
 #define ENEMY_PHYSICAL_HEIGTH	14
 
+//
+
+enum class EnemyState {NORMAL, ANGRY};
+enum class EnemyLook { RIGHT, LEFT };
+enum class ZenchanAnim {
+	WALK_RIGHT, WALK_LEFT,
+	ANGRY_LEFT, ANGRY_RIGHT,
+	DEAD,
+	BUBBLE,
+	NUM_ANIMATIONS
+};
+
 class Enemy : public Entity {
 public:
-	Enemy();
+	Enemy(const Point& p, EnemyState s, EnemyLook l);
 	~Enemy();
 
 	AppStatus Initialise();
@@ -27,6 +39,11 @@ private:
 
 	//Animations
 	void SetAnimation(int id);
+	ZenchanAnim GetAnimation();
+
+	EnemyState state;
+	EnemyLook look;
+	float angryTimer;
 	
 
 };

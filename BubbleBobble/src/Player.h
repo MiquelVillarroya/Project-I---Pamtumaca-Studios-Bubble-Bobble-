@@ -66,6 +66,7 @@ public:
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void DrawBubbles();
+	void DrawBubblesDebug(const Color& col) const;
 	void ClearBubbles();
 	void Release();
 
