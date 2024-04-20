@@ -82,14 +82,4 @@ void Entity::Warp() {
 
 }
 
-void Entity::Warp() {
 
-	if (pos.y > WINDOW_HEIGHT) {
-
-		pos.y = -TILE_SIZE+MARGIN_GUI_Y;
-
-
-	}
-
-
-}
