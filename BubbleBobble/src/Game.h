@@ -2,7 +2,7 @@
 #include "Globals.h"
 #include "Scene.h"
 
-enum class GameState { INTRO, MAIN_MENU, PLAYING, SETTINGS, CREDITS };
+enum class GameState { INTRO, MAIN_MENU, PLAYING, SETTINGS, CREDITS, GAME_OVER };
 enum  MusicTrack {
     GAME_MUS,
     HURRY_MUS,
@@ -12,7 +12,7 @@ enum  MusicTrack {
     SUPER_DRUNK_MUS,
     REAL_ENDING_MUS,
     NAME_REGISTER_MUS,
-    GAME_OVER
+    GAME_OVER_MUS
 };
 class Game
 {
@@ -41,7 +41,7 @@ private:
 
     GameState state;
     Scene *scene;
-    const Texture2D *img_menu, *img_intro1, *img_intro2;
+    const Texture2D *img_menu, *img_intro1, *img_intro2, *game_over;
     double startTime;
 
 
