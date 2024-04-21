@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "ResourceManager.h"
 #include <stdio.h>
+#include "Player.h"
 
 
 Sound sounds[10];
@@ -24,7 +25,7 @@ Game::Game()
     tracks[SUPER_DRUNK_MUS] = LoadMusicStream("audio/music/6_Super_Drunk.ogg");
     tracks[REAL_ENDING_MUS] = LoadMusicStream("audio/music/7_Real_Ending.ogg");
     tracks[NAME_REGISTER_MUS] = LoadMusicStream("audio/music/8_Name_Register.ogg");
-    tracks[GAME_OVER] = LoadMusicStream("audio/music/9_Game_Over.ogg");
+    tracks[GAME_OVER_MUS] = LoadMusicStream("audio/music/9_Game_Over.ogg");
     currentTrack = LoadMusicStream("audio/music/1_Introduction_Main_Theme.ogg");
 
     target = {};
@@ -96,6 +97,24 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_intro2 = data.GetTexture(Resource::IMG_INTRO2);
+
+    if (data.LoadTexture(Resource::GAME_OVER, "images/game_over.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    game_over = data.GetTexture(Resource::GAME_OVER);
+
+    if (data.LoadTexture(Resource::STAGE1, "images/level1.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    stage1 = data.GetTexture(Resource::STAGE1);
+    if (data.LoadTexture(Resource::STAGE2, "images/level13.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    stage2 = data.GetTexture(Resource::STAGE2);
+
   
     tracks[GAME_MUS].looping = true;
 
@@ -160,7 +179,19 @@ AppStatus Game::Update()
                 //Game logic
                 scene->Update();
             }
-            break;
+            if (IsKeyPressed(KEY_P))
+            {
+               
+                state = GameState::GAME_OVER;
+            }
+            if (IsKeyPressed(KEY_N)) {
+
+
+                state = GameState::TRANSITION;
+
+            }
+        
+            
     }
     return AppStatus::OK;
 }
@@ -201,6 +232,52 @@ void Game::Render()
             printf("%f \n",GetMusicTimePlayed(currentTrack));
             UpdateMusicStream(currentTrack);
             break;
+
+
+
+
+        case GameState::GAME_OVER:
+            tracks[GAME_OVER_MUS].stream;
+
+            if (IsKeyPressed(KEY_ESCAPE)) state = GameState::MAIN_MENU;
+
+            DrawTexture(*game_over, 0, 0, WHITE);
+
+            //ChangeTrack(GAME_OVER_MUS);
+           // currentTrack.stream;
+          //  tracks[GAME_OVER_MUS].stream; //Nose pq no funciona la musica wtf
+            break;
+
+        case GameState::TRANSITION:
+
+            float transition = timeSpent / totalTime;
+            float stage2_position = 224.0 * -transition;
+
+            if (timeSpent <= totalTime) {
+
+
+                DrawTexture(*stage1, 0, stage2_position, WHITE);
+                DrawTexture(*stage2, 0, stage2_position+224.0, WHITE);
+                timeSpent += GetFrameTime();
+                
+            }
+            else {
+
+                scene->LoadLevel(2);
+                timeSpent = 0;
+                state = GameState::PLAYING;
+                
+
+
+            }
+            
+            break;
+
+
+
+     
+
+
     }
     
     EndTextureMode();
@@ -212,7 +289,7 @@ void Game::Render()
 }
 void Game::Cleanup()
 {
-    for (int i = 0; i < GAME_OVER; ++i) {
+    for (int i = 0; i < GAME_OVER_MUS; ++i) {
         UnloadMusicStream(tracks[i]);
     }
     UnloadResources();
@@ -224,7 +301,7 @@ void Game::UnloadResources()
     data.ReleaseTexture(Resource::IMG_MENU);
     data.ReleaseTexture(Resource::IMG_INTRO1);
     data.ReleaseTexture(Resource::IMG_INTRO2);
-
+    data.ReleaseTexture(Resource::GAME_OVER);
     UnloadRenderTexture(target);
 }
 Music Game::GetCurrentTrack() const {
