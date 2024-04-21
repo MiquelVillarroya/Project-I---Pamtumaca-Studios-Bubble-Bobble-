@@ -24,7 +24,7 @@
 #define BLINK_TIME				10
 #define POP_TIME				12
 
-enum class EnemyState {NORMAL, BUBBLE, ANGRY, BLINK_END, RED_END, DEAD};
+enum class EnemyState {NORMAL, BUBBLE, ANGRY, BLINK_END, RED_END};
 enum class EnemyLook { RIGHT, LEFT };
 enum class ZenchanAnim {
 	WALK_RIGHT, WALK_LEFT,
