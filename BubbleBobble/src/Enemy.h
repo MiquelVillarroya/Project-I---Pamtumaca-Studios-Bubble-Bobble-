@@ -12,13 +12,25 @@
 //Enemy speed
 #define ENEMY_SPEED				1
 
-enum class EnemyState {NORMAL, ANGRY};
+//Bubble logic parameters
+#define PHYSICAL_OFFSET			7
+#define MAX_HEIGHT				40
+#define TOP_OFFSET				20
+#define HORIZONTAL_ADVANCE_TOP	1
+#define VERTICAL_ADVANCE		1
+
+//Bubble render parameters
+#define RED_TIME				7		
+#define BLINK_TIME				10
+#define POP_TIME				12
+
+enum class EnemyState {NORMAL, BUBBLE, ANGRY, BLINK_END, RED_END};
 enum class EnemyLook { RIGHT, LEFT };
 enum class ZenchanAnim {
 	WALK_RIGHT, WALK_LEFT,
 	ANGRY_LEFT, ANGRY_RIGHT,
 	DEAD,
-	BUBBLE,
+	BUBBLE, RED_START, RED_BLINK,
 	NUM_ANIMATIONS
 };
 
@@ -34,11 +46,15 @@ public:
 	void DrawDebug(const Color& col) const;
 	void Release();
 
+	EnemyState GetState();
+	void SetState(const EnemyState& s);
+
 private:
 
 	//Movement
 	void MoveX();
 	void MoveY();
+	void BubbleCounter();
 
 	//Animations
 	void SetAnimation(int id);
@@ -47,6 +63,8 @@ private:
 	EnemyState state;
 	EnemyLook look;
 	float angryTimer;
+	float bubbleTimer;
+	bool alive;
 	
 	TileMap* map;
 };

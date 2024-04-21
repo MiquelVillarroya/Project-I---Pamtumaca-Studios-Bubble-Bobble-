@@ -12,6 +12,8 @@ enum class Resource {
     IMG_PLAYER, 
     IMG_TILES,
     IMG_ITEMS,
+    IMG_BUBBLE,
+    IMG_ZENCHAN,
     GAME_OVER,
     TRANSITION,
     STAGE2,

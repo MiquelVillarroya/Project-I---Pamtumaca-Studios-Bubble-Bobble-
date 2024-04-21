@@ -42,7 +42,7 @@
 #define DEAD_COOLDOWN			1.67
 
 //Logic states
-enum class State { IDLE, WALKING, JUMPING, FALLING, DEAD };
+enum class State { IDLE, WALKING, JUMPING, FALLING, SHOOTING, DEAD };
 enum class Look { RIGHT, LEFT };
 
 //Rendering states
@@ -52,6 +52,7 @@ enum class PlayerAnim {
 	JUMPING_LEFT, JUMPING_RIGHT,
 	LEVITATING_LEFT, LEVITATING_RIGHT,
 	FALLING_LEFT, FALLING_RIGHT,
+	SHOT_RIGHT, SHOT_LEFT,
 	DEATH,
 	NUM_ANIMATIONS
 };
@@ -118,6 +119,7 @@ private:
 
 	std::vector<Bubble*> bubbles;
 	float elapsedTimeBubble;
+	float shootTime;
 
 	TileMap *map;
 

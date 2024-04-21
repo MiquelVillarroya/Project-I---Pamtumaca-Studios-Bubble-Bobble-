@@ -24,6 +24,7 @@ Player::Player(const Point& p, State s, Look view) :
 }
 Player::~Player()
 {
+	UnloadSound(playersound[0]);
 	for (Bubble* bubl : bubbles)
 	{
 		delete bubl;
@@ -47,6 +48,8 @@ AppStatus Player::Initialise()
 		LOG("Failed to allocate memory for player sprite");
 		return AppStatus::ERROR;
 	}
+
+	playersound[0] = LoadSound("audio/FX/Characters/JumpSFX.wav");
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetNumberAnimations((int)PlayerAnim::NUM_ANIMATIONS);
@@ -83,6 +86,13 @@ AppStatus Player::Initialise()
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { n, 7*n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { n, 7*n, n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::SHOT_RIGHT, ANIM_DELAY);
+	for (i = 0; i < 4; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::SHOT_RIGHT, { (float)i*n, 2*n, -n, n});
+	sprite->SetAnimationDelay((int)PlayerAnim::SHOT_LEFT, ANIM_DELAY);
+	for (i = 0; i < 4; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::SHOT_LEFT, { (float)i*n, 2*n, n, n});
 
 	sprite->SetAnimationDelay((int)PlayerAnim::DEATH, ANIM_DELAY);
 	for (i = 0; i < 13; ++i) {
@@ -187,10 +197,8 @@ void Player::StartFalling()
 	else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
 	
 }
-
 void Player::StartJumping()
 {
-	playersound[0] = LoadSound("audio/FX/Characters/JumpSFX.wav");
 	PlaySound(playersound[0]);
 	dir.y = -PLAYER_JUMP_FORCE;
 	state = State::JUMPING;
@@ -312,7 +320,7 @@ void Player::MoveY()
 {
 	AABB box;
 
-	if (state == State::JUMPING)
+	if (state == State::JUMPING || state==State::SHOOTING)
 	{
 		LogicJumping();
 	}
@@ -336,7 +344,6 @@ void Player::MoveY()
 	}
 }
 void Player::BubbleShot() {
-	
  	elapsedTimeBubble += GetFrameTime();
 	if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .25)
 	{
@@ -345,12 +352,16 @@ void Player::BubbleShot() {
 			bubl->Initialise();
 			bubl->SetTileMap(map);
 			bubbles.push_back(bubl);
+			//if (shootTime >= .25) {
+			//	state = State::
+			//}
 		}
 		else if (IsLookingRight()) {
 			Bubble* bubl = new Bubble({ pos.x + PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::RIGHT);
 			bubl->Initialise();
 			bubl->SetTileMap(map);
 			bubbles.push_back(bubl);
+			SetAnimation((int)PlayerAnim::SHOT_RIGHT);
 		}
 		elapsedTimeBubble = 0;
 	}
@@ -423,6 +434,8 @@ bool Player::CheckBubbleCollision(const AABB& enemy_box)
 		bubl_box = (*it)->GetHitbox();
 		if (bubl_box.TestAABB(enemy_box))
 		{
+			delete* it;
+			it = bubbles.erase(it);
 			return true;
 		}
 		++it;

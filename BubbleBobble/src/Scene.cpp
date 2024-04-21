@@ -6,6 +6,7 @@ Scene::Scene()
 {
 	player = nullptr;
     level = nullptr;
+	stage = 1;
 	
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
@@ -151,7 +152,7 @@ AppStatus Scene::LoadLevel(int stage)
 			 5,   6,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  10,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   5,   6,
 			 3,   4,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   3,   4,
 			 5,   6,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   5,   6,
-			 3,   4,   0, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   3,   4,
+			 3,   4,   0, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0, 101,   0,   0,   0,   3,   4,
 			 5,   6,   2,   2,   2,   2,   2,   2,   2,   0,   0,   0,   0,   2,   2,   2,   2,   2,   2,   0,   0,   0,   0,   2,   2,   2,   2,   2,   2,   2,   5,   6
 
 
@@ -274,8 +275,25 @@ void Scene::Update()
 		debug = (DebugMode)(((int)debug + 1) % (int)DebugMode::SIZE);
 	}
 	//Debug levels instantly
-	if (IsKeyPressed(KEY_ONE))		LoadLevel(1);
-	else if (IsKeyPressed(KEY_TWO))	LoadLevel(2);
+	if (IsKeyPressed(KEY_ONE))
+	{
+		LoadLevel(1);
+		stage = 1;
+	}
+	else if (IsKeyPressed(KEY_TWO))
+	{
+		LoadLevel(2);
+		stage = 2;
+	}
+	if (enemies.size() == 0)
+	{
+		if (stage != MAX_STAGE)
+		{
+			stage++;
+			LoadLevel(stage);
+		}
+		else player->MinusLife();
+	}
 
 	level->Update();
 	player->Update();
@@ -315,51 +333,53 @@ void Scene::Render()
 }
 void Scene::Release()
 {
-    level->Release();
+	level->Release();
 	player->Release();
 	ClearLevel();
 }
 void Scene::CheckCollisions()
 {
 	AABB player_box, obj_box, enemy_box, bubl_box;
-	
+
 	player_box = player->GetHitbox();
 	auto itObj = objects.begin();
 	while (itObj != objects.end())
 	{
 		obj_box = (*itObj)->GetHitbox();
-		if(player_box.TestAABB(obj_box))
+		if (player_box.TestAABB(obj_box))
 		{
 			player->IncrScore((*itObj)->Points());
-			
+
 			//Delete the object
-			delete* itObj; 
+			delete* itObj;
 			//Erase the object from the vector and get the itObjerator to the next valid element
-			itObj = objects.erase(itObj); 
+			itObj = objects.erase(itObj);
 		}
 		else
 		{
 			//Move to the next object
-			++itObj; 
+			++itObj;
 		}
 	}
 	auto itEnem = enemies.begin();
-	while ( itEnem != enemies.end())
+	while (itEnem != enemies.end())
 	{
 		enemy_box = (*itEnem)->GetHitbox();
-		if (player_box.TestAABB(enemy_box) && player->GetState() != State::DEAD)  
+		if (player_box.TestAABB(enemy_box) && player->GetState() != State::DEAD && (*itEnem)->GetState() != EnemyState::BUBBLE)
 		{
 			player->MinusLife();
-			itEnem++;
 		}
-		else if (player->CheckBubbleCollision(enemy_box))
+		else if (player_box.TestAABB(enemy_box) && player->GetState() != State::DEAD && (*itEnem)->GetState() == EnemyState::BUBBLE)
 		{
 			delete* itEnem;
 			itEnem = enemies.erase(itEnem);
+			break;
 		}
-		else {
-			itEnem++;
+		if (player->CheckBubbleCollision(enemy_box))
+		{
+			(*itEnem)->SetState(EnemyState::BUBBLE);
 		}
+		itEnem++;
 	}
 }
 void Scene::ClearLevel()
@@ -409,4 +429,9 @@ void Scene::RenderGUI() const
 	//Temporal approach
 	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 5, 8, LIGHTGRAY);
 	DrawText(TextFormat("LIVES : %d", player->GetLives()), 200, 5, 8, LIGHTGRAY);
+}
+bool Scene::IsPlayerAlive()
+{
+	if (player->GetLives() > 0) return true;
+	return false;
 }

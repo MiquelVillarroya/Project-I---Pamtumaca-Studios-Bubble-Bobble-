@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include "Player.h"
 
-
 Sound sounds[10];
 
 Game::Game()
@@ -14,6 +13,10 @@ Game::Game()
     img_menu = nullptr;
     img_intro1 = nullptr;
     img_intro2 = nullptr;
+    game_over = nullptr;
+    transition = nullptr;
+    stage1 = nullptr;
+    stage2 = nullptr;
     startTime = 0;
 
     tracks[GAME_MUS] = LoadMusicStream("audio/music/1_Introduction_Main_Theme.ogg");
@@ -117,6 +120,7 @@ AppStatus Game::LoadResources()
 
   
     tracks[GAME_MUS].looping = true;
+    tracks[GAME_OVER_MUS].looping = false;
 
     return AppStatus::OK;
 }
@@ -169,26 +173,25 @@ AppStatus Game::Update()
             break;
 
         case GameState::PLAYING:  
-            if (IsKeyPressed(KEY_ESCAPE))
+            if (IsKeyPressed(KEY_ESCAPE) || !scene->IsPlayerAlive())
             {
                 FinishPlay();
-                state = GameState::MAIN_MENU;
+                currentTrack = tracks[GAME_OVER_MUS];
+                PlayMusicStream(currentTrack);
+                state = GameState::GAME_OVER;
             }
             else
             {
                 //Game logic
                 scene->Update();
             }
-            if (IsKeyPressed(KEY_P))
-            {
-               
-                state = GameState::GAME_OVER;
-            }
             if (IsKeyPressed(KEY_N)) {
-
-
                 state = GameState::TRANSITION;
-
+            }
+        case GameState::GAME_OVER:
+            if (IsKeyPressed(KEY_F))
+            {
+                state = GameState::MAIN_MENU;
             }
         
             
@@ -229,29 +232,19 @@ void Game::Render()
         case GameState::PLAYING:
             scene->Render();
             if (GetMusicTimePlayed(currentTrack) >= 100) SeekMusicStream(currentTrack, 45);
-            printf("%f \n",GetMusicTimePlayed(currentTrack));
             UpdateMusicStream(currentTrack);
             break;
 
-
-
-
         case GameState::GAME_OVER:
-            tracks[GAME_OVER_MUS].stream;
-
-            if (IsKeyPressed(KEY_ESCAPE)) state = GameState::MAIN_MENU;
-
-            DrawTexture(*game_over, 0, 0, WHITE);
-
-            //ChangeTrack(GAME_OVER_MUS);
-           // currentTrack.stream;
-          //  tracks[GAME_OVER_MUS].stream; //Nose pq no funciona la musica wtf
+            DrawTexture(*game_over, 0, 0, WHITE);  
+            UpdateMusicStream(currentTrack);
             break;
 
         case GameState::TRANSITION:
 
+            UpdateMusicStream(currentTrack);
             float transition = timeSpent / totalTime;
-            float stage2_position = 224.0 * -transition;
+            float stage2_position = 224.0 * - transition;
 
             if (timeSpent <= totalTime) {
 
@@ -262,22 +255,11 @@ void Game::Render()
                 
             }
             else {
-
                 scene->LoadLevel(2);
                 timeSpent = 0;
                 state = GameState::PLAYING;
-                
-
-
             }
-            
             break;
-
-
-
-     
-
-
     }
     
     EndTextureMode();
@@ -303,6 +285,8 @@ void Game::UnloadResources()
     data.ReleaseTexture(Resource::IMG_INTRO2);
     data.ReleaseTexture(Resource::GAME_OVER);
     UnloadRenderTexture(target);
+    UnloadMusicStream(currentTrack);
+
 }
 Music Game::GetCurrentTrack() const {
     return currentTrack;

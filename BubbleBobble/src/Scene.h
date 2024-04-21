@@ -5,7 +5,11 @@
 #include "Object.h"
 #include "Enemy.h"
 
+//LAST STAGE
+#define MAX_STAGE   2
+
 enum class DebugMode { OFF, SPRITES_AND_HITBOXES, ONLY_HITBOXES, SIZE };
+enum class SceneState {NORMAL, TRANSITION};
 
 class Scene
 {
@@ -19,9 +23,10 @@ public:
     void Release();
     AppStatus LoadLevel(int stage);
 
+    bool IsPlayerAlive();
+
 private:
   
-    
     void CheckCollisions(); 
     void ClearLevel();
     void RenderObjects() const;
@@ -31,11 +36,22 @@ private:
     void RenderGUI() const;
 
     Player *player;
+    bool playerAlive;
+    
     TileMap *level;
+    int stage;
+
     std::vector<Object*> objects;
     std::vector<Enemy*> enemies;
+    std::vector<Bubble*> bubbleEnemies;
 
     Camera2D camera;
     DebugMode debug;
+
+    const Texture2D* stage1, * stage2;
+
+    float timeSpent;
+    float totalTime;
+    SceneState state;
 };
 
