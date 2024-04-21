@@ -33,6 +33,8 @@ void Object::DrawDebug(const Color& col) const
 }
 int Object::Points() const
 {
+
+	objectsound[0] = LoadSound("audio/FX/Items/GrabFruitSFX.wav");
 	if (type == ObjectType::MUSHROOM) { ; PlaySound(objectsound[0]); return POINTS_MUSHROOM; }
 	else if (type == ObjectType::BANANA) { PlaySound(objectsound[0]);return POINTS_BANANA; }
 	else if (type == ObjectType::CHERRY) { PlaySound(objectsound[0]);return POINTS_CHERRY; }
