@@ -51,6 +51,7 @@ AppStatus Player::Initialise()
 
 	playersound[0] = LoadSound("audio/FX/Characters/JumpSFX.wav");
 	playersound[1] = LoadSound("audio/FX/Characters/BubbleAtkSFX.wav");
+	playersound[2] = LoadSound("audio/FX/Characters/DeathSFX.wav");
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetNumberAnimations((int)PlayerAnim::NUM_ANIMATIONS);
@@ -135,6 +136,7 @@ void Player::MinusLife()
 		lives--;
 		state = State::DEAD;
 		SetAnimation((int)PlayerAnim::DEATH);
+		PlaySound(playersound[2]);
 	}
 }
 void Player::SetTileMap(TileMap* tilemap)
