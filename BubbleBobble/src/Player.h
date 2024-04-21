@@ -1,11 +1,12 @@
 #pragma once
 #include "Entity.h"
 #include "TileMap.h"
+#include "Bubble.h"
 
 //Representation model size: 16x16
 #define PLAYER_FRAME_SIZE		16
 
-//Logical model size: 12x28
+//Logical model size: 12x14
 #define PLAYER_PHYSICAL_WIDTH	12
 #define PLAYER_PHYSICAL_HEIGHT	14
 
@@ -33,6 +34,13 @@
 //Gravity affects jumping velocity when jump_delay is 0
 #define GRAVITY_FORCE			1
 
+//Spawn locations
+#define PLAYER_SPAWN_X			24
+#define PLAYER_SPAWN_Y			199
+
+//Dead timer animation
+#define DEAD_COOLDOWN			1.67
+
 //Logic states
 enum class State { IDLE, WALKING, JUMPING, FALLING, DEAD };
 enum class Look { RIGHT, LEFT };
@@ -44,8 +52,7 @@ enum class PlayerAnim {
 	JUMPING_LEFT, JUMPING_RIGHT,
 	LEVITATING_LEFT, LEVITATING_RIGHT,
 	FALLING_LEFT, FALLING_RIGHT,
-	SHOCK_LEFT, SHOCK_RIGHT,
-	TELEPORT_LEFT, TELEPORT_RIGHT,
+	DEATH,
 	NUM_ANIMATIONS
 };
 
@@ -61,9 +68,19 @@ public:
 	void InitScore();
 	void IncrScore(int n);
 	int GetScore();
+	int GetLives() const;
+	bool GetGod() const;
+	State GetState() const;
+	void MinusLife();
+
+	bool CheckBubbleCollision(const AABB& enemy_box);
 
 	void Update();
 	void DrawDebug(const Color& col) const;
+	void DrawBubbles();
+	void DrawBubblesDebug(const Color& col) const;
+	void DrawGod(const Color& col) const;
+	void ClearBubbles();
 	void Release();
 
 private:
@@ -71,9 +88,11 @@ private:
 	bool IsLookingLeft() const;
 
 	//Player mechanics
+	void GodMode();
 	void MoveX();
 	void MoveY();
 	void LogicJumping();
+	void BubbleShot();
 
 	//Animation management
 	void SetAnimation(int id);
@@ -94,9 +113,15 @@ private:
 	State state;
 	Look look;
 	int jump_delay;
+	float deadTimer;
+	bool god;
+
+	std::vector<Bubble*> bubbles;
+	float elapsedTimeBubble;
 
 	TileMap *map;
 
 	int score;
+	int lives;
 };
 

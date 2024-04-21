@@ -33,6 +33,11 @@ Scene::~Scene()
 		delete obj;
 	}
 	objects.clear();
+	for (Enemy* enemy : enemies)
+	{
+		delete enemy;
+	}
+	enemies.clear();
 }
 AppStatus Scene::Init()
 {
@@ -82,6 +87,7 @@ AppStatus Scene::LoadLevel(int stage)
 	Point pos;
 	int *map = nullptr;
 	Object *obj;
+	Enemy *enemy;
 	
 	ClearLevel();
 
@@ -98,7 +104,7 @@ AppStatus Scene::LoadLevel(int stage)
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
-			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
+			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 101,   0,   0, 102,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   9,   9,   0,   0,   0,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,	  9,   9,   9,   9,   0,   0,   0,   9,   9,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
@@ -145,7 +151,7 @@ AppStatus Scene::LoadLevel(int stage)
 			 5,   6,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  10,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   5,   6,
 			 3,   4,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   3,   4,
 			 5,   6,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   5,   6,
-			 3,   4,   0, 100,   0,   0,   0,  50,   0,  51,   0,  52,   0,  53,   0,  54,   0,  55,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   3,   4,
+			 3,   4,   0, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   3,   4,
 			 5,   6,   2,   2,   2,   2,   2,   2,   2,   0,   0,   0,   0,   2,   2,   2,   2,   2,   2,   0,   0,   0,   0,   2,   2,   2,   2,   2,   2,   2,   5,   6
 
 
@@ -228,6 +234,26 @@ AppStatus Scene::LoadLevel(int stage)
 				objects.push_back(obj);
 				map[i] = 0;
 			}
+			else if (tile == Tile::ZENCHAN_LEFT)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT);
+				enemy->Initialise();
+				enemy->SetTileMap(level);
+				enemies.push_back(enemy);
+				map[i] = 0;
+			}
+			else if (tile == Tile::ZENCHAN_RIGHT)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::RIGHT);
+				enemy->Initialise();
+				enemy->SetTileMap(level);
+				enemies.push_back(enemy);
+				map[i] = 0;
+			}
 			++i;
 		}
 	}
@@ -253,6 +279,12 @@ void Scene::Update()
 
 	level->Update();
 	player->Update();
+	auto it = enemies.begin();
+	while (it != enemies.end())
+	{
+		(*it)->Update();
+		++it;
+	}
 	CheckCollisions();
 }
 void Scene::Render()
@@ -262,13 +294,19 @@ void Scene::Render()
     level->Render();
 	if (debug == DebugMode::OFF || debug == DebugMode::SPRITES_AND_HITBOXES)
 	{
-		RenderObjects(); 
+		RenderObjects();
 		player->Draw();
+		player->DrawBubbles();
+		if (player->GetGod()) player->DrawGod(GREEN);
+		RenderEnemies();
 	}
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
 	{
 		RenderObjectsDebug(YELLOW);
 		player->DrawDebug(GREEN);
+		player->DrawBubblesDebug(PURPLE);
+		if (player->GetGod()) player->DrawGod(GREEN);
+		RenderEnemiesDebug(RED);
 	}
 
 	EndMode2D();
@@ -283,26 +321,44 @@ void Scene::Release()
 }
 void Scene::CheckCollisions()
 {
-	AABB player_box, obj_box;
+	AABB player_box, obj_box, enemy_box, bubl_box;
 	
 	player_box = player->GetHitbox();
-	auto it = objects.begin();
-	while (it != objects.end())
+	auto itObj = objects.begin();
+	while (itObj != objects.end())
 	{
-		obj_box = (*it)->GetHitbox();
+		obj_box = (*itObj)->GetHitbox();
 		if(player_box.TestAABB(obj_box))
 		{
-			player->IncrScore((*it)->Points());
+			player->IncrScore((*itObj)->Points());
 			
 			//Delete the object
-			delete* it; 
-			//Erase the object from the vector and get the iterator to the next valid element
-			it = objects.erase(it); 
+			delete* itObj; 
+			//Erase the object from the vector and get the itObjerator to the next valid element
+			itObj = objects.erase(itObj); 
 		}
 		else
 		{
 			//Move to the next object
-			++it; 
+			++itObj; 
+		}
+	}
+	auto itEnem = enemies.begin();
+	while ( itEnem != enemies.end())
+	{
+		enemy_box = (*itEnem)->GetHitbox();
+		if (player_box.TestAABB(enemy_box) && player->GetState() != State::DEAD)  
+		{
+			player->MinusLife();
+			itEnem++;
+		}
+		else if (player->CheckBubbleCollision(enemy_box))
+		{
+			delete* itEnem;
+			itEnem = enemies.erase(itEnem);
+		}
+		else {
+			itEnem++;
 		}
 	}
 }
@@ -313,6 +369,12 @@ void Scene::ClearLevel()
 		delete obj;
 	}
 	objects.clear();
+	for (Enemy* enemy : enemies)
+	{
+		delete enemy;
+	}
+	enemies.clear();
+	player->ClearBubbles();
 }
 void Scene::RenderObjects() const
 {
@@ -328,8 +390,23 @@ void Scene::RenderObjectsDebug(const Color& col) const
 		obj->DrawDebug(col);
 	}
 }
+void Scene::RenderEnemies()
+{
+	for (Enemy* enemy : enemies)
+	{
+		enemy->Draw();
+	}
+}
+void Scene::RenderEnemiesDebug(const Color& col) const
+{
+	for (Enemy* enemy : enemies)
+	{
+		enemy->DrawDebug(col);
+	}
+}
 void Scene::RenderGUI() const
 {
 	//Temporal approach
-	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 10, 8, LIGHTGRAY);
+	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 5, 8, LIGHTGRAY);
+	DrawText(TextFormat("LIVES : %d", player->GetLives()), 200, 5, 8, LIGHTGRAY);
 }

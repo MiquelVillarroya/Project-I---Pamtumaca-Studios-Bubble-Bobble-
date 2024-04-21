@@ -21,7 +21,7 @@ enum class Tile {
 
 
 	// id >= 100: entities' initial locations
-	PLAYER = 100,
+	PLAYER = 100, ZENCHAN_LEFT, ZENCHAN_RIGHT,
 
 	//Intervals
 	STATIC_FIRST = BLOCK_LVL1,
@@ -30,16 +30,10 @@ enum class Tile {
 	SOLID_LAST = NUMBER_BLOCK_LVL1_2,
 	PLAT_FIRST = PLAT_LVL1,
 	PLAT_LAST = PLAT_LVL2,
-
-
-
-
-
 	SPECIAL_FIRST = FOOD_MUSHROOM ,
 	SPECIAL_LAST = FOOD_CAKE ,
-
 	ENTITY_FIRST = PLAYER,
-	ENTITY_LAST = PLAYER
+	ENTITY_LAST = ZENCHAN_RIGHT
 };
 
 class TileMap

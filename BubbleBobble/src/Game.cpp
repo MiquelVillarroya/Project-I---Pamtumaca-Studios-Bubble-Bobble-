@@ -40,7 +40,7 @@ Game::~Game()
         delete scene;
         scene = nullptr;
     }
-
+    UnloadRenderTexture(target);
 }
 AppStatus Game::Initialise(float scale)
 {
@@ -228,7 +228,7 @@ void Game::Render()
 
         case GameState::PLAYING:
             scene->Render();
-            if (GetMusicTimePlayed(currentTrack) >= 99) SeekMusicStream(currentTrack, 45);
+            if (GetMusicTimePlayed(currentTrack) >= 100) SeekMusicStream(currentTrack, 45);
             printf("%f \n",GetMusicTimePlayed(currentTrack));
             UpdateMusicStream(currentTrack);
             break;

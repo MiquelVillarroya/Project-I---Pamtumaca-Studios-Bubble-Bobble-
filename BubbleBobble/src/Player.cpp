@@ -15,11 +15,20 @@ Player::Player(const Point& p, State s, Look view) :
 	look = view;
 	jump_delay = PLAYER_JUMP_DELAY;
 	map = nullptr;
+	elapsedTimeBubble = 0;
 	score = 0;
+	lives = 3;
+	deadTimer = 0;
+	god = false;
 	
 }
 Player::~Player()
 {
+	for (Bubble* bubl : bubbles)
+	{
+		delete bubl;
+	}
+	bubbles.clear();
 }
 AppStatus Player::Initialise()
 {
@@ -74,6 +83,11 @@ AppStatus Player::Initialise()
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { n, 7*n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { n, 7*n, n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::DEATH, ANIM_DELAY);
+	for (i = 0; i < 13; ++i) {
+		sprite->AddKeyFrameOffset((int)PlayerAnim::DEATH, {(float)i*n, 10*n, n, 2*n}, 0, -n);
+	}
 		
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
@@ -90,6 +104,27 @@ void Player::IncrScore(int n)
 int Player::GetScore()
 {
 	return score;
+}
+int Player::GetLives() const
+{
+	return lives;
+}
+State Player::GetState() const
+{
+	return state;
+}
+bool Player::GetGod() const
+{
+	return god;
+}
+void Player::MinusLife()
+{
+	if (god == false)
+	{
+		lives--;
+		state = State::DEAD;
+		SetAnimation((int)PlayerAnim::DEATH);
+	}
 }
 void Player::SetTileMap(TileMap* tilemap)
 {
@@ -189,12 +224,47 @@ void Player::Update()
 {
 	//Player doesn't use the "Entity::Update() { pos += dir; }" default behaviour.
 	//Instead, uses an independent behaviour for each axis.
-	MoveX();
-	MoveY();
+	
+	if (state == State::DEAD) {
+		deadTimer += GetFrameTime();
+		if (deadTimer >= DEAD_COOLDOWN)
+		{
+			state = State::IDLE;
+			SetAnimation((int)PlayerAnim::IDLE_RIGHT);
+			pos = { PLAYER_SPAWN_X, PLAYER_SPAWN_Y };
+			deadTimer = 0;
+		}
+	}
+	else {
+		GodMode();
+		MoveX();
+		MoveY();
+		BubbleShot();
+		auto it = bubbles.begin();
+		while (it != bubbles.end())
+		{
+			if ((*it)->IsAlive() == false)
+			{
+				delete* it;
+				it = bubbles.erase(it);
+			}
+			else
+			{
+				(*it)->Update();
+				++it;
+			}
 
+		}
+	}
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 	Warp();
+}
+void Player::GodMode() {
+	if (IsKeyPressed(KEY_F3))
+	{
+		god = !god;
+	}
 }
 void Player::MoveX()
 {
@@ -253,7 +323,7 @@ void Player::MoveY()
 		if (map->TestCollisionGround(box, &pos.y))
 		{
 			if (state == State::FALLING) Stop();
-			else if (IsKeyPressed(KEY_SPACE))
+			else if (IsKeyPressed(KEY_UP))
 			{
 				
 				StartJumping();
@@ -263,6 +333,26 @@ void Player::MoveY()
 		{
 			if (state != State::FALLING) StartFalling();
 		}
+	}
+}
+void Player::BubbleShot() {
+	
+ 	elapsedTimeBubble += GetFrameTime();
+	if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .25)
+	{
+		if (IsLookingLeft()) {
+			Bubble* bubl = new Bubble({ pos.x - PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::LEFT);
+			bubl->Initialise();
+			bubl->SetTileMap(map);
+			bubbles.push_back(bubl);
+		}
+		else if (IsLookingRight()) {
+			Bubble* bubl = new Bubble({ pos.x + PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::RIGHT);
+			bubl->Initialise();
+			bubl->SetTileMap(map);
+			bubbles.push_back(bubl);
+		}
+		elapsedTimeBubble = 0;
 	}
 }
 void Player::LogicJumping()
@@ -323,17 +413,70 @@ void Player::LogicJumping()
 		}
 	}
 }
+bool Player::CheckBubbleCollision(const AABB& enemy_box)
+{
+	AABB bubl_box;
+
+	auto it = bubbles.begin();
+	while (it != bubbles.end())
+	{
+		bubl_box = (*it)->GetHitbox();
+		if (bubl_box.TestAABB(enemy_box))
+		{
+			return true;
+		}
+		++it;
+	}
+	return false;
+}
 void Player::DrawDebug(const Color& col) const
 {	
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
-	
+
 	DrawText(TextFormat("Position: (%d,%d)\nSize: %dx%d\nFrame: %dx%d", pos.x, pos.y, width, height, frame_width, frame_height), 18*16, 0, 8, LIGHTGRAY);
 	DrawPixel(pos.x, pos.y, WHITE);
 }
+ void Player::DrawBubbles()
+ {
+	 auto it = bubbles.begin();
+	 while (it != bubbles.end())
+	 {
+	 	(*it)->Draw();
+		++it;
+	 }
+}
+ void Player::DrawBubblesDebug(const Color& col) const
+ {
+	 auto it = bubbles.begin();
+	 while (it != bubbles.end())
+	 {
+		 (*it)->DrawDebug(col);
+		 ++it;
+	 }
+ }
+ void Player::DrawGod(const Color& col) const
+ {
+	 DrawText(TextFormat("GOD MODE ON"), 90, -12, 10, col);
+ }
+
+ void Player::ClearBubbles()
+ {
+	 for (Bubble* bubl : bubbles)
+	 {
+		 delete bubl;
+	 }
+	 bubbles.clear();
+ }
 void Player::Release()
 {
 	ResourceManager& data = ResourceManager::Instance();
 	data.ReleaseTexture(Resource::IMG_PLAYER);
 
 	render->Release();
+	auto it = bubbles.begin();
+	while (it != bubbles.end())
+	{
+		(*it)->Release();
+		++it;
+	}
 }

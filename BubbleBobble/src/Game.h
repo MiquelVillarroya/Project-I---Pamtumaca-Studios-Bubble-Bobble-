@@ -30,7 +30,6 @@ public:
 
     Music tracks[10];
     Music currentTrack;
-    Music trackTimer;
 
 private:
     AppStatus BeginPlay();
@@ -45,7 +44,6 @@ private:
     double startTime;
     float totalTime = 1.5f;
     float timeSpent = 0.0;
-
 
 
     //To work with original game units and then scale the result
