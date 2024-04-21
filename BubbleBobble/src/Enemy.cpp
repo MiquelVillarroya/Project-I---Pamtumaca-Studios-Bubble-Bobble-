@@ -49,10 +49,10 @@ AppStatus Enemy::Initialise()
 		sprite->AddKeyFrame((int)ZenchanAnim::BUBBLE, { (float)i*n, 3*n, n, n });
 	sprite->SetAnimationDelay((int)ZenchanAnim::RED_START, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
-		sprite->AddKeyFrame((int)ZenchanAnim::RED_START, { 6 + (float)i*n, 3*n, n, n });
+		sprite->AddKeyFrame((int)ZenchanAnim::RED_START, { 6*n + (float)i*n, 3*n, n, n });
 	sprite->SetAnimationDelay((int)ZenchanAnim::RED_BLINK, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
-		sprite->AddKeyFrame((int)ZenchanAnim::RED_BLINK, { 9 + (float)i*n, 3*n, n, n });
+		sprite->AddKeyFrame((int)ZenchanAnim::RED_BLINK, { 9*n + (float)i*n, 3*n, n, n });
 
 	if (look == EnemyLook::LEFT) sprite->SetAnimation((int)ZenchanAnim::WALK_LEFT);
 	if (look == EnemyLook::RIGHT) sprite->SetAnimation((int)ZenchanAnim::WALK_RIGHT);
@@ -162,12 +162,10 @@ void Enemy::BubbleCounter()
 		}
 		else if (bubbleTimer >= BLINK_TIME)
 		{
-			state = EnemyState::BLINK_END;
 			SetAnimation((int)ZenchanAnim::RED_BLINK);
 		}
 		else if (bubbleTimer >= RED_TIME)
 		{
-			state = EnemyState::RED_END;
 			SetAnimation((int)ZenchanAnim::RED_START);
 		}
 	}
