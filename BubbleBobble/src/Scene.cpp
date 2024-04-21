@@ -282,6 +282,7 @@ void Scene::Update()
 	}
 	else if (IsKeyPressed(KEY_TWO))
 	{
+		
 		LoadLevel(2);
 		stage = 2;
 	}

@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include <stdio.h>
 #include "Player.h"
+#include "Scene.h"
 
 Sound sounds[10];
 
@@ -188,6 +189,11 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_N)) {
                 state = GameState::TRANSITION;
             }
+    
+          
+    
+
+
         case GameState::GAME_OVER:
             if (IsKeyPressed(KEY_F))
             {

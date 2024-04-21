@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Scene.h"
+#include "Enemy.h"
 
 enum class GameState { INTRO, MAIN_MENU, PLAYING, SETTINGS, CREDITS, GAME_OVER, TRANSITION };
 enum  MusicTrack {

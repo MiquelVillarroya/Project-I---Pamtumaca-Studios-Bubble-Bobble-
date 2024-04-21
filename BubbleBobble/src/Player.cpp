@@ -50,6 +50,7 @@ AppStatus Player::Initialise()
 	}
 
 	playersound[0] = LoadSound("audio/FX/Characters/JumpSFX.wav");
+	playersound[1] = LoadSound("audio/FX/Characters/BubbleAtkSFX.wav");
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetNumberAnimations((int)PlayerAnim::NUM_ANIMATIONS);
@@ -347,6 +348,7 @@ void Player::BubbleShot() {
  	elapsedTimeBubble += GetFrameTime();
 	if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .25)
 	{
+		PlaySound(playersound[1]);
 		if (IsLookingLeft()) {
 			Bubble* bubl = new Bubble({ pos.x - PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::LEFT);
 			bubl->Initialise();

@@ -24,6 +24,7 @@ public:
     AppStatus LoadLevel(int stage);
 
     bool IsPlayerAlive();
+    std::vector<Enemy*> enemies;
 
 private:
   
@@ -42,7 +43,7 @@ private:
     int stage;
 
     std::vector<Object*> objects;
-    std::vector<Enemy*> enemies;
+   
     std::vector<Bubble*> bubbleEnemies;
 
     Camera2D camera;
