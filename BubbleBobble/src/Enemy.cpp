@@ -10,7 +10,7 @@ Enemy::Enemy(const Point&p, EnemyState s, EnemyLook l) :
 	state = s;
 	look = l;
 	angryTimer = 0;
-
+	map = nullptr;
 }
 Enemy::~Enemy()
 {
@@ -48,6 +48,10 @@ AppStatus Enemy::Initialise()
 
 	return AppStatus::OK;
 }
+void Enemy::SetTileMap(TileMap* tilemap)
+{
+	map = tilemap;
+}
 void Enemy::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -67,7 +71,31 @@ void Enemy::Update()
 }
 void Enemy::MoveX()
 {
+	AABB box;
+	int prev_x = pos.x;
+	box = GetHitbox();
+	if (look == EnemyLook::RIGHT)
+	{
+		pos.x += ENEMY_SPEED;
+		if (map->TestCollisionWallRight(box))
+		{
+			pos.x = prev_x;
+			look = EnemyLook::LEFT;
+			SetAnimation((int)ZenchanAnim::WALK_LEFT);
+		}
 
+	}
+	else if (look == EnemyLook::LEFT)
+	{
+		pos.x += -ENEMY_SPEED;
+		if (map->TestCollisionWallLeft(box))
+		{
+			pos.x = prev_x;
+			look = EnemyLook::RIGHT;
+			SetAnimation((int)ZenchanAnim::WALK_RIGHT);
+		}
+
+	}
 }
 void Enemy::MoveY()
 {

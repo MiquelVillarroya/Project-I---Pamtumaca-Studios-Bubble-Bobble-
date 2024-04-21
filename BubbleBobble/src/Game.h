@@ -44,7 +44,6 @@ private:
     double startTime;
 
 
-
     //To work with original game units and then scale the result
     RenderTexture2D target;
     Rectangle src, dst;

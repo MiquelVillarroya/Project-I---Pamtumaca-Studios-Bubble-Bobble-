@@ -104,9 +104,9 @@ void Bubble::MoveX()
 			forceDelay = BUBBLE_FORCE_DELAY;
 			forceMax++;
 			box = GetHitbox();
-			if (pos.x < 19)
+			if (pos.x < 16)
 			{
-				pos.x = 19;
+				pos.x = 16;
 				forceDelay = BUBBLE_FORCE_DELAY * 2;
 				state = BubbleState::NORMAL;
 				SetAnimation((int)BubbleAnim::IDLE);

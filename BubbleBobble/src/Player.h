@@ -34,6 +34,13 @@
 //Gravity affects jumping velocity when jump_delay is 0
 #define GRAVITY_FORCE			1
 
+//Spawn locations
+#define PLAYER_SPAWN_X			24
+#define PLAYER_SPAWN_Y			199
+
+//Dead timer animation
+#define DEAD_COOLDOWN			1.67
+
 //Logic states
 enum class State { IDLE, WALKING, JUMPING, FALLING, DEAD };
 enum class Look { RIGHT, LEFT };
@@ -62,13 +69,17 @@ public:
 	void IncrScore(int n);
 	int GetScore();
 	int GetLives() const;
+	bool GetGod() const;
 	State GetState() const;
 	void MinusLife();
+
+	bool CheckBubbleCollision(const AABB& enemy_box);
 
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void DrawBubbles();
 	void DrawBubblesDebug(const Color& col) const;
+	void DrawGod(const Color& col) const;
 	void ClearBubbles();
 	void Release();
 
@@ -77,6 +88,7 @@ private:
 	bool IsLookingLeft() const;
 
 	//Player mechanics
+	void GodMode();
 	void MoveX();
 	void MoveY();
 	void LogicJumping();
@@ -101,6 +113,8 @@ private:
 	State state;
 	Look look;
 	int jump_delay;
+	float deadTimer;
+	bool god;
 
 	std::vector<Bubble*> bubbles;
 	float elapsedTimeBubble;

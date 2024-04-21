@@ -9,7 +9,8 @@
 #define	ENEMY_PHYSICAL_WIDTH	14
 #define ENEMY_PHYSICAL_HEIGTH	14
 
-//
+//Enemy speed
+#define ENEMY_SPEED				1
 
 enum class EnemyState {NORMAL, ANGRY};
 enum class EnemyLook { RIGHT, LEFT };
@@ -27,6 +28,8 @@ public:
 	~Enemy();
 
 	AppStatus Initialise();
+	void SetTileMap(TileMap* tilemap);
+
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void Release();
@@ -45,5 +48,5 @@ private:
 	EnemyLook look;
 	float angryTimer;
 	
-
+	TileMap* map;
 };

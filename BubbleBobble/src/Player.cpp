@@ -18,6 +18,8 @@ Player::Player(const Point& p, State s, Look view) :
 	elapsedTimeBubble = 0;
 	score = 0;
 	lives = 3;
+	deadTimer = 0;
+	god = false;
 	
 }
 Player::~Player()
@@ -84,7 +86,7 @@ AppStatus Player::Initialise()
 
 	sprite->SetAnimationDelay((int)PlayerAnim::DEATH, ANIM_DELAY);
 	for (i = 0; i < 13; ++i) {
-		sprite->AddKeyFrame((int)PlayerAnim::DEATH, {(float)i*n, 13*n, n, n, });
+		sprite->AddKeyFrameOffset((int)PlayerAnim::DEATH, {(float)i*n, 10*n, n, 2*n}, 0, -n);
 	}
 		
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
@@ -111,11 +113,18 @@ State Player::GetState() const
 {
 	return state;
 }
+bool Player::GetGod() const
+{
+	return god;
+}
 void Player::MinusLife()
 {
-	lives--;
-	state = State::DEAD;
-	SetAnimation((int)PlayerAnim::DEATH);
+	if (god == false)
+	{
+		lives--;
+		state = State::DEAD;
+		SetAnimation((int)PlayerAnim::DEATH);
+	}
 }
 void Player::SetTileMap(TileMap* tilemap)
 {
@@ -213,9 +222,19 @@ void Player::Update()
 {
 	//Player doesn't use the "Entity::Update() { pos += dir; }" default behaviour.
 	//Instead, uses an independent behaviour for each axis.
-	if (false) {
+	
+	if (state == State::DEAD) {
+		deadTimer += GetFrameTime();
+		if (deadTimer >= DEAD_COOLDOWN)
+		{
+			state = State::IDLE;
+			SetAnimation((int)PlayerAnim::IDLE_RIGHT);
+			pos = { PLAYER_SPAWN_X, PLAYER_SPAWN_Y };
+			deadTimer = 0;
+		}
 	}
 	else {
+		GodMode();
 		MoveX();
 		MoveY();
 		BubbleShot();
@@ -237,6 +256,12 @@ void Player::Update()
 	}
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
+}
+void Player::GodMode() {
+	if (IsKeyPressed(KEY_F3))
+	{
+		god = !god;
+	}
 }
 void Player::MoveX()
 {
@@ -310,7 +335,7 @@ void Player::MoveY()
 void Player::BubbleShot() {
 	
  	elapsedTimeBubble += GetFrameTime();
-	if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .2)
+	if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .25)
 	{
 		if (IsLookingLeft()) {
 			Bubble* bubl = new Bubble({ pos.x - PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::LEFT);
@@ -385,6 +410,22 @@ void Player::LogicJumping()
 		}
 	}
 }
+bool Player::CheckBubbleCollision(const AABB& enemy_box)
+{
+	AABB bubl_box;
+
+	auto it = bubbles.begin();
+	while (it != bubbles.end())
+	{
+		bubl_box = (*it)->GetHitbox();
+		if (bubl_box.TestAABB(enemy_box))
+		{
+			return true;
+		}
+		++it;
+	}
+	return false;
+}
 void Player::DrawDebug(const Color& col) const
 {	
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
@@ -410,6 +451,11 @@ void Player::DrawDebug(const Color& col) const
 		 ++it;
 	 }
  }
+ void Player::DrawGod(const Color& col) const
+ {
+	 DrawText(TextFormat("GOD MODE ON"), 90, -12, 10, col);
+ }
+
  void Player::ClearBubbles()
  {
 	 for (Bubble* bubl : bubbles)

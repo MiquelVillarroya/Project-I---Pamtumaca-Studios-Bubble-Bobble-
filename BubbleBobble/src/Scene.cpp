@@ -240,6 +240,7 @@ AppStatus Scene::LoadLevel(int stage)
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT);
 				enemy->Initialise();
+				enemy->SetTileMap(level);
 				enemies.push_back(enemy);
 				map[i] = 0;
 			}
@@ -249,6 +250,7 @@ AppStatus Scene::LoadLevel(int stage)
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::RIGHT);
 				enemy->Initialise();
+				enemy->SetTileMap(level);
 				enemies.push_back(enemy);
 				map[i] = 0;
 			}
@@ -295,6 +297,7 @@ void Scene::Render()
 		RenderObjects();
 		player->Draw();
 		player->DrawBubbles();
+		if (player->GetGod()) player->DrawGod(GREEN);
 		RenderEnemies();
 	}
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
@@ -302,6 +305,7 @@ void Scene::Render()
 		RenderObjectsDebug(YELLOW);
 		player->DrawDebug(GREEN);
 		player->DrawBubblesDebug(PURPLE);
+		if (player->GetGod()) player->DrawGod(GREEN);
 		RenderEnemiesDebug(RED);
 	}
 
@@ -317,7 +321,7 @@ void Scene::Release()
 }
 void Scene::CheckCollisions()
 {
-	AABB player_box, obj_box, enemy_box;
+	AABB player_box, obj_box, enemy_box, bubl_box;
 	
 	player_box = player->GetHitbox();
 	auto itObj = objects.begin();
@@ -346,8 +350,16 @@ void Scene::CheckCollisions()
 		if (player_box.TestAABB(enemy_box) && player->GetState() != State::DEAD)  
 		{
 			player->MinusLife();
+			itEnem++;
 		}
-		++itEnem;
+		else if (player->CheckBubbleCollision(enemy_box))
+		{
+			delete* itEnem;
+			itEnem = enemies.erase(itEnem);
+		}
+		else {
+			itEnem++;
+		}
 	}
 }
 void Scene::ClearLevel()
@@ -396,5 +408,5 @@ void Scene::RenderGUI() const
 {
 	//Temporal approach
 	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 5, 8, LIGHTGRAY);
-	DrawText(TextFormat("LIVES : %d", player->GetLives()), 150, 5, 8, LIGHTGRAY);
+	DrawText(TextFormat("LIVES : %d", player->GetLives()), 200, 5, 8, LIGHTGRAY);
 }

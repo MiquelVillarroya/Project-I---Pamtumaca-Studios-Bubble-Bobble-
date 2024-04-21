@@ -39,7 +39,7 @@ Game::~Game()
         delete scene;
         scene = nullptr;
     }
-
+    UnloadRenderTexture(target);
 }
 AppStatus Game::Initialise(float scale)
 {
