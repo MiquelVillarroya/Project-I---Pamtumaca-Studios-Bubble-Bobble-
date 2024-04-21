@@ -4,14 +4,17 @@
 #include "Globals.h"
 #include <raymath.h>
 
-Enemy::Enemy(const Point&p, EnemyState s, EnemyLook l) :
+Enemy::Enemy(const Point&p, EnemyState s, EnemyLook l, EnemyType t) :
 	Entity (p, ENEMY_PHYSICAL_WIDTH, ENEMY_PHYSICAL_HEIGTH, ENEMY_FRAME_SIZE, ENEMY_FRAME_SIZE)
 {
 	state = s;
 	look = l;
+	type = t; //Temporal Approach
+	alive = true;
 	angryTimer = 0;
 	bubbleTimer = 0;
 	map = nullptr;
+	
 }
 Enemy::~Enemy()
 {
@@ -54,8 +57,28 @@ AppStatus Enemy::Initialise()
 	for (i = 0; i < 3; ++i)
 		sprite->AddKeyFrame((int)ZenchanAnim::RED_BLINK, { 9*n + (float)i*n, 3*n, n, n });
 
-	if (look == EnemyLook::LEFT) sprite->SetAnimation((int)ZenchanAnim::WALK_LEFT);
-	if (look == EnemyLook::RIGHT) sprite->SetAnimation((int)ZenchanAnim::WALK_RIGHT);
+	//Zenchan Temporal Approach
+	sprite->SetAnimationDelay((int)ZenchanAnim::WALK_RIGHT_H, ANIM_DELAY);
+	for (i = 0; i < 4; ++i)
+		sprite->AddKeyFrame((int)ZenchanAnim::WALK_RIGHT_H, { (float)i*n, 5*n, -n, n });
+	sprite->SetAnimationDelay((int)ZenchanAnim::WALK_LEFT_H, ANIM_DELAY);
+	for (i = 0; i < 4; ++i)
+		sprite->AddKeyFrame((int)ZenchanAnim::WALK_LEFT_H, { (float)i*n, 5*n, n, n });
+
+	sprite->SetAnimationDelay((int)ZenchanAnim::BUBBLE_H, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)ZenchanAnim::BUBBLE_H, { (float)i*n, 9*n, n, n });
+	sprite->SetAnimationDelay((int)ZenchanAnim::RED_START_H, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)ZenchanAnim::RED_START_H, { 6*n + (float)i*n, 9*n, n, n });
+	sprite->SetAnimationDelay((int)ZenchanAnim::RED_BLINK_H, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)ZenchanAnim::RED_BLINK_H, { 9*n + (float)i*n, 9*n, n, n });
+
+	if (look == EnemyLook::LEFT && type == EnemyType::ZENCHAN) sprite->SetAnimation((int)ZenchanAnim::WALK_LEFT);
+	if (look == EnemyLook::RIGHT && type == EnemyType::ZENCHAN) sprite->SetAnimation((int)ZenchanAnim::WALK_RIGHT);
+	if (look == EnemyLook::LEFT && type == EnemyType::HIDEGONS) sprite->SetAnimation((int)ZenchanAnim::WALK_LEFT_H);
+	if (look == EnemyLook::RIGHT && type == EnemyType::HIDEGONS) sprite->SetAnimation((int)ZenchanAnim::WALK_RIGHT_H);
 
 	return AppStatus::OK;
 }
@@ -70,7 +93,8 @@ EnemyState Enemy::GetState()
 void Enemy::SetState(const EnemyState& s)
 {
 	state = s;
-	if (state == EnemyState::BUBBLE) SetAnimation((int)ZenchanAnim::BUBBLE);
+	if (state == EnemyState::BUBBLE && type == EnemyType::ZENCHAN) SetAnimation((int)ZenchanAnim::BUBBLE);
+	if (state == EnemyState::BUBBLE && type == EnemyType::HIDEGONS) SetAnimation((int)ZenchanAnim::BUBBLE_H);
 
 }
 void Enemy::SetAnimation(int id)
@@ -104,7 +128,8 @@ void Enemy::MoveX()
 			{
 				pos.x = prev_x;
 				look = EnemyLook::LEFT;
-				SetAnimation((int)ZenchanAnim::WALK_LEFT);
+				if (type == EnemyType::ZENCHAN) SetAnimation((int)ZenchanAnim::WALK_LEFT);
+				else if (type == EnemyType::HIDEGONS) SetAnimation((int)ZenchanAnim::WALK_LEFT_H);
 			}
 
 		}
@@ -115,7 +140,8 @@ void Enemy::MoveX()
 			{
 				pos.x = prev_x;
 				look = EnemyLook::RIGHT;
-				SetAnimation((int)ZenchanAnim::WALK_RIGHT);
+				if (type == EnemyType::ZENCHAN) SetAnimation((int)ZenchanAnim::WALK_RIGHT);
+				else if (type == EnemyType::HIDEGONS) SetAnimation((int)ZenchanAnim::WALK_RIGHT_H);
 			}
 
 		}
@@ -162,11 +188,13 @@ void Enemy::BubbleCounter()
 		}
 		else if (bubbleTimer >= BLINK_TIME)
 		{
-			SetAnimation((int)ZenchanAnim::RED_BLINK);
+			if (type == EnemyType::ZENCHAN) SetAnimation((int)ZenchanAnim::RED_BLINK);
+			else if (type == EnemyType::HIDEGONS) SetAnimation((int)ZenchanAnim::RED_BLINK_H);
 		}
 		else if (bubbleTimer >= RED_TIME)
 		{
-			SetAnimation((int)ZenchanAnim::RED_START);
+			if (type == EnemyType::ZENCHAN) SetAnimation((int)ZenchanAnim::RED_START);
+			else if (type == EnemyType::HIDEGONS) SetAnimation((int)ZenchanAnim::RED_START_H);
 		}
 	}
 }

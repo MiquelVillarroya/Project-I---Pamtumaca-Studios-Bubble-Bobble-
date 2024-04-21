@@ -7,6 +7,7 @@ Scene::Scene()
 	player = nullptr;
     level = nullptr;
 	stage = 1;
+	alive = true;
 	
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
@@ -105,22 +106,22 @@ AppStatus Scene::LoadLevel(int stage)
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
-			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
+			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,  52,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	 55,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   9,   9,   0,   0,   0,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,	  9,   9,   9,   9,   0,   0,   0,   9,   9,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
-			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
+			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,  51,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	 54,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   9,   9,   0,   0,   0,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,	  9,   9,   9,   9,   0,   0,   0,   9,   9,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
-			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
+			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,  50,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	 53,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   9,   9,   0,   0,   0,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,   9,	  9,   9,   9,   9,   0,   0,   0,   9,   9,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
-			 1,   1,   0, 100,   0,   0,   0,  50,   0,  51,   0,  52,   0,  53,   0,  54,   0,  55,   0, 102,   0,	  0,   0,   0,   0,   0,   0, 101,   0,   0,   1,   1,
+			 1,   1,   0, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 101, 104,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1
 		};
 		player->InitScore();
@@ -239,7 +240,7 @@ AppStatus Scene::LoadLevel(int stage)
 			{
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT);
+				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT, EnemyType::ZENCHAN);
 				enemy->Initialise();
 				enemy->SetTileMap(level);
 				enemies.push_back(enemy);
@@ -249,7 +250,27 @@ AppStatus Scene::LoadLevel(int stage)
 			{
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::RIGHT);
+				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::RIGHT, EnemyType::ZENCHAN);
+				enemy->Initialise();
+				enemy->SetTileMap(level);
+				enemies.push_back(enemy);
+				map[i] = 0;
+			}
+			else if (tile == Tile::HIDEGONS_LEFT)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT, EnemyType::HIDEGONS);
+				enemy->Initialise();
+				enemy->SetTileMap(level);
+				enemies.push_back(enemy);
+				map[i] = 0;
+			}
+			else if (tile == Tile::HIDEGONS_RIGHT)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::RIGHT, EnemyType::HIDEGONS);
 				enemy->Initialise();
 				enemy->SetTileMap(level);
 				enemies.push_back(enemy);
@@ -293,7 +314,9 @@ void Scene::Update()
 			stage++;
 			LoadLevel(stage);
 		}
-		else player->MinusLife();
+		else {
+			alive = false;
+		}
 	}
 
 	level->Update();
@@ -440,4 +463,8 @@ bool Scene::IsPlayerAlive()
 {
 	if (player->GetLives() > 0) return true;
 	return false;
+}
+bool Scene::IsSceneAlive()
+{
+	return alive;
 }

@@ -26,17 +26,23 @@
 
 enum class EnemyState {NORMAL, BUBBLE, ANGRY, BLINK_END, RED_END};
 enum class EnemyLook { RIGHT, LEFT };
+enum class EnemyType {ZENCHAN, HIDEGONS }; //Temporal Approach
 enum class ZenchanAnim {
 	WALK_RIGHT, WALK_LEFT,
 	ANGRY_LEFT, ANGRY_RIGHT,
 	DEAD,
 	BUBBLE, RED_START, RED_BLINK,
+	WALK_RIGHT_H, WALK_LEFT_H,
+	ANGRY_LEFT_H, ANGRY_RIGHT_H,
+	DEAD_H,
+	BUBBLE_H, RED_START_H, RED_BLINK_H,
+
 	NUM_ANIMATIONS
 };
 
 class Enemy : public Entity {
 public:
-	Enemy(const Point& p, EnemyState s, EnemyLook l);
+	Enemy(const Point& p, EnemyState s, EnemyLook l, EnemyType t);
 	~Enemy();
 
 	AppStatus Initialise();
@@ -65,6 +71,8 @@ private:
 	float angryTimer;
 	float bubbleTimer;
 	bool alive;
+
+	EnemyType type; //Temporal Approach
 	
 	TileMap* map;
 };

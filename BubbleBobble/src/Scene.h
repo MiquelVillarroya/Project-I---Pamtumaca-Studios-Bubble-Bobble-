@@ -24,6 +24,7 @@ public:
     AppStatus LoadLevel(int stage);
 
     bool IsPlayerAlive();
+    bool IsSceneAlive();
     std::vector<Enemy*> enemies;
 
 private:
@@ -54,5 +55,7 @@ private:
     float timeSpent;
     float totalTime;
     SceneState state;
+
+    bool alive;
 };
 

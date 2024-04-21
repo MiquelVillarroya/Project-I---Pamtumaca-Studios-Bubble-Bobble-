@@ -182,7 +182,7 @@ AppStatus Game::Update()
             break;
 
         case GameState::PLAYING:  
-            if (IsKeyPressed(KEY_ESCAPE) || !scene->IsPlayerAlive())
+            if (IsKeyPressed(KEY_ESCAPE) || !scene->IsPlayerAlive() || !scene->IsSceneAlive())
             {
                 FinishPlay();
                 currentTrack = tracks[GAME_OVER_MUS];
@@ -197,10 +197,6 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_N)) {
                 state = GameState::TRANSITION;
             }
-    
-          
-    
-
 
         case GameState::GAME_OVER:
             if (IsKeyPressed(KEY_F))

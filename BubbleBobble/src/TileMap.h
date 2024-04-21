@@ -21,7 +21,7 @@ enum class Tile {
 
 
 	// id >= 100: entities' initial locations
-	PLAYER = 100, ZENCHAN_LEFT, ZENCHAN_RIGHT,
+	PLAYER = 100, ZENCHAN_LEFT, ZENCHAN_RIGHT, HIDEGONS_LEFT, HIDEGONS_RIGHT,
 
 	//Intervals
 	STATIC_FIRST = BLOCK_LVL1,
