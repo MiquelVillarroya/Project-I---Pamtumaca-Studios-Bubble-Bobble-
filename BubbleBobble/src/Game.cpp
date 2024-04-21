@@ -30,6 +30,8 @@ Game::Game()
     tracks[REAL_ENDING_MUS] = LoadMusicStream("audio/music/7_Real_Ending.ogg");
     tracks[NAME_REGISTER_MUS] = LoadMusicStream("audio/music/8_Name_Register.ogg");
     tracks[GAME_OVER_MUS] = LoadMusicStream("audio/music/9_Game_Over.ogg");
+    
+    
     currentTrack = LoadMusicStream("audio/music/1_Introduction_Main_Theme.ogg");
 
     target = {};
@@ -160,11 +162,17 @@ AppStatus Game::Update()
             {
             double time = GetTime() - startTime;
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if (IsKeyPressed(KEY_SPACE)) state = GameState::MAIN_MENU;
+            if (IsKeyPressed(KEY_SPACE)) {
+                Sound menusound;
+                menusound = LoadSound("audio/FX/Intro/TitleSFX.wav");
+                PlaySound(menusound);state = GameState::MAIN_MENU; 
+            }
+
             if (time > 9) state = GameState::MAIN_MENU;
             break;
             }
         case GameState::MAIN_MENU: 
+           
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (IsKeyPressed(KEY_SPACE))
             {

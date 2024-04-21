@@ -13,7 +13,8 @@ enum  MusicTrack {
     SUPER_DRUNK_MUS,
     REAL_ENDING_MUS,
     NAME_REGISTER_MUS,
-    GAME_OVER_MUS
+    GAME_OVER_MUS,
+    
 };
 class Game
 {
