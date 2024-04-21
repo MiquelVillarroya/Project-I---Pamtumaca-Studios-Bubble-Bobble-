@@ -71,6 +71,7 @@ void Enemy::SetState(const EnemyState& s)
 {
 	state = s;
 	if (state == EnemyState::BUBBLE) SetAnimation((int)ZenchanAnim::BUBBLE);
+
 }
 void Enemy::SetAnimation(int id)
 {

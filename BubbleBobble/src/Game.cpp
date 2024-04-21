@@ -299,7 +299,7 @@ void Game::UnloadResources()
     data.ReleaseTexture(Resource::IMG_INTRO2);
     data.ReleaseTexture(Resource::GAME_OVER);
     UnloadRenderTexture(target);
-    UnloadMusicStream(currentTrack);
+   
 
 }
 Music Game::GetCurrentTrack() const {

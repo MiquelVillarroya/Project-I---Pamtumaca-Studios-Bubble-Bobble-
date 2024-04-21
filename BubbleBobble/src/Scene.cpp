@@ -372,6 +372,11 @@ void Scene::CheckCollisions()
 		}
 		else if (player_box.TestAABB(enemy_box) && player->GetState() != State::DEAD && (*itEnem)->GetState() == EnemyState::BUBBLE)
 		{
+		 
+
+			Sound enemydeath = LoadSound("audio/FX/enemies/OneEnemyKilledSFX.wav");
+			PlaySound(enemydeath);
+			
 			delete* itEnem;
 			itEnem = enemies.erase(itEnem);
 			break;
