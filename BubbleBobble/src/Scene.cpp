@@ -1,9 +1,11 @@
 #include "Scene.h"
 #include <stdio.h>
 #include "Globals.h"
+#include "MemLeaks.h"
 
 Scene::Scene()
 {
+
 	player = nullptr;
     level = nullptr;
 	stage = 1;
@@ -43,6 +45,7 @@ Scene::~Scene()
 }
 AppStatus Scene::Init()
 {
+
 	//Create player
 	player = new Player({ 0,0 }, State::IDLE, Look::RIGHT);
 	if (player == nullptr)
@@ -83,6 +86,7 @@ AppStatus Scene::Init()
 }
 AppStatus Scene::LoadLevel(int stage)
 {
+
 	int size;
 	int x, y, i;
 	Tile tile;

@@ -11,7 +11,10 @@ int main()
     int main_return = EXIT_SUCCESS;
 
     LOG("Application start");
+
     InitAudioDevice();
+    if (!IsAudioDeviceReady()) LOG("Failed to initialise Audio Device");
+
     game = new Game();
     status = game->Initialise(GAME_SCALE_FACTOR);
     if (status != AppStatus::OK)
@@ -33,10 +36,11 @@ int main()
     }
 
     LOG("Application finish");
-    
     game->Cleanup();
+
     CloseAudioDevice();
- 
+    if (IsAudioDeviceReady()) LOG("Failed to close Audio Device");
+
     LOG("Bye :)");
     delete game;
 

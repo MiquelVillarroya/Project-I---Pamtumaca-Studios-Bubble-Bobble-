@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "StaticImage.h"
+#include "MemLeaks.h"
 
 Sound objectsound[10];
 
@@ -33,6 +34,7 @@ void Object::DrawDebug(const Color& col) const
 }
 int Object::Points() const
 {
+	ReportMemoryLeaks();
 
 	objectsound[0] = LoadSound("audio/FX/Items/GrabFruitSFX.wav");
 	if (type == ObjectType::MUSHROOM) { ; PlaySound(objectsound[0]); return POINTS_MUSHROOM; }
