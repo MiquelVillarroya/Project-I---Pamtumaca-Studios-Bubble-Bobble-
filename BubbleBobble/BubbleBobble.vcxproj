@@ -137,8 +137,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EnemyManager.cpp" />
-    <ClCompile Include="Hidegons.cpp" />
+    <ClCompile Include="src\EnemyManager.cpp" />
+    <ClCompile Include="src\Hidegons.cpp" />
     <ClCompile Include="src\AABB.cpp" />
     <ClCompile Include="src\Bubble.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
@@ -154,11 +154,11 @@
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\StaticImage.cpp" />
     <ClCompile Include="src\TileMap.cpp" />
-    <ClCompile Include="Zenchan.cpp" />
+    <ClCompile Include="src\Zenchan.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnemyManager.h" />
-    <ClInclude Include="Hidegons.h" />
+    <ClInclude Include="src\EnemyManager.h" />
+    <ClInclude Include="src\Hidegons.h" />
     <ClInclude Include="src\AABB.h" />
     <ClInclude Include="src\Bubble.h" />
     <ClInclude Include="src\Enemy.h" />
@@ -175,7 +175,7 @@
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\StaticImage.h" />
     <ClInclude Include="src\TileMap.h" />
-    <ClInclude Include="Zenchan.h" />
+    <ClInclude Include="src\Zenchan.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

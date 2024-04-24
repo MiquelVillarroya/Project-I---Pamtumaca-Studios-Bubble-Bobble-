@@ -69,13 +69,13 @@
     <ClCompile Include="src\Enemy.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyManager.cpp">
+    <ClCompile Include="src\EnemyManager.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Zenchan.cpp">
+    <ClCompile Include="src\Zenchan.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Hidegons.cpp">
+    <ClCompile Include="src\Hidegons.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,13 +128,13 @@
     <ClInclude Include="src\Enemy.h">
       <Filter>Entities\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyManager.h">
+    <ClInclude Include="src\EnemyManager.h">
       <Filter>Entities\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Zenchan.h">
+    <ClInclude Include="src\Zenchan.h">
       <Filter>Entities\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Hidegons.h">
+    <ClInclude Include="src\Hidegons.h">
       <Filter>Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
