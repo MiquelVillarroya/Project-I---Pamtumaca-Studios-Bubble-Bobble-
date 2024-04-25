@@ -40,7 +40,6 @@ void Sprite::AddKeyFrameOffset(int id, const Rectangle& rect, int offsetX, int o
         animations[id].frames.push_back(rect);
     }
 }
-
 void Sprite::SetAnimation(int id)
 {
     if (id >= 0 && id < animations.size())

@@ -8,8 +8,8 @@ enum class AnimMode { AUTOMATIC, MANUAL };
 struct Animation
 {
     int delay;
-    int offsetX;
-    int offsetY;
+    int offsetX = 0;
+    int offsetY = 0;
     std::vector<Rectangle> frames;
 };
 

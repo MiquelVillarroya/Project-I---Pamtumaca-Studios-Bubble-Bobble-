@@ -1,78 +1,39 @@
 #pragma once
 #include "Entity.h"
-#include "TileMap.h"
 
-//Representation model size: 16x16
+//Representation model size: 32x32
 #define ENEMY_FRAME_SIZE		16
+//Logical model size: 24x30
+#define ENEMY_PHYSICAL_WIDTH	14
+#define ENEMY_PHYSICAL_HEIGHT	14
 
-//Logical model size
-#define	ENEMY_PHYSICAL_WIDTH	14
-#define ENEMY_PHYSICAL_HEIGTH	14
+enum class EnemyType { ZENCHAN, HIDEGONS };
 
-//Enemy speed
-#define ENEMY_SPEED				1
-
-//Bubble logic parameters
-#define PHYSICAL_OFFSET			7
-#define MAX_HEIGHT				40
-#define TOP_OFFSET				20
-#define HORIZONTAL_ADVANCE_TOP	1
-#define VERTICAL_ADVANCE		1
-
-//Bubble render parameters
-#define RED_TIME				7		
-#define BLINK_TIME				10
-#define POP_TIME				12
-
-enum class EnemyState {NORMAL, BUBBLE, ANGRY, BLINK_END, RED_END};
-enum class EnemyLook { RIGHT, LEFT };
-enum class EnemyType {ZENCHAN, HIDEGONS }; //Temporal Approach
-enum class ZenchanAnim {
-	WALK_RIGHT, WALK_LEFT,
-	ANGRY_LEFT, ANGRY_RIGHT,
-	DEAD,
-	BUBBLE, RED_START, RED_BLINK,
-	WALK_RIGHT_H, WALK_LEFT_H,
-	ANGRY_LEFT_H, ANGRY_RIGHT_H,
-	DEAD_H,
-	BUBBLE_H, RED_START_H, RED_BLINK_H,
-
-	NUM_ANIMATIONS
-};
-
-class Enemy : public Entity {
+class Enemy : public Entity
+{
 public:
-	Enemy(const Point& p, EnemyState s, EnemyLook l, EnemyType t);
-	~Enemy();
+	Enemy(const Point& p, int width, int height, int frame_width, int frame_height);
+	virtual ~Enemy();
 
-	AppStatus Initialise();
-	void SetTileMap(TileMap* tilemap);
+	//Draw the maximum visibility area of the enemy
+	void DrawVisibilityArea(const Color& col) const;
 
-	void Update();
-	void DrawDebug(const Color& col) const;
-	void Release();
+	//Pure virtual functions, any class inheriting from this class must provide its own implementations
 
-	EnemyState GetState();
-	void SetState(const EnemyState& s);
+	//Initialize the enemy with the specified look and area
+	virtual AppStatus Initialise(Look look, const AABB& area) = 0;
 
-private:
+	//Update the enemy according to its logic, return true if the enemy must shoot
+	virtual bool Update(const AABB& box) = 0;
 
-	//Movement
-	void MoveX();
-	void MoveY();
-	void BubbleCounter();
+	//Retrieve the position and direction of the shot to be thrown
+	virtual void GetShootingPosDir(Point* pos, Point* dir) const = 0;
 
-	//Animations
-	void SetAnimation(int id);
-	ZenchanAnim GetAnimation();
+protected:
+	//Return true if the given hitbox is within the visibility area and the enemy is facing it
+	bool IsVisible(const AABB& hitbox);
 
-	EnemyState state;
-	EnemyLook look;
-	float angryTimer;
-	float bubbleTimer;
-	bool alive;
-
-	EnemyType type; //Temporal Approach
-	
-	TileMap* map;
+	Look look;
+	AABB visibility_area;
 };
+

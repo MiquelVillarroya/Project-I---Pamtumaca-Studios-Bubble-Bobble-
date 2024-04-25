@@ -16,6 +16,7 @@ enum class Resource {
     IMG_ZENCHAN,
     IMG_HIDEGONS,
     GAME_OVER,
+    //The next images are temporary (for the transition)
     TRANSITION,
     STAGE2,
     STAGE1

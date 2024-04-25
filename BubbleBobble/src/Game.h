@@ -3,6 +3,15 @@
 #include "Scene.h"
 #include "Enemy.h"
 
+//Intro Timing
+#define INTRO_TIME          10.0
+#define INTRO_FIRST_IMAGE   INTRO_TIME * 0.1
+#define INTRO_SECOND_IMAGE   INTRO_TIME * 0.5
+#define INTRO_SECOND_FADE   INTRO_TIME * 0.6
+
+
+
+
 enum class GameState { INTRO, MAIN_MENU, PLAYING, SETTINGS, CREDITS, GAME_OVER, TRANSITION };
 enum  MusicTrack {
     GAME_MUS,
@@ -13,9 +22,9 @@ enum  MusicTrack {
     SUPER_DRUNK_MUS,
     REAL_ENDING_MUS,
     NAME_REGISTER_MUS,
-    GAME_OVER_MUS,
-    
+    GAME_OVER_MUS,  
 };
+
 class Game
 {
 public:
@@ -43,7 +52,9 @@ private:
     GameState state;
     Scene *scene;
     const Texture2D* img_menu, * img_intro1, * img_intro2, * game_over, * transition, * stage2, * stage1;
-    double startTime;
+    double introTimer;;
+
+    //Temporary (for transition)
     float totalTime = 1.5f;
     float timeSpent = 0.0;
 
