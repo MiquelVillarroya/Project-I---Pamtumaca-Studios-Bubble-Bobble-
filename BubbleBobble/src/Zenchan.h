@@ -6,19 +6,7 @@
 //Logical model size
 #define	ZENCHAN_ANIM_DELAY		ANIM_DELAY
 
-//Bubble logic parameters
-#define PHYSICAL_OFFSET			7
-#define MAX_HEIGHT				40
-#define TOP_OFFSET				20
-#define HORIZONTAL_ADVANCE_TOP	1
-#define VERTICAL_ADVANCE		1
-
-//Bubble render parameters
-#define RED_TIME				7		
-#define BLINK_TIME				10
-#define POP_TIME				12
-
-enum class ZenchanState { ROAMING, JUMPING, FALLING, BUBBLE, ANGRY, BLINK_END, RED_END };
+enum class ZenchanState { ROAMING, JUMPING, FALLING };
 enum class ZenchanAnim {
 	WALKING_RIGHT, WALKING_LEFT,
 	WALKING_ANGRY_LEFT, WALKING_ANGRY_RIGHT,

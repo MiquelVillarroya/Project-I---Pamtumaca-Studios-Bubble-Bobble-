@@ -13,9 +13,14 @@ EnemyManager::~EnemyManager()
 AppStatus EnemyManager::Initialise()
 {
 	ResourceManager& data = ResourceManager::Instance();
-	if (data.LoadTexture(Resource::IMG_ENEMIES, "images/enemies.png") != AppStatus::OK)
+	if (data.LoadTexture(Resource::IMG_ZENCHAN, "images/zenchan.png") != AppStatus::OK)
 	{
-		LOG("Failed to load enemies sprite texture");
+		LOG("Failed to load zenchan sprite texture");
+		return AppStatus::ERROR;
+	}
+	if (data.LoadTexture(Resource::IMG_ZENCHAN, "images/hidegons.png") != AppStatus::OK)
+	{
+		LOG("Failed to load hidegons sprite texture");
 		return AppStatus::ERROR;
 	}
 
