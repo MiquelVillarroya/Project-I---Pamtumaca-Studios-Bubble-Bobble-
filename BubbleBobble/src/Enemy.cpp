@@ -6,9 +6,19 @@ Enemy::Enemy(const Point& p, int width, int height, int frame_width, int frame_h
 {
 	visibility_area = {};
 	look = Look::LEFT;
+	map = nullptr;
 }
 Enemy::~Enemy()
 {
+}
+void Enemy::SetTileMap(TileMap* tilemap)
+{
+	map = tilemap;
+}
+void Enemy::SetAnimation(int id)
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetAnimation(id);
 }
 bool Enemy::IsVisible(const AABB& hitbox)
 {

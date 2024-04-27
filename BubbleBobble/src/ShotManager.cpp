@@ -1,64 +1,68 @@
 #include "ShotManager.h"
+#include "Bubble.h"
 
 ShotManager::ShotManager()
 {
-	map = nullptr;
 }
 ShotManager::~ShotManager()
 {
+	Release();
 }
 AppStatus ShotManager::Initialise()
 {
-	//Nothing needs to be done because the texture is located within the enemy sprites
-	//and loaded by the EnemyManager
+	ResourceManager& data = ResourceManager::Instance();
+	if (data.LoadTexture(Resource::IMG_BUBBLE, "images/bubbles.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
 
 	return AppStatus::OK;
 }
 void ShotManager::SetTileMap(TileMap* tilemap)
 {
-	map = tilemap;
-}
-void ShotManager::Add(const Point& pos, const Point& dir)
-{
-	bool found = false;
-	for (Shot& shot : shots)
+	for (Shot* shot : shots)
 	{
-		if (!shot.IsAlive())
-		{
-			shot.Init(pos, dir);
-			found = true;
-			break;
-		}
+		shot->SetTileMap(tilemap);
 	}
-	if (!found) LOG("Not enough space to add a new shot in the ShotManager!");
 }
-void ShotManager::Clear()
+void ShotManager::Add(const Point& pos, const Point& dir, ShotType type)
 {
-	for (Shot& shot : shots)
-		shot.SetAlive(false);
+	Shot* shot;
+
+	if (type == ShotType::BUBBLE)
+	{
+		shot = new Bubble(pos, dir, BUBBLE_PHYSICAL_WIDTH, BUBBLE_PHYSICAL_HEIGHT, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE);
+	}
+	else if (type == ShotType::FIREBALL)
+	{
+		shot = new Bubble(pos, dir, BUBBLE_PHYSICAL_WIDTH, BUBBLE_PHYSICAL_HEIGHT, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE);
+	}
+	else
+	{
+		LOG("Internal error; trying to add a new shot with invalid type");
+		return;
+	}
+
+	shot->Initialise();
+	shots.push_back(shot);
 }
-void ShotManager::Update(const AABB& player_hitbox)
+void ShotManager::Update(const AABB& temp_hitbox)
 {
 	AABB box;
 	bool hit;
 
-	for (Shot& shot : shots)
+	for (Shot* shot : shots)
 	{
-		if (shot.IsAlive())
+		if (shot->IsAlive())
 		{
 			//Update position
-			shot.Update();
-
-			//Check level collisions
-			box = shot.GetHitbox();
-			hit = false;
-			if (shot.IsMovingLeft())		  hit = map->TestCollisionWallLeft(box);
-			else if (shot.IsMovingRight()) hit = map->TestCollisionWallRight(box);
+			shot->Update(temp_hitbox);
 
 			//Check player collision
-			if (!hit) hit = box.TestAABB(player_hitbox);
+			hit = false;
+			if (!hit) hit = box.TestAABB(temp_hitbox);
 
-			if (hit) shot.SetAlive(false);
+			if (hit) shot->SetAlive(false);
 		}
 	}
 }
@@ -66,11 +70,17 @@ void ShotManager::Draw() const
 {
 	//Iterate over the shots vector by reference instead of by value to avoid a copy
 	//of each Entity object
-	for (const Shot& shot : shots)
-		if (shot.IsAlive())	shot.Draw();
+	for (const Shot* shot : shots)
+		if (shot->IsAlive())	shot->Draw();
 }
 void ShotManager::DrawDebug(const Color& col) const
 {
-	for (const Shot& shot : shots)
-		if (shot.IsAlive()) shot.DrawHitbox(col);
+	for (const Shot* shot : shots)
+		if (shot->IsAlive()) shot->DrawHitbox(col);
+}
+void ShotManager::Release()
+{
+	for (Shot* shot : shots)
+		delete shot;
+	shots.clear();
 }

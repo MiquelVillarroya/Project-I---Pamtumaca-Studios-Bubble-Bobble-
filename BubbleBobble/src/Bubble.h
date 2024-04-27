@@ -1,15 +1,10 @@
 #pragma once
 #include "Entity.h"
-#include "TileMap.h"
+#include "Shot.h"
 
 
 //#defines here
-//Representation model size
-#define BUBBLE_FRAME_SIZE		16
 
-//Logical model size 16x16
-#define BUBBLE_PHYSICAL_WIDTH	14
-#define BUBBLE_PHYSICAL_HEIGHT	14
 #define PHYSICAL_OFFSET			7
 
 //Bubble speed
@@ -37,7 +32,6 @@
 
 
 enum class BubbleState { SHOT, NORMAL, RED_END, BLINK_END, ENEMY};
-enum class BubbleDirection {LEFT, RIGHT};
 enum class BubbleAnim {
 	INITIAL,
 	IDLE,
@@ -47,19 +41,16 @@ enum class BubbleAnim {
 	NUM_ANIMATIONS
 };
 
-class Bubble : public Entity {
+class Bubble : public Shot {
 public:
-	Bubble(const Point& p, BubbleDirection);
+	Bubble(const Point& p, const Point& d, int width, int heigth, int frame_width, int frame_heigth);
 	~Bubble();
 
-	AppStatus Initialise();
-	void SetTileMap(TileMap* tilemap);
+	AppStatus Initialise() override;
 
-	void Update();
-	void DrawDebug(const Color& col) const;
-	void Release();
+	void Update(const AABB& box) override;
 
-	bool IsAlive() const;
+	//bool IsAlive() const;
 
 private:
 
@@ -75,14 +66,7 @@ private:
 	//BubbleTimer
 	float bubbleTimer;
 
-	//Animations
-	void SetAnimation(int id);
-	BubbleAnim GetAnimation();
-
-
 	BubbleState state;
-	BubbleDirection direction;
-	TileMap* map;
 
 	//Bubble shot variables
 	int forceDelay;

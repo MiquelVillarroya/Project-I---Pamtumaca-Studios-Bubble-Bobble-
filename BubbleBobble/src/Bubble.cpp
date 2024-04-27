@@ -1,16 +1,14 @@
 #include "Bubble.h"
 #include "Sprite.h"
-#include "TileMap.h"
-#include "Globals.h"
-#include "raymath.h"
+//#include "TileMap.h"
+//#include "Globals.h"
+//#include "raymath.h"
 
 
-Bubble::Bubble(const Point& p, BubbleDirection bd) :
-	Entity(p, BUBBLE_PHYSICAL_WIDTH, BUBBLE_PHYSICAL_HEIGHT, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE)
+Bubble::Bubble(const Point& p, const Point& d, int width, int height, int frame_width, int frame_heigth) :
+	Shot(p, d, width, height, frame_width, frame_heigth)
 {
 	state = BubbleState::SHOT;
-	direction = bd;
-	map = nullptr;
 
 	alive = true;
 	move = true;
@@ -28,11 +26,6 @@ AppStatus Bubble::Initialise()
 	const int n = BUBBLE_FRAME_SIZE;
 
 	ResourceManager& data = ResourceManager::Instance();
-	if (data.LoadTexture(Resource::IMG_BUBBLE, "images/bubbles.png") != AppStatus::OK)
-	{
-		return AppStatus::ERROR;
-	}
-
 	render = new Sprite(data.GetTexture(Resource::IMG_BUBBLE));
 	if (render == nullptr){
 		LOG("Failed to allocate memory for bubble sprite");
@@ -64,26 +57,12 @@ AppStatus Bubble::Initialise()
 
 	return AppStatus::OK;
 }
-void Bubble::SetTileMap(TileMap* tilemap)
-{
-	map = tilemap;
-}
-void Bubble::SetAnimation(int id)
-{
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetAnimation(id);
-}
-BubbleAnim Bubble::GetAnimation()
-{
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	return (BubbleAnim)sprite->GetAnimation();
-}
-bool Bubble::IsAlive() const
-{
-	if (alive == true) return true;
-	return false;
-}
-void Bubble::Update()
+//bool Bubble::IsAlive() const
+//{
+//	if (alive == true) return true;
+//	return false;
+//}
+void Bubble::Update(const AABB& box)
 {
 	MoveX();
 	MoveY();
@@ -99,8 +78,8 @@ void Bubble::MoveX()
 		forceDelay--;
 		if (forceDelay == 0 && state == BubbleState::SHOT)
 		{
-			if (direction == BubbleDirection::LEFT) pos.x -= HORIZONTAL_ADVANCE;
-			else if (direction == BubbleDirection::RIGHT) pos.x += HORIZONTAL_ADVANCE;
+			if (IsMovingLeft()) pos.x -= HORIZONTAL_ADVANCE;
+			else if (IsMovingRight()) pos.x += HORIZONTAL_ADVANCE;
 			forceDelay = BUBBLE_FORCE_DELAY;
 			forceMax++;
 			box = GetHitbox();
@@ -129,18 +108,18 @@ void Bubble::MoveX()
 			if (WINDOW_WIDTH / 2 - PHYSICAL_OFFSET + TOP_OFFSET <= pos.x)
 			{
 				pos.x -= HORIZONTAL_ADVANCE_TOP;
-				direction = BubbleDirection::LEFT;
+				dir.x = -dir.x;
 			}
 			//right movement
 			else if (WINDOW_WIDTH / 2 - PHYSICAL_OFFSET - TOP_OFFSET >= pos.x)
 			{
 				pos.x += HORIZONTAL_ADVANCE_TOP;
-				direction = BubbleDirection::RIGHT;
+				dir.x = -dir.x;
 			}
 			else
 			{
-				if (direction == BubbleDirection::LEFT) pos.x -= HORIZONTAL_ADVANCE_TOP;
-				if (direction == BubbleDirection::RIGHT) pos.x += HORIZONTAL_ADVANCE_TOP;
+				if (IsMovingLeft()) pos.x -= HORIZONTAL_ADVANCE_TOP;
+				if (IsMovingRight()) pos.x += HORIZONTAL_ADVANCE_TOP;
 			}
 			forceDelay = BUBBLE_FORCE_DELAY * 2;
 		}
@@ -182,15 +161,4 @@ void Bubble::BubbleCounter()
 			SetAnimation((int)BubbleAnim::RED_START);
 		}
 	}
-}
-void Bubble::DrawDebug(const Color& col) const
-{
-	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
-}
-void Bubble::Release()
-{
-	ResourceManager& data = ResourceManager::Instance();
-	data.ReleaseTexture(Resource::IMG_BUBBLE);
-
-	render->Release();
 }

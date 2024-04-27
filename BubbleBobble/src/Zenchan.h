@@ -25,6 +25,10 @@ public:
 	//Update the enemy according to its logic, return true if the enemy must shoot
 	bool Update(const AABB& box) override;
 
+
+	//To avoid errors
+	void GetShootingPosDir(Point* pos, Point* dir) const {};
+
 private:
 
 	//Movement

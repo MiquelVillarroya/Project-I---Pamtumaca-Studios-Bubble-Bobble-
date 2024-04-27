@@ -225,14 +225,14 @@ void Game::Render()
                  DrawTexture(*img_intro1, 0, 0, WHITE);
              }
              else if (introTimer > INTRO_FIRST_IMAGE && introTimer < INTRO_SECOND_IMAGE) {
-                 float trans = 1.25 - 0.28 * introTimer;
+                 float trans = 1.25f - 0.28f * introTimer;
                  DrawTexture(*img_intro1, 0, 0, Fade (WHITE, trans));
              }
              else if (introTimer >= INTRO_SECOND_IMAGE && introTimer < INTRO_SECOND_FADE) {
                  DrawTexture(*img_intro2, 0, 0, WHITE);
              }
              else if (introTimer > INTRO_SECOND_FADE && introTimer <= INTRO_TIME) {
-                 float trans = 2.75 - 0.28 * introTimer;
+                 float trans = 2.75f - 0.28f * introTimer;
                  DrawTexture(*img_intro2, 0, 0, Fade (WHITE, trans));
              }
              break;
@@ -257,13 +257,13 @@ void Game::Render()
 
             UpdateMusicStream(currentTrack);
             float transition = timeSpent / totalTime;
-            float stage2_position = 224.0 * - transition;
+            float stage2_position = 224.0f * - transition;
 
             if (timeSpent <= totalTime) {
 
 
-                DrawTexture(*stage1, 0, stage2_position, WHITE);
-                DrawTexture(*stage2, 0, stage2_position+224.0, WHITE);
+                DrawTexture(*stage1, 0, (int)stage2_position, WHITE);
+                DrawTexture(*stage2, 0, (int)(stage2_position+224.0f), WHITE);
                 timeSpent += GetFrameTime();
                 
             }

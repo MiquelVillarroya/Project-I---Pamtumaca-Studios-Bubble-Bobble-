@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "TileMap.h"
 
 //Representation model size: 32x32
 #define ENEMY_FRAME_SIZE		16
@@ -18,8 +19,10 @@ public:
 	//Draw the maximum visibility area of the enemy
 	void DrawVisibilityArea(const Color& col) const;
 
-	//Pure virtual functions, any class inheriting from this class must provide its own implementations
+	//Initialize enemy tilemap for collision checks
+	void SetTileMap(TileMap* tilemap);
 
+	//Pure virtual functions, any class inheriting from this class must provide its own implementations
 	//Initialize the enemy with the specified look and area
 	virtual AppStatus Initialise(Look look, const AABB& area) = 0;
 
@@ -33,7 +36,11 @@ protected:
 	//Return true if the given hitbox is within the visibility area and the enemy is facing it
 	bool IsVisible(const AABB& hitbox);
 
+	//Animation Management
+	void SetAnimation(int id);
+
 	Look look;
 	AABB visibility_area;
+	TileMap* map;
 };
 

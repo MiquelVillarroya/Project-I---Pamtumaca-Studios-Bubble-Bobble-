@@ -118,9 +118,15 @@ AppStatus Scene::Init()
 
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
+	//Assign the bubble manager reference to the enemy manager so enemies can add bubbles
+	player->SetShotManager(shots);
+
 	//Assign the tile map reference to the shot manager to check collisions when shots are shot
 	shots->SetTileMap(level);
-	//Assign the shot manager reference to the enemy manager so enemies can add shots
+
+	//Assign the tile map reference to each enemy to check collisions for movement and logic
+	enemies->SetTileMap(level);
+	//Assign the bubble manager reference to the enemy manager so enemies can add shots
 	enemies->SetShotManager(shots);
 
     return AppStatus::OK;
@@ -395,7 +401,7 @@ void Scene::ClearLevel()
 	}
 	objects.clear();
 	enemies->Release();
-	shots->Clear();
+	shots->Release();
 }
 void Scene::RenderObjects() const
 {

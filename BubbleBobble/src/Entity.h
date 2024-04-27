@@ -14,6 +14,7 @@ public:
 	Entity();
 	Entity(const Point& p, int width, int height);
 	Entity(const Point& p, int width, int height, int frame_width, int frame_height);
+	Entity(const Point& p, const Point& d, int width, int height, int frame_width, int frame_height);
 	virtual ~Entity();
 
 	void Set(const Point& p, const Point& d, int w, int h, int framew, int frameh);

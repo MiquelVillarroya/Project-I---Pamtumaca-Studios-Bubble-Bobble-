@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "TileMap.h"
 #include "Globals.h"
+#include "ShotManager.h"
 #include <raymath.h>
 
 Sound playersound[10];
@@ -13,9 +14,12 @@ Player::Player(const Point& p, State s, Look view) :
 {
 	state = s;
 	look = view;
-	jump_delay = PLAYER_JUMP_DELAY;
+	shots = nullptr;
 	map = nullptr;
+
+	jump_delay = PLAYER_JUMP_DELAY;
 	elapsedTimeBubble = 0;
+
 	score = 0;
 	lives = 3;
 	deadTimer = 0;
@@ -25,11 +29,8 @@ Player::Player(const Point& p, State s, Look view) :
 Player::~Player()
 {
 	UnloadSound(playersound[0]);
-	for (Bubble* bubl : bubbles)
-	{
-		delete bubl;
-	}
-	bubbles.clear();
+	UnloadSound(playersound[1]);
+	UnloadSound(playersound[2]);
 }
 AppStatus Player::Initialise()
 {
@@ -104,6 +105,10 @@ AppStatus Player::Initialise()
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
 	return AppStatus::OK;
+}
+void Player::SetShotManager(ShotManager* shots)
+{
+	this->shots = shots;
 }
 void Player::InitScore()
 {
@@ -251,25 +256,11 @@ void Player::Update()
 		MoveX();
 		MoveY();
 		BubbleShot();
-		auto it = bubbles.begin();
-		while (it != bubbles.end())
-		{
-			if ((*it)->IsAlive() == false)
-			{
-				delete* it;
-				it = bubbles.erase(it);
-			}
-			else
-			{
-				(*it)->Update();
-				++it;
-			}
-
-		}
 	}
+
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
-	Warp();
+	//Warp();
 }
 void Player::GodMode() {
 	if (IsKeyPressed(KEY_F3))
@@ -346,27 +337,23 @@ void Player::MoveY()
 		}
 	}
 }
-void Player::BubbleShot() {
- 	elapsedTimeBubble += GetFrameTime();
+void Player::BubbleShot()
+{
+	Point p, d;
+	elapsedTimeBubble += GetFrameTime();
+
 	if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .25)
 	{
 		PlaySound(playersound[1]);
 		if (IsLookingLeft()) {
-			Bubble* bubl = new Bubble({ pos.x - PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::LEFT);
-			bubl->Initialise();
-			bubl->SetTileMap(map);
-			bubbles.push_back(bubl);
-			//if (shootTime >= .25) {
-			//	state = State::
-			//}
-		}
-		else if (IsLookingRight()) {
-			Bubble* bubl = new Bubble({ pos.x + PLAYER_PHYSICAL_WIDTH, pos.y }, BubbleDirection::RIGHT);
-			bubl->Initialise();
-			bubl->SetTileMap(map);
-			bubbles.push_back(bubl);
+			d = { -BUBBLE_SHOT_SPEED, 0 };
 			SetAnimation((int)PlayerAnim::SHOT_RIGHT);
 		}
+		else if (IsLookingRight()) {
+			d = { BUBBLE_SHOT_SPEED, 0 };
+			SetAnimation((int)PlayerAnim::SHOT_RIGHT);
+		}
+		shots->Add(p, d, ShotType::BUBBLE);
 		elapsedTimeBubble = 0;
 	}
 }
@@ -428,24 +415,24 @@ void Player::LogicJumping()
 		}
 	}
 }
-bool Player::CheckBubbleCollision(const AABB& enemy_box)
-{
-	AABB bubl_box;
-
-	auto it = bubbles.begin();
-	while (it != bubbles.end())
-	{
-		bubl_box = (*it)->GetHitbox();
-		if (bubl_box.TestAABB(enemy_box))
-		{
-			delete* it;
-			it = bubbles.erase(it);
-			return true;
-		}
-		++it;
-	}
-	return false;
-}
+//bool Player::CheckBubbleCollision(const AABB& enemy_box)
+//{
+//	AABB bubl_box;
+//
+//	auto it = bubbles.begin();
+//	while (it != bubbles.end())
+//	{
+//		bubl_box = (*it)->GetHitbox();
+//		if (bubl_box.TestAABB(enemy_box))
+//		{
+//			delete* it;
+//			it = bubbles.erase(it);
+//			return true;
+//		}
+//		++it;
+//	}
+//	return false;
+//}
 void Player::DrawDebug(const Color& col) const
 {	
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
@@ -453,36 +440,9 @@ void Player::DrawDebug(const Color& col) const
 	DrawText(TextFormat("Position: (%d,%d)\nSize: %dx%d\nFrame: %dx%d", pos.x, pos.y, width, height, frame_width, frame_height), 18*16, 0, 8, LIGHTGRAY);
 	DrawPixel(pos.x, pos.y, WHITE);
 }
- void Player::DrawBubbles()
- {
-	 auto it = bubbles.begin();
-	 while (it != bubbles.end())
-	 {
-	 	(*it)->Draw();
-		++it;
-	 }
-}
- void Player::DrawBubblesDebug(const Color& col) const
- {
-	 auto it = bubbles.begin();
-	 while (it != bubbles.end())
-	 {
-		 (*it)->DrawDebug(col);
-		 ++it;
-	 }
- }
  void Player::DrawGod(const Color& col) const
  {
 	 DrawText(TextFormat("GOD MODE ON"), 90, -12, 10, col);
- }
-
- void Player::ClearBubbles()
- {
-	 for (Bubble* bubl : bubbles)
-	 {
-		 delete bubl;
-	 }
-	 bubbles.clear();
  }
 void Player::Release()
 {
@@ -490,10 +450,4 @@ void Player::Release()
 	data.ReleaseTexture(Resource::IMG_PLAYER);
 
 	render->Release();
-	auto it = bubbles.begin();
-	while (it != bubbles.end())
-	{
-		(*it)->Release();
-		++it;
-	}
 }

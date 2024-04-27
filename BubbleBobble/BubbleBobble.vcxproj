@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\miquelvm3\Desktop\Github\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\noapm\Documents\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\noapo\Desktop\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\Keli\Desktop\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\miquelvm3\Desktop\Github\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;C:\Users\noapm\Documents\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;C:\Users\Keli\Desktop\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;C:\Users\noapo\Desktop\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Keli11\Desktop\Github\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\miquelvm3\Desktop\Github\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\noapm\Documents\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\noapo\Desktop\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\Keli\Desktop\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Keli11\Desktop\Github\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;C:\Users\miquelvm3\Desktop\Github\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;C:\Users\noapm\Documents\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;C:\Users\Keli\Desktop\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;C:\Users\noapo\Desktop\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\Keli\Desktop\GitHub\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;C:\Users\noapo\Desktop\Project-I---Pamtumaca-Studios-Bubble-Bobble-\BubbleBobble\raylib\include;$(IncludePath)</IncludePath>
@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\EnemyManager.cpp" />
+    <ClCompile Include="src\Fireball.cpp" />
     <ClCompile Include="src\Hidegons.cpp" />
     <ClCompile Include="src\AABB.cpp" />
     <ClCompile Include="src\Bubble.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="src\RenderComponent.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\Shot.cpp" />
     <ClCompile Include="src\ShotManager.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\StaticImage.cpp" />
@@ -159,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\EnemyManager.h" />
+    <ClInclude Include="src\Fireball.h" />
     <ClInclude Include="src\Hidegons.h" />
     <ClInclude Include="src\AABB.h" />
     <ClInclude Include="src\Bubble.h" />
@@ -173,6 +176,7 @@
     <ClInclude Include="src\RenderComponent.h" />
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\Shot.h" />
     <ClInclude Include="src\ShotManager.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\StaticImage.h" />

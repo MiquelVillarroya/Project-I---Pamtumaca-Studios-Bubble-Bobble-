@@ -12,6 +12,8 @@ public:
 
 	//Set the ShotManager reference for managing enemy shots
 	void SetShotManager(ShotManager* shots);
+	//Set the tilemap for each enemy to manage collisions and logic
+	void SetTileMap(TileMap* tilemap);
 
 	//Add a new enemy with the given position, type, action area and looking direction
 	void Add(const Point& pos, EnemyType type, const AABB& area, Look look = Look::RIGHT);

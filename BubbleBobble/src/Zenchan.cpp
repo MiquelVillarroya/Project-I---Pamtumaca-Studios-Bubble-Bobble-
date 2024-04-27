@@ -51,14 +51,15 @@ AppStatus Zenchan::Initialise(Look look, const AABB& area)
 
 	return AppStatus::OK;
 }
-void Zenchan::Update()
+bool Zenchan::Update(const AABB& box)
 {
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-
 	MoveX();
 	MoveY();
 
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
+
+	return false;
 }
 void Zenchan::MoveX()
 {
@@ -72,7 +73,7 @@ void Zenchan::MoveX()
 			{
 				pos.x = prev_x;
 				look = Look::LEFT;
-				sprite->SetAnimation((int)ZenchanAnim::WALKING_LEFT);
+				SetAnimation((int)ZenchanAnim::WALKING_LEFT);
 			}
 
 		else if (look == Look::LEFT)
@@ -82,9 +83,8 @@ void Zenchan::MoveX()
 			{
 				pos.x = prev_x;
 				look = Look::RIGHT;
-				sprite->SetAnimation((int)ZenchanAnim::WALKING_RIGHT);
+				SetAnimation((int)ZenchanAnim::WALKING_RIGHT);
 			}
-
 		}
 	}
 }

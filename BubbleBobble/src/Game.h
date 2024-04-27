@@ -52,7 +52,7 @@ private:
     GameState state;
     Scene *scene;
     const Texture2D* img_menu, * img_intro1, * img_intro2, * game_over, * transition, * stage2, * stage1;
-    double introTimer;;
+    float introTimer;;
 
     //Temporary (for transition)
     float totalTime = 1.5f;

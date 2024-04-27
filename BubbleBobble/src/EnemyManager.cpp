@@ -30,6 +30,13 @@ void EnemyManager::SetShotManager(ShotManager* shots)
 {
 	this->shots = shots;
 }
+void EnemyManager::SetTileMap(TileMap* tilemap)
+{
+	for (Enemy* enemy : enemies)
+	{
+		enemy->SetTileMap(tilemap);
+	}
+}
 void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look look)
 {
 	Enemy* enemy;
@@ -40,7 +47,7 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 	}
 	else if (type == EnemyType::HIDEGONS)
 	{
-		enemy = new Hidegons(pos, ENEMY_PHYSICAL_WIDTH, ENEMY_PHYSICAL_HEIGHT, ENEMY_FRAME_SIZE, ENEMY_FRAME_SIZE);
+		enemy = new Zenchan(pos, ENEMY_PHYSICAL_WIDTH, ENEMY_PHYSICAL_HEIGHT, ENEMY_FRAME_SIZE, ENEMY_FRAME_SIZE);
 	}
 	else
 	{
@@ -89,7 +96,7 @@ void EnemyManager::Update(const AABB& player_hitbox)
 		if (shoot)
 		{
 			enemy->GetShootingPosDir(&p, &d);
-			shots->Add(p, d);
+			shots->Add(p, d, ShotType::BUBBLE);
 		}
 	}
 }

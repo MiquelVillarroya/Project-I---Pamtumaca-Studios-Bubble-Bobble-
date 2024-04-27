@@ -16,7 +16,12 @@ Entity::Entity(const Point& p, int w, int h) :
 Entity::Entity(const Point& p, int w, int h, int frame_w, int frame_h) :
 	pos(p), dir({ 0,0 }), width(w), height(h), frame_width(frame_w), frame_height(frame_h), render(nullptr)
 {
-	alive = false;
+	alive = true;
+}
+Entity::Entity(const Point& p, const Point& d, int w, int h, int frame_w, int frame_h) :
+	pos(p), dir(d), width(w), height(h), frame_width(frame_w), frame_height(frame_h), render(nullptr)
+{
+	alive = true;
 }
 Entity::~Entity()
 {
