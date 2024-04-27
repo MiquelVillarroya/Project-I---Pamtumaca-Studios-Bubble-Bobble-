@@ -18,7 +18,7 @@ AppStatus EnemyManager::Initialise()
 		LOG("Failed to load zenchan sprite texture");
 		return AppStatus::ERROR;
 	}
-	if (data.LoadTexture(Resource::IMG_ZENCHAN, "images/hidegons.png") != AppStatus::OK)
+	if (data.LoadTexture(Resource::IMG_HIDEGONS, "images/hidegons.png") != AppStatus::OK)
 	{
 		LOG("Failed to load hidegons sprite texture");
 		return AppStatus::ERROR;

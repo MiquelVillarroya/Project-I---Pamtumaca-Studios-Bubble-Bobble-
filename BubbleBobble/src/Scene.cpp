@@ -13,7 +13,13 @@ Scene::Scene()
 	//Temporary for killing the scene
 	stage = 1;
 	alive = true;
-	
+	playerAlive = true;
+	stage1 = nullptr;
+	stage2 = nullptr;
+	state = SceneState::NORMAL;
+	timeSpent = 0;
+	totalTime = 1.5;
+
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
 	camera.rotation = 0.0f;					//No rotation
@@ -120,12 +126,6 @@ AppStatus Scene::Init()
 	player->SetTileMap(level);
 	//Assign the bubble manager reference to the enemy manager so enemies can add bubbles
 	player->SetShotManager(shots);
-
-	//Assign the tile map reference to the shot manager to check collisions when shots are shot
-	shots->SetTileMap(level);
-
-	//Assign the tile map reference to each enemy to check collisions for movement and logic
-	enemies->SetTileMap(level);
 	//Assign the bubble manager reference to the enemy manager so enemies can add shots
 	enemies->SetShotManager(shots);
 
@@ -173,7 +173,7 @@ AppStatus Scene::LoadLevel(int stage)
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
-			 1,   1,   0, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 101, 104,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
+			 1,   1,   0, 100,   0,   0,   0,   0,   0,   0,   0,   0, 101,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0, 101,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1
 		};
 		player->InitScore();
@@ -297,6 +297,11 @@ AppStatus Scene::LoadLevel(int stage)
 	}
 	//Remove initial positions of objects and entities from the map;
 	level->ClearObjectEntityPositions();
+	//Assign the tile map reference to the shot manager to check collisions when shots are shot
+	shots->SetTileMap(level);
+	//Assign the tile map reference to each enemy to check collisions for movement and logic
+	enemies->SetTileMap(level);
+
 	delete[] map;
 
 	return AppStatus::OK;
@@ -315,7 +320,7 @@ void Scene::Update()
 	if (IsKeyPressed(KEY_ONE))		{LoadLevel(1); stage = 1;}
 	else if (IsKeyPressed(KEY_TWO))	{LoadLevel(2); stage = 2;}
 
-	if (enemies->IsEmpty() == 1)
+	if (enemies->IsEmpty() == true)
 	{
 		if (stage != MAX_STAGE)
 		{
@@ -354,7 +359,7 @@ void Scene::Render()
 		RenderObjectsDebug(YELLOW);
 		enemies->DrawDebug();
 		player->DrawDebug(GREEN);
-		player->DrawDebug(GRAY);
+		shots->DrawDebug(GRAY);
 		if (player->GetGod()) player->DrawGod(GREEN);
 	}
 

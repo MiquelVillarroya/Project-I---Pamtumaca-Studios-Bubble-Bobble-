@@ -27,10 +27,10 @@ AppStatus Zenchan::Initialise(Look look, const AABB& area)
 
 	sprite->SetAnimationDelay((int)ZenchanAnim::WALKING_RIGHT, ZENCHAN_ANIM_DELAY);
 	for (i = 0; i < 4; ++i)
-		sprite->AddKeyFrame((int)ZenchanAnim::WALKING_RIGHT, {(float)i*n, 0, n, n});
+		sprite->AddKeyFrame((int)ZenchanAnim::WALKING_RIGHT, {(float)i*n, 0, -n, n});
 	sprite->SetAnimationDelay((int)ZenchanAnim::WALKING_LEFT, ZENCHAN_ANIM_DELAY);
 	for (i = 0; i < 4; ++i)
-		sprite->AddKeyFrame((int)ZenchanAnim::WALKING_LEFT, { (float)i*n, 0, -n, n});
+		sprite->AddKeyFrame((int)ZenchanAnim::WALKING_LEFT, { (float)i*n, 0, n, n});
 
 	sprite->SetAnimationDelay((int)ZenchanAnim::WALKING_ANGRY_RIGHT, ZENCHAN_ANIM_DELAY);
 	for (i = 0; i < 4; ++i)
@@ -66,25 +66,24 @@ void Zenchan::MoveX()
 	AABB box;
 	int prev_x = pos.x;
 	box = GetHitbox();
-		if (look == Look::RIGHT)
+	if (look == Look::RIGHT)
+	{
+		pos.x += ZENCHAN_SPEED;
+		if (map->TestCollisionWallRight(box))
 		{
-			pos.x += ZENCHAN_SPEED;
-			if (map->TestCollisionWallRight(box))
+			pos.x = prev_x;
+			look = Look::LEFT;
+			SetAnimation((int)ZenchanAnim::WALKING_LEFT);
+		}
+	}
+	else if (look == Look::LEFT)
+	{
+		pos.x += -ZENCHAN_SPEED;
+		if (map->TestCollisionWallLeft(box))
 			{
-				pos.x = prev_x;
-				look = Look::LEFT;
-				SetAnimation((int)ZenchanAnim::WALKING_LEFT);
-			}
-
-		else if (look == Look::LEFT)
-		{
-			pos.x += -ZENCHAN_SPEED;
-			if (map->TestCollisionWallLeft(box))
-			{
-				pos.x = prev_x;
-				look = Look::RIGHT;
-				SetAnimation((int)ZenchanAnim::WALKING_RIGHT);
-			}
+			pos.x = prev_x;
+			look = Look::RIGHT;
+			SetAnimation((int)ZenchanAnim::WALKING_RIGHT);
 		}
 	}
 }

@@ -340,8 +340,9 @@ void Player::MoveY()
 void Player::BubbleShot()
 {
 	Point p, d;
-	elapsedTimeBubble += GetFrameTime();
+	p = { pos.x, pos.y };
 
+	elapsedTimeBubble += GetFrameTime();
 	if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .25)
 	{
 		PlaySound(playersound[1]);

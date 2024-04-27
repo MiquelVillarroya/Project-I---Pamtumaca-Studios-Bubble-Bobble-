@@ -5,8 +5,8 @@
 //Representation model size: 32x32
 #define ENEMY_FRAME_SIZE		16
 //Logical model size: 24x30
-#define ENEMY_PHYSICAL_WIDTH	14
-#define ENEMY_PHYSICAL_HEIGHT	14
+#define ENEMY_PHYSICAL_WIDTH	16
+#define ENEMY_PHYSICAL_HEIGHT	16
 
 enum class EnemyType { ZENCHAN, HIDEGONS };
 

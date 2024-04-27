@@ -13,7 +13,7 @@ Enemy::~Enemy()
 }
 void Enemy::SetTileMap(TileMap* tilemap)
 {
-	map = tilemap;
+ 	map = tilemap;
 }
 void Enemy::SetAnimation(int id)
 {
