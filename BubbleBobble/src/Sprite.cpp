@@ -7,6 +7,7 @@ Sprite::Sprite(const Texture2D *texture)
     current_frame = 0;
     current_delay = 0;
     mode = AnimMode::AUTOMATIC;
+    animation_complete;
 }
 Sprite::~Sprite()
 {
@@ -61,6 +62,10 @@ void Sprite::SetAutomaticMode()
 {
     mode = AnimMode::AUTOMATIC;
 }
+bool Sprite::IsAnimationComplete() const
+{
+    return animation_complete;
+}
 void Sprite::Update()
 {
     //Both animation modes (automatic and manual) are carry out with animation delay
@@ -75,6 +80,9 @@ void Sprite::Update()
                 current_frame++;
                 current_frame %= animations[current_anim].frames.size();
                 current_delay = animations[current_anim].delay;
+
+                //Animation is complete when we repeat from the first frame
+                animation_complete = (current_frame == 0);
             }
         }
     }

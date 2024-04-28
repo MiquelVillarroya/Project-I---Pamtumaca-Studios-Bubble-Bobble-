@@ -134,16 +134,6 @@ bool Player::GetGod() const
 {
 	return god;
 }
-void Player::MinusLife()
-{
-	if (god == false)
-	{
-		lives--;
-		state = State::DEAD;
-		SetAnimation((int)PlayerAnim::DEATH);
-		PlaySound(playersound[2]);
-	}
-}
 void Player::SetTileMap(TileMap* tilemap)
 {
 	map = tilemap;
@@ -236,19 +226,31 @@ void Player::ChangeAnimLeft()
 		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_LEFT); break;
 	}
 }
+void Player::MinusLife()
+{
+	if (god == false && state != State::DEAD)
+	{
+		lives--;
+		state = State::DEAD;
+		SetAnimation((int)PlayerAnim::DEATH);
+		PlaySound(playersound[2]);
+
+	}
+}
 void Player::Update()
 {
 	//Player doesn't use the "Entity::Update() { pos += dir; }" default behaviour.
 	//Instead, uses an independent behaviour for each axis.
 	
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->Update();
+
 	if (state == State::DEAD) {
-		deadTimer += GetFrameTime();
-		if (deadTimer >= DEAD_COOLDOWN)
+		if (sprite->IsAnimationComplete())
 		{
 			state = State::IDLE;
 			SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 			pos = { PLAYER_SPAWN_X, PLAYER_SPAWN_Y };
-			deadTimer = 0;
 		}
 	}
 	else {
@@ -258,8 +260,6 @@ void Player::Update()
 		BubbleShot();
 	}
 
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->Update();
 	//Warp();
 }
 void Player::GodMode() {

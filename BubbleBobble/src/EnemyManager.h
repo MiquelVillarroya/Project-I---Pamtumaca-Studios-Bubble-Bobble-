@@ -24,7 +24,7 @@ public:
 
 	//Update enemies according to their logic. If the given player hitbox is visible to them,
 	//they will shoot by adding shots to the ShotManager
-	void Update(const AABB& player_hitbox);
+	void Update(const AABB& player_hitbox, bool& hit);
 
 	//Draw all enemies
 	void Draw() const;

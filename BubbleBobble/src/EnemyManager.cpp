@@ -1,6 +1,7 @@
 #include "EnemyManager.h"
 #include "Zenchan.h"
 #include "Hidegons.h"
+#include "Player.h"
 
 EnemyManager::EnemyManager()
 {
@@ -85,10 +86,12 @@ bool EnemyManager::IsEmpty() const
 	if (enemies.empty()) return true;
 	return false;
 }
-void EnemyManager::Update(const AABB& player_hitbox)
+void EnemyManager::Update(const AABB& player_hitbox, bool& hit)
 {
 	bool shoot;
 	Point p, d;
+	AABB box;
+	hit = false;
 
 	for (Enemy* enemy : enemies)
 	{
@@ -98,6 +101,8 @@ void EnemyManager::Update(const AABB& player_hitbox)
 			enemy->GetShootingPosDir(&p, &d);
 			shots->Add(p, d, ShotType::BUBBLE);
 		}
+		box = enemy->GetHitbox();
+		if (!hit) hit = box.TestAABB(player_hitbox);
 	}
 }
 void EnemyManager::Draw() const

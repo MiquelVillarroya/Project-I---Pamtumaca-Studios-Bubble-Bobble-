@@ -308,6 +308,7 @@ AppStatus Scene::LoadLevel(int stage)
 }
 void Scene::Update()
 {
+	bool hit = false;
 	Point p1, p2;
 	AABB hitbox;
 
@@ -338,8 +339,10 @@ void Scene::Update()
 	CheckObjectCollisions();
 
 	hitbox = player->GetHitbox();
-	enemies->Update(hitbox);
+	enemies->Update(hitbox, hit);
 	shots->Update(hitbox);
+
+	if (hit) player->MinusLife();
 }
 void Scene::Render()
 {
