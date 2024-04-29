@@ -243,7 +243,7 @@ void Player::Update()
 	//Instead, uses an independent behaviour for each axis.
 	
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->Update();
+	
 
 	if (state == State::DEAD) {
 		if (sprite->IsAnimationComplete())
@@ -259,6 +259,8 @@ void Player::Update()
 		MoveY();
 		BubbleShot();
 	}
+
+	sprite->Update();
 
 	//Warp();
 }

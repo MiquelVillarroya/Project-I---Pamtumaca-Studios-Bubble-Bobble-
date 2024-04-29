@@ -47,6 +47,7 @@ void Sprite::SetAnimation(int id)
     {
         current_anim = id;
         current_frame = 0;
+        animation_complete = false;
         current_delay = animations[current_anim].delay;
     }
 }

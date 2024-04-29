@@ -447,7 +447,7 @@ void Scene::RenderGUI() const
 		font->Draw(110, 8, TextFormat("ON"), YELLOW);
 	}
 	font->Draw(20, 0, TextFormat("1UP"), GREEN);
-	font->Draw(30, 8, TextFormat("%d", player->GetScore()), WHITE);
+	font->Draw(20, 8, TextFormat("%d", player->GetScore()), WHITE);
 	font->Draw(180, 0, TextFormat("2UP"), BLUE);
 	font->Draw(190, 8, TextFormat("%d", player->GetLives()), WHITE);
 
