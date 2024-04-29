@@ -449,7 +449,14 @@ void Scene::RenderGUI() const
 	font->Draw(20, 0, TextFormat("1UP"), GREEN);
 	font->Draw(20, 8, TextFormat("%d", player->GetScore()), WHITE);
 	font->Draw(180, 0, TextFormat("2UP"), BLUE);
-	font->Draw(190, 8, TextFormat("%d", player->GetLives()), WHITE);
+	font->Draw(190, 8, TextFormat("%d", 0), WHITE);
+
+	//int x_offset = 0;
+	//for (int i = 0; i < player->GetLives(); ++i)
+	//{		
+	//	font->Draw(x_offset, 8, TextFormat("", 0), WHITE);
+	//	x_offset += 8;
+	//}
 
 }
 bool Scene::IsPlayerAlive()

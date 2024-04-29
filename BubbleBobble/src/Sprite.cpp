@@ -7,7 +7,7 @@ Sprite::Sprite(const Texture2D *texture)
     current_frame = 0;
     current_delay = 0;
     mode = AnimMode::AUTOMATIC;
-    animation_complete;
+    animation_complete = false;
 }
 Sprite::~Sprite()
 {
