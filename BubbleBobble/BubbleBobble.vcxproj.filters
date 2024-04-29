@@ -90,6 +90,9 @@
     <ClCompile Include="src\Fireball.cpp">
       <Filter>Entities\Shots</Filter>
     </ClCompile>
+    <ClCompile Include="src\Text.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity.h">
@@ -157,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="src\Fireball.h">
       <Filter>Entities\Shots</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Text.h">
+      <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

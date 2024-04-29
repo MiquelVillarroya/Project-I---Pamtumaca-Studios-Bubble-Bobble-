@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "EnemyManager.h"
 #include "ShotManager.h"
+#include "Text.h"
 
 //LAST STAGE
 #define MAX_STAGE   2
@@ -69,5 +70,6 @@ private:
     float timeSpent;
     float totalTime;
 
+    Text* font;
 };
 

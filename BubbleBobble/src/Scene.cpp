@@ -9,6 +9,7 @@ Scene::Scene()
     level = nullptr;
 	enemies = nullptr;
 	shots = nullptr;
+	font = nullptr;
 
 	//Temporary for killing the scene
 	stage = 1;
@@ -56,6 +57,11 @@ Scene::~Scene()
 	{
 		delete shots;
 		shots = nullptr;
+	}
+	if (font != nullptr)
+	{
+		delete font;
+		font = nullptr;
 	}
 }
 AppStatus Scene::Init()
@@ -128,6 +134,20 @@ AppStatus Scene::Init()
 	player->SetShotManager(shots);
 	//Assign the bubble manager reference to the enemy manager so enemies can add shots
 	enemies->SetShotManager(shots);
+
+	//Create text font
+	font = new Text();
+	if (font == nullptr)
+	{
+		LOG("Failed to allocate memory for font 1");
+		return AppStatus::ERROR;
+	}
+	//Initialise text font
+	if (font->Initialise(Resource::IMG_FONT, "images/font.png", ' ', 8) != AppStatus::OK)
+	{
+		LOG("Failed to initialise Level");
+		return AppStatus::ERROR;
+	}
 
     return AppStatus::OK;
 }
@@ -355,7 +375,6 @@ void Scene::Render()
 		enemies->Draw();
 		player->Draw();
 		shots->Draw();
-		if (player->GetGod()) player->DrawGod(GREEN);
 	}
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
 	{
@@ -363,7 +382,6 @@ void Scene::Render()
 		enemies->DrawDebug();
 		player->DrawDebug(GREEN);
 		shots->DrawDebug(GRAY);
-		if (player->GetGod()) player->DrawGod(GREEN);
 	}
 
 	EndMode2D();
@@ -423,9 +441,16 @@ void Scene::RenderObjectsDebug(const Color& col) const
 }
 void Scene::RenderGUI() const
 {
-	//Temporal approach
-	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 5, 8, LIGHTGRAY);
-	DrawText(TextFormat("LIVES : %d", player->GetLives()), 200, 5, 8, LIGHTGRAY);
+	if (player->GetGod())
+	{
+		font->Draw(90, 0, TextFormat("GOD MODE"), YELLOW);
+		font->Draw(110, 8, TextFormat("ON"), YELLOW);
+	}
+	font->Draw(20, 0, TextFormat("1UP"), GREEN);
+	font->Draw(30, 8, TextFormat("%d", player->GetScore()), WHITE);
+	font->Draw(180, 0, TextFormat("2UP"), BLUE);
+	font->Draw(190, 8, TextFormat("%d", player->GetLives()), WHITE);
+
 }
 bool Scene::IsPlayerAlive()
 {

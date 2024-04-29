@@ -79,7 +79,6 @@ public:
 
 	void Update();
 	void DrawDebug(const Color& col) const;
-	void DrawGod(const Color& col) const;
 	void Release();
 
 private:
