@@ -354,10 +354,12 @@ void Scene::Update()
 		}
 	}
 
+	//Level, player and objects
 	level->Update();
 	player->Update();
 	CheckObjectCollisions();
 
+	//Bubbles & Enemies
 	hitbox = player->GetHitbox();
 	enemies->Update(hitbox, hit);
 	shots->Update(hitbox);

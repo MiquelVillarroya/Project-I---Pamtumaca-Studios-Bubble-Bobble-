@@ -56,7 +56,8 @@ void ShotManager::Update(const AABB& temp_hitbox)
 		if (shot->IsAlive())
 		{
 			//Update position
-			shot->Update(temp_hitbox);
+ 			shot->Update(temp_hitbox);
+			shot->CheckEnemyCollision
 
 			//Check player collision
 			hit = false;

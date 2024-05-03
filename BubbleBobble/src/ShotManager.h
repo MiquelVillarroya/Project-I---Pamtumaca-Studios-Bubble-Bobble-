@@ -1,5 +1,6 @@
 #pragma once
 #include "Shot.h"
+#include "EnemyManager.h"
 
 class ShotManager
 {
@@ -30,7 +31,8 @@ public:
 private:
 	std::vector<Shot*> shots;
 
-	//Reference to the TileMap object
+	//Reference to the EnemyManager object
 	//This class does not own the object, it only holds a reference to it
+	EnemyManager* enemies;
 };
 
