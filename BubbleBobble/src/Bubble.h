@@ -10,18 +10,11 @@
 //Bubble speed
 #define BUBBLE_SPEED			1
 
-//Initial bubble impulse
-#define BUBBLE_MAX_FORCE		4
-
-//Update bubble impulse delay
-#define BUBBLE_FORCE_DELAY		2
-
 //Max Height & Top Offset
 #define MAX_HEIGHT				40
 #define TOP_OFFSET				20
 
 //Movement advance
-#define HORIZONTAL_ADVANCE		10
 #define HORIZONTAL_ADVANCE_TOP	1
 #define VERTICAL_ADVANCE		1
 
@@ -31,9 +24,8 @@
 #define POP_TIME				12
 
 
-enum class BubbleState { SHOT, NORMAL, RED_END, BLINK_END, ENEMY};
+enum class BubbleState { NORMAL, RED_END, BLINK_END};
 enum class BubbleAnim {
-	INITIAL,
 	IDLE,
 	RED_START,
 	RED_BLINK,
@@ -48,20 +40,14 @@ public:
 
 	AppStatus Initialise() override;
 
-	void Update(const AABB& box) override;
-
-	//bool IsAlive() const;
+	bool Update(const AABB& box) override;
 
 private:
 
 	//Bubble Mechanics
 	void MoveX();
 	void MoveY();
-	void BubbleCounter();
-
-	//Bubble destruction;
-	bool alive;
-	bool move;
+	void BubbleCounter(bool& flag);
 
 	//BubbleTimer
 	float bubbleTimer;

@@ -21,6 +21,8 @@ public:
 	void SetPos(const Point& p);
 	void Update();
 	AABB GetHitbox() const;
+	Point GetPos() const;
+	Point GetDir() const;
 
 	void SetAlive(bool b);
 	bool IsAlive() const;

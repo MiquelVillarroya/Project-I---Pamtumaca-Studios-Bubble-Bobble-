@@ -105,9 +105,26 @@ void EnemyManager::Update(const AABB& player_hitbox, bool& hit)
 		if (!hit) hit = box.TestAABB(player_hitbox);
 	}
 }
-void EnemyManager::CheckShotCollisions()
+bool EnemyManager::CheckBubbleCollisions(const AABB& bubble_hitbox)
 {
+	AABB box;
+	int hit;
 
+	for (Enemy* enemy : enemies)
+	{
+		hit = false;
+		box = enemy->GetHitbox();
+		hit = box.TestAABB(bubble_hitbox);
+
+		if (hit)
+		{
+			delete enemy;
+			return true;
+		}
+
+	}
+
+	return hit;
 }
 void EnemyManager::Draw() const
 {

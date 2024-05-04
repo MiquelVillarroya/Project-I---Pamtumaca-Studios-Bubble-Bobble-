@@ -55,6 +55,16 @@ AABB Entity::GetHitbox() const
 	AABB hitbox(p, width, height);
 	return hitbox;
 }
+Point Entity::GetPos() const
+{
+	Point p(pos.x, pos.y);
+	return p;
+}
+Point Entity::GetDir() const
+{
+	Point p(dir.x, dir.y);
+	return p;
+}
 void Entity::SetAlive(bool b)
 {
 	alive = b;

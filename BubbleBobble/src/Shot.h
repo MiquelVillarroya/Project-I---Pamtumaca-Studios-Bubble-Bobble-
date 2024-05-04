@@ -6,10 +6,10 @@
 #define BUBBLE_FRAME_SIZE		16
 
 //Logical model size 16x16
-#define BUBBLE_PHYSICAL_WIDTH	14
-#define BUBBLE_PHYSICAL_HEIGHT	14
+#define BUBBLE_PHYSICAL_WIDTH	16
+#define BUBBLE_PHYSICAL_HEIGHT	16
 
-enum class ShotType { BUBBLE, FIREBALL };
+enum class ShotType { PLAYER_BUBBLE, ENEMY_BUBBLE, BUBBLE, FIREBALL };
 
 class Shot : public Entity
 {
@@ -21,7 +21,8 @@ public:
 	void SetTileMap(TileMap* tilemap);
 	
 	//Update the enemy according to its logic;
-	virtual void Update(const AABB& box) = 0;
+	virtual bool Update(const AABB& box);
+	virtual bool Update();
 	bool IsMovingLeft() const;
 	bool IsMovingRight() const;
 

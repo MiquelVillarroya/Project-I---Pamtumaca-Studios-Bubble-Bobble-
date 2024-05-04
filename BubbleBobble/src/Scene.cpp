@@ -134,6 +134,8 @@ AppStatus Scene::Init()
 	player->SetShotManager(shots);
 	//Assign the bubble manager reference to the enemy manager so enemies can add shots
 	enemies->SetShotManager(shots);
+	//Assign the shot manager reference to the enemy manager to manage enemy collisions
+	shots->SetEnemyManager(enemies);
 
 	//Create text font
 	font = new Text();

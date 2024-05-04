@@ -19,6 +19,16 @@ void Shot::SetTileMap(TileMap* tilemap)
 {
 	map = tilemap;
 }
+bool Shot::Update(const AABB& box)
+{
+	LOG("Wrong update in shot manager, wrong Update(const AABB& box) function called");
+	return false;
+}
+bool Shot::Update()
+{
+	LOG("Wrong update in shot manager, wrong Update() function called");
+	return false;
+}
 bool Shot::IsMovingLeft() const
 {
 	return dir.x < 0;

@@ -93,6 +93,9 @@
     <ClCompile Include="src\Text.cpp">
       <Filter>Render</Filter>
     </ClCompile>
+    <ClCompile Include="src\PlayerBubble.cpp">
+      <Filter>Entities\Shots</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="src\Text.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerBubble.h">
+      <Filter>Entities\Shots</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

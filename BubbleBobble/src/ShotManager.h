@@ -1,6 +1,9 @@
 #pragma once
 #include "Shot.h"
 #include "EnemyManager.h"
+#include <array>
+
+class EnemyManager;
 
 class ShotManager
 {
@@ -9,6 +12,9 @@ public:
 	~ShotManager();
 
 	AppStatus Initialise();
+
+	//Set the EnemyManager reference for managing enemy shots
+	void SetEnemyManager(EnemyManager* enemies);
 
 	//Set the TileMap reference for each shot for managing shot collisions
 	void SetTileMap(TileMap* tilemap);
@@ -30,9 +36,12 @@ public:
 
 private:
 	std::vector<Shot*> shots;
+	std::vector<Shot*> playerBubbles;
 
 	//Reference to the EnemyManager object
 	//This class does not own the object, it only holds a reference to it
 	EnemyManager* enemies;
+
 };
+
 

@@ -356,7 +356,7 @@ void Player::BubbleShot()
 			d = { BUBBLE_SHOT_SPEED, 0 };
 			SetAnimation((int)PlayerAnim::SHOT_RIGHT);
 		}
-		shots->Add(p, d, ShotType::BUBBLE);
+		shots->Add(p, d, ShotType::PLAYER_BUBBLE);
 		elapsedTimeBubble = 0;
 	}
 }
