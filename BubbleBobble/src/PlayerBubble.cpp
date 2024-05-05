@@ -32,7 +32,7 @@ AppStatus PlayerBubble::Initialise()
 	//Set Animations
 	sprite->SetAnimationDelay(0, BUBBLE_SHOOTING_DELAY);
 	for (i = 0; i < 4; ++i)
-		sprite->AddKeyFrame(0, { (float)i * n, 0, n, n });
+		sprite->AddKeyFrame(0, { (float)i * n + 3*n, 0, n, n });
 
 	SetAnimation(0);
 

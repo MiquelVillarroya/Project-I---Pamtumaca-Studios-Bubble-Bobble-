@@ -51,6 +51,10 @@ AppStatus Zenchan::Initialise(Look look, const AABB& area)
 
 	return AppStatus::OK;
 }
+EnemyType Zenchan::GetEnemyType() const
+{
+	return EnemyType::ZENCHAN;
+}
 bool Zenchan::Update(const AABB& box)
 {
 	MoveX();

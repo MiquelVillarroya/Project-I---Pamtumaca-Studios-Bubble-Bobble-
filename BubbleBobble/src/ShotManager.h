@@ -20,7 +20,7 @@ public:
 	void SetTileMap(TileMap* tilemap);
 
 	//Add a new shot with the given position and direction
-	void Add(const Point& pos, const Point& dir, ShotType type);
+	void Add(const Point& pos, const Point& dir, ShotType type, EnemyType enemyType = EnemyType::NONE);
 
 	//Update shot positions and check for collisions with the level and player
 	void Update(const AABB& player_hitbox);
@@ -41,6 +41,7 @@ private:
 	//Reference to the EnemyManager object
 	//This class does not own the object, it only holds a reference to it
 	EnemyManager* enemies;
+	TileMap* map;
 
 };
 

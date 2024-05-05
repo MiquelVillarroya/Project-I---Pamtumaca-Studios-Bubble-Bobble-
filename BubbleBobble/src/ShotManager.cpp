@@ -5,6 +5,7 @@
 ShotManager::ShotManager()
 {
 	enemies = nullptr;
+	map = nullptr;
 }
 ShotManager::~ShotManager()
 {
@@ -26,26 +27,19 @@ void ShotManager::SetEnemyManager(EnemyManager* enemies)
 }
 void ShotManager::SetTileMap(TileMap* tilemap)
 {
-	for (Shot* shot : shots)
-	{
-		shot->SetTileMap(tilemap);
-	}
-	for (Shot* shot : playerBubbles)
-	{
-		shot->SetTileMap(tilemap);
-	}
+	map = tilemap;
 }
-void ShotManager::Add(const Point& pos, const Point& dir, ShotType type)
+void ShotManager::Add(const Point& pos, const Point& dir, ShotType type, EnemyType enemyType)
 {
 	Shot* shot;
 
 	if (type == ShotType::BUBBLE)
 	{
-		shot = new Bubble(pos, dir, BUBBLE_PHYSICAL_WIDTH, BUBBLE_PHYSICAL_HEIGHT, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE);
+		shot = new Bubble(pos, dir, BUBBLE_PHYSICAL_WIDTH, BUBBLE_PHYSICAL_HEIGHT, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE, enemyType);
 	}
 	else if (type == ShotType::FIREBALL)
 	{
-		shot = new Bubble(pos, dir, BUBBLE_PHYSICAL_WIDTH, BUBBLE_PHYSICAL_HEIGHT, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE);
+		shot = new Bubble(pos, dir, BUBBLE_PHYSICAL_WIDTH, BUBBLE_PHYSICAL_HEIGHT, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE, enemyType);
 	}
 	else if (type == ShotType::PLAYER_BUBBLE)
 	{
@@ -58,6 +52,7 @@ void ShotManager::Add(const Point& pos, const Point& dir, ShotType type)
 	}
 
 	shot->Initialise();
+	shot->SetTileMap(map);
 	if (type == ShotType::PLAYER_BUBBLE)
 	{
 		playerBubbles.push_back(shot);
@@ -69,30 +64,34 @@ void ShotManager::Add(const Point& pos, const Point& dir, ShotType type)
 void ShotManager::Update(const AABB& temp_hitbox)
 {
 	AABB box;
-	bool playerHit, bubbleEnd, enemyHit;
+	EnemyType enemyHit;
+	bool playerHit, bubbleHit;
 
 	for (Shot* shot : playerBubbles)
 	{
 		if (shot->IsAlive())
 		{
-			bubbleEnd = false;
-			//Update position
-			bubbleEnd = shot->Update();
+			bubbleHit = false;
+			//Update position, return true if bubble ends shot or finds collision
+			bubbleHit = shot->Update();
 
 			//Check Enemy Collision
-			enemyHit = false;
+			enemyHit = EnemyType::NONE;
 			box = shot->GetHitbox();
-			if (!bubbleEnd) enemyHit = enemies->CheckBubbleCollisions(box);
+			if (!bubbleHit) enemyHit = enemies->CheckBubbleCollisions(box);
 
 			//Update according bubble logic (enemy/wall)
-			if (bubbleEnd || enemyHit)
+			if (bubbleHit || enemyHit != EnemyType::NONE)
 			{
 				Point p, d;
 				p = shot->GetPos();
 				d = shot->GetDir();
 				shot->SetAlive(false);
-				if (bubbleEnd)		Add(p, d, ShotType::BUBBLE);
-				else if (enemyHit)	Add(p, d, ShotType::BUBBLE);
+				if (bubbleHit)		Add(p, d, ShotType::BUBBLE);
+				else if (enemyHit != EnemyType::NONE)
+				{
+					Add(p, d, ShotType::BUBBLE, enemyHit);
+				}
 			}
 		}
 	}
@@ -101,15 +100,35 @@ void ShotManager::Update(const AABB& temp_hitbox)
 	{
 		if (shot->IsAlive())
 		{
+			enemyHit = EnemyType::NONE;
+
 			//Update position
- 			shot->Update(temp_hitbox);
+ 			enemyHit = shot->Update(temp_hitbox);
 
 			//Check player collision
 			playerHit = false;
 			box = shot->GetHitbox();
-			if (!playerHit) playerHit = box.TestAABB(temp_hitbox);
+			playerHit = box.TestAABB(temp_hitbox);
 
-			//if (hit) shot->SetAlive(false);
+			//Add enemy
+			if (enemyHit != EnemyType::NONE)
+			{
+				Look look = Look::LEFT;
+				AABB enemy_box, area;
+				Point p;
+
+				p = shot->GetPos();
+				enemy_box = enemies->GetEnemyHitBox(p, enemyHit);
+				area = map->GetSweptAreaX(enemy_box);
+				if (p.x <= LEVEL_WIDTH / 2) look = Look::RIGHT;
+				else if (p.y > LEVEL_WIDTH / 2) look = Look::LEFT;
+
+				enemies->Add(p, enemyHit, area, look);
+			}
+			else if (playerHit)
+			{
+				shot->SetAlive(false);
+			}
 		}
 	}
 }

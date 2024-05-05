@@ -33,10 +33,7 @@ void EnemyManager::SetShotManager(ShotManager* shots)
 }
 void EnemyManager::SetTileMap(TileMap* tilemap)
 {
-	for (Enemy* enemy : enemies)
-	{
-		enemy->SetTileMap(tilemap);
-	}
+	map = tilemap;
 }
 void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look look)
 {
@@ -57,6 +54,7 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 	}
 
 	enemy->Initialise(look, area);
+	enemy->SetTileMap(map);
 	enemies.push_back(enemy);
 }
 AABB EnemyManager::GetEnemyHitBox(const Point& pos, EnemyType type) const
@@ -95,48 +93,56 @@ void EnemyManager::Update(const AABB& player_hitbox, bool& hit)
 
 	for (Enemy* enemy : enemies)
 	{
-		shoot = enemy->Update(player_hitbox);
-		if (shoot)
-		{
-			enemy->GetShootingPosDir(&p, &d);
-			shots->Add(p, d, ShotType::BUBBLE);
+		if (enemy->IsAlive()) {
+			shoot = enemy->Update(player_hitbox);
+			if (shoot)
+			{
+				enemy->GetShootingPosDir(&p, &d);
+				shots->Add(p, d, ShotType::BUBBLE);
+			}
+			box = enemy->GetHitbox();
+			if (!hit) hit = box.TestAABB(player_hitbox);
 		}
-		box = enemy->GetHitbox();
-		if (!hit) hit = box.TestAABB(player_hitbox);
 	}
 }
-bool EnemyManager::CheckBubbleCollisions(const AABB& bubble_hitbox)
+EnemyType EnemyManager::CheckBubbleCollisions(const AABB& bubble_hitbox)
 {
 	AABB box;
-	int hit;
+	EnemyType type = EnemyType::NONE;
+	bool hit = false;
+
 
 	for (Enemy* enemy : enemies)
 	{
-		hit = false;
-		box = enemy->GetHitbox();
-		hit = box.TestAABB(bubble_hitbox);
+		if (enemy->IsAlive()) {
+			hit = false;
+			box = enemy->GetHitbox();
+			hit = box.TestAABB(bubble_hitbox);
 
-		if (hit)
-		{
-			delete enemy;
-			return true;
+			if (hit)
+			{
+				enemy->SetAlive(false);
+				type = enemy->GetEnemyType();
+				return type;
+			}
 		}
-
 	}
 
-	return hit;
+	return type;
 }
 void EnemyManager::Draw() const
 {
 	for (const Enemy* enemy : enemies)
-		enemy->Draw();
+		if (enemy->IsAlive())	enemy->Draw();
 }
 void EnemyManager::DrawDebug() const
 {
 	for (const Enemy* enemy : enemies)
 	{
-		enemy->DrawVisibilityArea(DARKGRAY);
-		enemy->DrawHitbox(RED);
+		if (enemy->IsAlive()) {
+			enemy->DrawVisibilityArea(DARKGRAY);
+			enemy->DrawHitbox(RED);
+		}
 	}
 }
 void EnemyManager::Release()

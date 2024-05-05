@@ -96,6 +96,9 @@
     <ClCompile Include="src\PlayerBubble.cpp">
       <Filter>Entities\Shots</Filter>
     </ClCompile>
+    <ClCompile Include="src\EnemyBubble.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="src\PlayerBubble.h">
       <Filter>Entities\Shots</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyBubble.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

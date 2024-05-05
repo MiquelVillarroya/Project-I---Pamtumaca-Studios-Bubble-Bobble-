@@ -247,6 +247,10 @@ AppStatus Scene::LoadLevel(int stage)
 	//Tile map
 	level->Load(map, LEVEL_WIDTH, LEVEL_HEIGHT);
 
+	//Set the tilemaps of the managers to further assign the reference to entities (enemies and shots)
+	shots->SetTileMap(level);
+	enemies->SetTileMap(level);
+
 	//Entities and objects
 	i = 0;
 	for (y = 0; y < LEVEL_HEIGHT; ++y)
@@ -319,10 +323,6 @@ AppStatus Scene::LoadLevel(int stage)
 	}
 	//Remove initial positions of objects and entities from the map;
 	level->ClearObjectEntityPositions();
-	//Assign the tile map reference to the shot manager to check collisions when shots are shot
-	shots->SetTileMap(level);
-	//Assign the tile map reference to each enemy to check collisions for movement and logic
-	enemies->SetTileMap(level);
 
 	delete[] map;
 

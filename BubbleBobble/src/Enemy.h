@@ -8,7 +8,7 @@
 #define ENEMY_PHYSICAL_WIDTH	16
 #define ENEMY_PHYSICAL_HEIGHT	16
 
-enum class EnemyType { ZENCHAN, HIDEGONS };
+enum class EnemyType { NONE, ZENCHAN, HIDEGONS };
 
 class Enemy : public Entity
 {
@@ -31,6 +31,9 @@ public:
 
 	//Retrieve the position and direction of the shot to be thrown
 	virtual void GetShootingPosDir(Point* pos, Point* dir) const = 0;
+
+	//Get the enemy type
+	virtual EnemyType GetEnemyType() const = 0;
 
 protected:
 	//Return true if the given hitbox is within the visibility area and the enemy is facing it

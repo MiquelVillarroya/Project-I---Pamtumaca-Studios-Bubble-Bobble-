@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Tilemap.h"
+#include "Enemy.h"
 
 //Representation model size 16x16
 #define BUBBLE_FRAME_SIZE		16
@@ -9,7 +10,7 @@
 #define BUBBLE_PHYSICAL_WIDTH	16
 #define BUBBLE_PHYSICAL_HEIGHT	16
 
-enum class ShotType { PLAYER_BUBBLE, ENEMY_BUBBLE, BUBBLE, FIREBALL };
+enum class ShotType { PLAYER_BUBBLE, BUBBLE, FIREBALL };
 
 class Shot : public Entity
 {
@@ -21,7 +22,7 @@ public:
 	void SetTileMap(TileMap* tilemap);
 	
 	//Update the enemy according to its logic;
-	virtual bool Update(const AABB& box);
+	virtual EnemyType Update(const AABB& box);
 	virtual bool Update();
 	bool IsMovingLeft() const;
 	bool IsMovingRight() const;

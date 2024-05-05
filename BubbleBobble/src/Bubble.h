@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Shot.h"
-
+#include "Enemy.h"
 
 //#defines here
 
@@ -28,6 +28,7 @@ enum class BubbleState { NORMAL, RED_END, BLINK_END};
 enum class BubbleAnim {
 	IDLE,
 	RED_START,
+	DARKER_RED,
 	RED_BLINK,
 	POP,
 	NUM_ANIMATIONS
@@ -35,26 +36,29 @@ enum class BubbleAnim {
 
 class Bubble : public Shot {
 public:
-	Bubble(const Point& p, const Point& d, int width, int heigth, int frame_width, int frame_heigth);
+	Bubble(const Point& p, const Point& d, int width, int heigth, int frame_width, int frame_heigth, EnemyType type);
 	~Bubble();
 
 	AppStatus Initialise() override;
 
-	bool Update(const AABB& box) override;
+	EnemyType Update(const AABB& box) override;
 
 private:
 
 	//Bubble Mechanics
 	void MoveX();
 	void MoveY();
-	void BubbleCounter(bool& flag);
+	void BubbleCounter(EnemyType& flag);
+
+	//Animation Management
+	void SetAnimations();
 
 	//BubbleTimer
 	float bubbleTimer;
 
 	BubbleState state;
 
-	//Bubble shot variables
-	int forceDelay;
-	int forceMax;
+	//Enemy Management
+	EnemyType enemyType;
+	void SpawnEnemy();
 };

@@ -29,6 +29,10 @@ public:
 	//To avoid errors
 	void GetShootingPosDir(Point* pos, Point* dir) const {};
 
+	//Get enemy type
+	virtual EnemyType GetEnemyType() const override;
+
+
 private:
 
 	//Movement

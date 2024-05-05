@@ -1,5 +1,6 @@
 #include "Shot.h"
 #include "StaticImage.h"
+#include "Enemy.h"
 
 
 Shot::Shot(const Point& p, const Point& d, int width, int heigth, int frame_width, int frame_height) :
@@ -19,10 +20,10 @@ void Shot::SetTileMap(TileMap* tilemap)
 {
 	map = tilemap;
 }
-bool Shot::Update(const AABB& box)
+EnemyType Shot::Update(const AABB& box)
 {
 	LOG("Wrong update in shot manager, wrong Update(const AABB& box) function called");
-	return false;
+	return EnemyType::NONE;
 }
 bool Shot::Update()
 {
