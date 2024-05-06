@@ -8,7 +8,9 @@ TileMap::TileMap()
 	map = nullptr;
 	width = 0;
 	height = 0;
+	// Animated tiles (fire)
 	laser = nullptr;
+
 	img_tiles = nullptr;
 
 	InitTileDictionary();
@@ -98,6 +100,17 @@ AppStatus TileMap::Load(int data[], int w, int h)
 
 	return AppStatus::OK;
 }
+void TileMap::ClearObjectEntityPositions()
+{
+	int i;
+	Tile tile;
+	for (i = 0; i < size; ++i)
+	{
+		tile = map[i];
+		if (IsTileEntity(tile) || IsTileObject(tile) || tile == Tile::EMPTY)
+			map[i] = Tile::AIR;
+	}
+}
 void TileMap::Update()
 {
 	laser->Update();
@@ -111,6 +124,14 @@ Tile TileMap::GetTileIndex(int x, int y) const
 		return Tile::AIR;
 	}
 	return map[x + y * width];
+}
+bool TileMap::IsTileObject(Tile tile) const
+{
+	return Tile::OBJECT_FIRST <= tile && tile <= Tile::OBJECT_LAST;
+}
+bool TileMap::IsTileEntity(Tile tile) const
+{
+	return Tile::ENTITY_FIRST <= tile && tile <= Tile::ENTITY_LAST;
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
@@ -184,7 +205,59 @@ bool TileMap::CollisionY(const Point& p, int distance) const
 	}
 	return false;
 }
+AABB TileMap::GetSweptAreaX(const AABB& hitbox) const
+{
+	AABB box;
+	int column, x, y, y0, y1;
+	bool collision;
 
+	box.pos.y = hitbox.pos.y;
+	box.height = hitbox.height;
+
+	column = hitbox.pos.x / TILE_SIZE;
+	y0 = hitbox.pos.y / TILE_SIZE;
+	y1 = (hitbox.pos.y + hitbox.height - 1) / TILE_SIZE;
+
+	//Compute left tile index
+	collision = false;
+	x = column - 1;
+	while (!collision && x >= 0)
+	{
+		//Iterate over the tiles within the vertical range
+		for (y = y0; y <= y1; ++y)
+		{
+			//One solid tile is sufficient
+			if (IsTileSolid(GetTileIndex(x, y)))
+			{
+				collision = true;
+				break;
+			}
+		}
+		if (!collision) x--;
+	}
+	box.pos.x = (x + 1) * TILE_SIZE;
+
+	//Compute right tile index
+	collision = false;
+	x = column + 1;
+	while (!collision && x < LEVEL_WIDTH)
+	{
+		//Iterate over the tiles within the vertical range
+		for (y = y0; y <= y1; ++y)
+		{
+			//One solid tile is sufficient
+			if (IsTileSolid(GetTileIndex(x, y)))
+			{
+				collision = true;
+				break;
+			}
+		}
+		if (!collision) x++;
+	}
+	box.width = x * TILE_SIZE - box.pos.x;
+
+	return box;
+}
 void TileMap::Render()
 {
 	Tile tile;
@@ -219,7 +292,7 @@ void TileMap::Release()
 	ResourceManager& data = ResourceManager::Instance(); 
 	data.ReleaseTexture(Resource::IMG_TILES);
 	
-	//laser->Release();
+	laser->Release();
 
 	dict_rect.clear();
 }

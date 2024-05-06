@@ -15,10 +15,13 @@ Game::Game()
     img_intro1 = nullptr;
     img_intro2 = nullptr;
     game_over = nullptr;
+
+    introTimer = 0;
+
+    //Temp?
     transition = nullptr;
     stage1 = nullptr;
     stage2 = nullptr;
-    startTime = 0;
 
     tracks[GAME_MUS] = LoadMusicStream("audio/music/1_Introduction_Main_Theme.ogg");
     tracks[GAME_MUS] = LoadMusicStream("audio/music/1_Introduction_Main_Theme.ogg");
@@ -30,7 +33,6 @@ Game::Game()
     tracks[REAL_ENDING_MUS] = LoadMusicStream("audio/music/7_Real_Ending.ogg");
     tracks[NAME_REGISTER_MUS] = LoadMusicStream("audio/music/8_Name_Register.ogg");
     tracks[GAME_OVER_MUS] = LoadMusicStream("audio/music/9_Game_Over.ogg");
-    
     
     currentTrack = LoadMusicStream("audio/music/1_Introduction_Main_Theme.ogg");
 
@@ -79,7 +81,6 @@ AppStatus Game::Initialise(float scale)
     SetTargetFPS(60);
     //Disable the escape key to quit functionality
     SetExitKey(0);
-    startTime = GetTime();
 
     return AppStatus::OK;
 }
@@ -110,6 +111,7 @@ AppStatus Game::LoadResources()
     }
     game_over = data.GetTexture(Resource::GAME_OVER);
 
+    //Those files are temporary (for the transition)
     if (data.LoadTexture(Resource::STAGE1, "images/level1.png") != AppStatus::OK)
     {
         return AppStatus::ERROR;
@@ -131,6 +133,7 @@ AppStatus Game::BeginPlay()
 {    
     scene = new Scene();
     currentTrack = tracks[GAME_MUS];
+    SeekMusicStream(currentTrack, 0);
     PlayMusicStream(currentTrack);
     if (scene == nullptr)
     {
@@ -159,18 +162,17 @@ AppStatus Game::Update()
     switch (state)
     {
     case GameState::INTRO:
-            {
-            double time = GetTime() - startTime;
+            introTimer += GetFrameTime();
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if (IsKeyPressed(KEY_SPACE)) {
+            if (introTimer > INTRO_TIME || IsKeyPressed(KEY_SPACE))
+            {
                 Sound menusound;
                 menusound = LoadSound("audio/FX/Intro/TitleSFX.wav");
-                PlaySound(menusound);state = GameState::MAIN_MENU; 
+                PlaySound(menusound);
+                state = GameState::MAIN_MENU;
             }
-
-            if (time > 9) state = GameState::MAIN_MENU;
             break;
-            }
+
         case GameState::MAIN_MENU: 
            
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
@@ -185,7 +187,7 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_ESCAPE) || !scene->IsPlayerAlive() || !scene->IsSceneAlive())
             {
                 FinishPlay();
-                currentTrack = tracks[GAME_OVER_MUS];
+                ChangeTrack(GAME_OVER_MUS);
                 PlayMusicStream(currentTrack);
                 state = GameState::GAME_OVER;
             }
@@ -197,12 +199,14 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_N)) {
                 state = GameState::TRANSITION;
             }
+            break;
 
         case GameState::GAME_OVER:
-            if (IsKeyPressed(KEY_F))
+            if (IsKeyPressed(KEY_ESCAPE))
             {
                 state = GameState::MAIN_MENU;
             }
+            break;
         
             
     }
@@ -217,24 +221,22 @@ void Game::Render()
     switch (state)
     {
          case GameState::INTRO:
-            {
-            double time = GetTime();
-            if (time > 1 && time <= 2) {
-                DrawTexture(*img_intro1, 0, 0, { 255, 255, 255, 255 });
-            }
-            else if (time > 2 && time < 5) {
-                unsigned char trans = 410 - 82 * time;
-                DrawTexture(*img_intro1, 0, 0, { 255, 255, 255, trans });
-            }
-            else if (time >= 5 && time < 6) {
-                DrawTexture(*img_intro2, 0, 0, { 255, 255, 255, 255 });
-            }
-            else if (time > 6 && time <= 9) {
-                unsigned char trans = 745 - 82 * time;
-                DrawTexture(*img_intro2, 0, 0, {255, 255, 255, trans});
-            }
-            break;
-            }
+             if (introTimer <= INTRO_FIRST_IMAGE) {
+                 DrawTexture(*img_intro1, 0, 0, WHITE);
+             }
+             else if (introTimer > INTRO_FIRST_IMAGE && introTimer < INTRO_SECOND_IMAGE) {
+                 float trans = 1.25f - 0.28f * introTimer;
+                 DrawTexture(*img_intro1, 0, 0, Fade (WHITE, trans));
+             }
+             else if (introTimer >= INTRO_SECOND_IMAGE && introTimer < INTRO_SECOND_FADE) {
+                 DrawTexture(*img_intro2, 0, 0, WHITE);
+             }
+             else if (introTimer > INTRO_SECOND_FADE && introTimer <= INTRO_TIME) {
+                 float trans = 2.75f - 0.28f * introTimer;
+                 DrawTexture(*img_intro2, 0, 0, Fade (WHITE, trans));
+             }
+             break;
+
         case GameState::MAIN_MENU:
             DrawTexture(*img_menu, 0, 0, WHITE);
             break;
@@ -250,17 +252,18 @@ void Game::Render()
             UpdateMusicStream(currentTrack);
             break;
 
+        //Temporary transition
         case GameState::TRANSITION:
 
             UpdateMusicStream(currentTrack);
             float transition = timeSpent / totalTime;
-            float stage2_position = 224.0 * - transition;
+            float stage2_position = 224.0f * - transition;
 
             if (timeSpent <= totalTime) {
 
 
-                DrawTexture(*stage1, 0, stage2_position, WHITE);
-                DrawTexture(*stage2, 0, stage2_position+224.0, WHITE);
+                DrawTexture(*stage1, 0, (int)stage2_position, WHITE);
+                DrawTexture(*stage2, 0, (int)(stage2_position+224.0f), WHITE);
                 timeSpent += GetFrameTime();
                 
             }

@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "TileMap.h"
-#include "Bubble.h"
+#include "ShotManager.h"
 
 //Representation model size: 16x16
 #define PLAYER_FRAME_SIZE		16
@@ -41,9 +41,11 @@
 //Dead timer animation
 #define DEAD_COOLDOWN			1.67
 
+//Bubble shot speed
+#define BUBBLE_SHOT_SPEED		1
+
 //Logic states
 enum class State { IDLE, WALKING, JUMPING, FALLING, SHOOTING, DEAD };
-enum class Look { RIGHT, LEFT };
 
 //Rendering states
 enum class PlayerAnim {
@@ -64,6 +66,7 @@ public:
 	~Player();
 	
 	AppStatus Initialise();
+	void SetShotManager(ShotManager* shots);
 	void SetTileMap(TileMap* tilemap);
 
 	void InitScore();
@@ -74,14 +77,8 @@ public:
 	State GetState() const;
 	void MinusLife();
 
-	bool CheckBubbleCollision(const AABB& enemy_box);
-
 	void Update();
 	void DrawDebug(const Color& col) const;
-	void DrawBubbles();
-	void DrawBubblesDebug(const Color& col) const;
-	void DrawGod(const Color& col) const;
-	void ClearBubbles();
 	void Release();
 
 private:
@@ -117,11 +114,10 @@ private:
 	float deadTimer;
 	bool god;
 
-	std::vector<Bubble*> bubbles;
 	float elapsedTimeBubble;
-	float shootTime;
 
 	TileMap *map;
+	ShotManager *shots;
 
 	int score;
 	int lives;

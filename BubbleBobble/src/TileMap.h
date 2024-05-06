@@ -16,24 +16,24 @@ enum class Tile {
 	// 0 < id < 50: static tiles
 	BLOCK_LVL1 = 1, BLOCK_LVL2 = 2, WALL_LVL2_1 = 3, WALL_LVL2_2 = 4, WALL_LVL2_3 = 5, WALL_LVL2_4 = 6, NUMBER_BLOCK_LVL1_1 = 7, NUMBER_BLOCK_LVL1_2 = 8, PLAT_LVL1 = 9,  PLAT_LVL2=10,
 
-	// 50 <= id < 100: special tiles
+	// 50 <= id < 100: special tiles (mainly objects)
 	FOOD_MUSHROOM = 50, FOOD_BANANA, FOOD_CHERRY, FOOD_ICE_CREAM, FOOD_FLAM, FOOD_CAKE,
 
 
 	// id >= 100: entities' initial locations
-	PLAYER = 100, ZENCHAN_LEFT, ZENCHAN_RIGHT, HIDEGONS_LEFT, HIDEGONS_RIGHT,
+	PLAYER = 100, ZENCHAN, HIDEGONS,
 
 	//Intervals
 	STATIC_FIRST = BLOCK_LVL1,
-	STATIC_LAST = NUMBER_BLOCK_LVL1_2,
+	STATIC_LAST = PLAT_LVL2,
 	SOLID_FIRST = BLOCK_LVL1,
 	SOLID_LAST = NUMBER_BLOCK_LVL1_2,
 	PLAT_FIRST = PLAT_LVL1,
 	PLAT_LAST = PLAT_LVL2,
-	SPECIAL_FIRST = FOOD_MUSHROOM ,
-	SPECIAL_LAST = FOOD_CAKE ,
+	OBJECT_FIRST = FOOD_MUSHROOM ,
+	OBJECT_LAST = FOOD_CAKE ,
 	ENTITY_FIRST = PLAYER,
-	ENTITY_LAST = ZENCHAN_RIGHT
+	ENTITY_LAST = HIDEGONS
 };
 
 class TileMap
@@ -44,9 +44,14 @@ public:
 
 	AppStatus Initialise();
 	AppStatus Load(int data[], int w, int h);
+	void ClearObjectEntityPositions();
+
 	void Update();
 	void Render();
 	void Release();
+
+	bool IsTileObject(Tile tile) const;
+	bool IsTileEntity(Tile tile) const;
 
 	//Test for collisions with walls
 	bool TestCollisionWallLeft(const AABB& box) const;
@@ -59,6 +64,9 @@ public:
 	
 	//Test if there is a ground tile one pixel below the given box
 	bool TestFalling(const AABB& box) const;
+
+	//Given a hitbox, computes the maximum swept box model along the X-axis without solid tiles
+	AABB GetSweptAreaX(const AABB& hitboxbox) const;
 
 private:
 	void InitTileDictionary();
@@ -78,7 +86,8 @@ private:
 	//Dictionary of tile frames
 	std::unordered_map<int, Rectangle> dict_rect;
 
-	Sprite* laser; //fire
+	//Animated tile (fire)
+	Sprite* laser;
 	
 	//Tile sheet
 	const Texture2D *img_tiles;

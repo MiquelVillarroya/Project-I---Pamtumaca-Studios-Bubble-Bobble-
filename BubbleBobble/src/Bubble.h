@@ -1,32 +1,20 @@
 #pragma once
 #include "Entity.h"
-#include "TileMap.h"
-
+#include "Shot.h"
+#include "Enemy.h"
 
 //#defines here
-//Representation model size
-#define BUBBLE_FRAME_SIZE		16
 
-//Logical model size 16x16
-#define BUBBLE_PHYSICAL_WIDTH	14
-#define BUBBLE_PHYSICAL_HEIGHT	14
 #define PHYSICAL_OFFSET			7
 
 //Bubble speed
 #define BUBBLE_SPEED			1
-
-//Initial bubble impulse
-#define BUBBLE_MAX_FORCE		4
-
-//Update bubble impulse delay
-#define BUBBLE_FORCE_DELAY		2
 
 //Max Height & Top Offset
 #define MAX_HEIGHT				40
 #define TOP_OFFSET				20
 
 //Movement advance
-#define HORIZONTAL_ADVANCE		10
 #define HORIZONTAL_ADVANCE_TOP	1
 #define VERTICAL_ADVANCE		1
 
@@ -36,55 +24,41 @@
 #define POP_TIME				12
 
 
-enum class BubbleState { SHOT, NORMAL, RED_END, BLINK_END, ENEMY};
-enum class BubbleDirection {LEFT, RIGHT};
+enum class BubbleState { NORMAL, RED_END, BLINK_END};
 enum class BubbleAnim {
-	INITIAL,
 	IDLE,
 	RED_START,
+	DARKER_RED,
 	RED_BLINK,
 	POP,
 	NUM_ANIMATIONS
 };
 
-class Bubble : public Entity {
+class Bubble : public Shot {
 public:
-	Bubble(const Point& p, BubbleDirection);
+	Bubble(const Point& p, const Point& d, int width, int heigth, int frame_width, int frame_heigth, EnemyType type);
 	~Bubble();
 
-	AppStatus Initialise();
-	void SetTileMap(TileMap* tilemap);
+	AppStatus Initialise() override;
 
-	void Update();
-	void DrawDebug(const Color& col) const;
-	void Release();
-
-	bool IsAlive() const;
+	EnemyType Update(const AABB& box) override;
 
 private:
 
 	//Bubble Mechanics
 	void MoveX();
 	void MoveY();
-	void BubbleCounter();
+	void BubbleCounter(EnemyType& flag);
 
-	//Bubble destruction;
-	bool alive;
-	bool move;
+	//Animation Management
+	void SetAnimations();
 
 	//BubbleTimer
 	float bubbleTimer;
 
-	//Animations
-	void SetAnimation(int id);
-	BubbleAnim GetAnimation();
-
-
 	BubbleState state;
-	BubbleDirection direction;
-	TileMap* map;
 
-	//Bubble shot variables
-	int forceDelay;
-	int forceMax;
+	//Enemy Management
+	EnemyType enemyType;
+	void SpawnEnemy();
 };

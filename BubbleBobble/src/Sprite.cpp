@@ -7,6 +7,7 @@ Sprite::Sprite(const Texture2D *texture)
     current_frame = 0;
     current_delay = 0;
     mode = AnimMode::AUTOMATIC;
+    animation_complete = false;
 }
 Sprite::~Sprite()
 {
@@ -40,13 +41,13 @@ void Sprite::AddKeyFrameOffset(int id, const Rectangle& rect, int offsetX, int o
         animations[id].frames.push_back(rect);
     }
 }
-
 void Sprite::SetAnimation(int id)
 {
     if (id >= 0 && id < animations.size())
     {
         current_anim = id;
         current_frame = 0;
+        animation_complete = false;
         current_delay = animations[current_anim].delay;
     }
 }
@@ -62,6 +63,10 @@ void Sprite::SetAutomaticMode()
 {
     mode = AnimMode::AUTOMATIC;
 }
+bool Sprite::IsAnimationComplete() const
+{
+    return animation_complete;
+}
 void Sprite::Update()
 {
     //Both animation modes (automatic and manual) are carry out with animation delay
@@ -76,6 +81,9 @@ void Sprite::Update()
                 current_frame++;
                 current_frame %= animations[current_anim].frames.size();
                 current_delay = animations[current_anim].delay;
+
+                //Animation is complete when we repeat from the first frame
+                animation_complete = (current_frame == 0);
             }
         }
     }
