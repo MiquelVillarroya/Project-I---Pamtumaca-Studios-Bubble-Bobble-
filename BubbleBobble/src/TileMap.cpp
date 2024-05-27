@@ -56,14 +56,40 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::PLAT_LEFT_LVL2] = { 0,  2 * n, n + sx, n + sy };
 
 
-	dict_rect[(int)Tile::BLOCK_LVL3] = { 0,  2 * n, n + sx, n + sy };
-	dict_rect[(int)Tile::PLAT_LVL3] = { 0,  2 * n, n + sx, n + sy };
-	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_1] = { 2 * n,  0, n + sx, n + sy };
-	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_2] = { 4 * n,  0, n + sx, n + sy };
-	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_3] = { 4 * n,  0, n + sx, n + sy };
-	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_4] = { 4 * n,  0, n + sx, n + sy };
-	dict_rect[(int)Tile::PLAT_RIGHT_LVL2] = { 0,  2 * n, n + sx, n + sy };
-	dict_rect[(int)Tile::PLAT_LEFT_LVL2] = { 0,  2 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::BLOCK_LVL3] = { 0,  4 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_LVL3] = { 0,  4 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_1] = { 2 * n,  4 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_2] = { 3 * n,  4 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_3] = { 5 * n,  4 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_4] = { 6 * n,  4 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_RIGHT_LVL3] = { 0,  4 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_LEFT_LVL3] = { 0,  4 * n, n + sx, n + sy };
+
+	dict_rect[(int)Tile::BLOCK_LVL4] = { 0,  6 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_LVL4] = { 0,  6 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL4_1] = { 2 * n,  6 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL4_2] = { 3 * n,  6 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL4_3] = { 5 * n,  6 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL4_4] = { 6 * n,  6 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_RIGHT_LVL4] = { 0,  6 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_LEFT_LVL4] = { 0,  6 * n, n + sx, n + sy };
+
+	dict_rect[(int)Tile::BLOCK_LVL5] = { 0,  8 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_LVL5] = { 0,  8 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL5_1] = { 2 * n,  8 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL5_2] = { 3 * n,  8 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL5_3] = { 5 * n,  8 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL5_4] = { 6 * n,  8 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_RIGHT_LVL5] = { 0,  8 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_LEFT_LVL5] = { 0,  8 * n, n + sx, n + sy };
+
+	dict_rect[(int)Tile::BLOCK_SR] = { 0,  10 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::WALL_SR_1] = { 2*n,  10 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::WALL_SR_2] = { 3 * n,  10 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::WALL_SR_3] = { 2 * n,  11 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::WALL_SR_4] = { 3 * n,  11 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_RIGHT_SR] = { 0,  10 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_LEFT_SR] = { 0,  10 * n, n + sx, n + sy };
 
 	dict_rect[(int)Tile::FOOD_MUSHROOM] = { 0,  0, n + sx, n + sy};
 	dict_rect[(int)Tile::FOOD_BANANA] = { 0,  0, n + sx, n + sy};
