@@ -1,11 +1,13 @@
 #include "EnemyManager.h"
 #include "Zenchan.h"
 #include "Hidegons.h"
+#include "Monsta.h"
 #include "Player.h"
 
 EnemyManager::EnemyManager()
 {
 	shots = nullptr;
+	map = nullptr;
 }
 EnemyManager::~EnemyManager()
 {
@@ -24,7 +26,12 @@ AppStatus EnemyManager::Initialise()
 		LOG("Failed to load hidegons sprite texture");
 		return AppStatus::ERROR;
 	}
-
+	if (data.LoadTexture(Resource::IMG_MONSTA, "images/monsta_SkelMonsta.png") != AppStatus::OK)
+	{
+		LOG("Failed to load monsta/skelMonsta sprite texture");
+		return AppStatus::ERROR;
+	}
+	
 	return AppStatus::OK;
 }
 void EnemyManager::SetShotManager(ShotManager* shots)
@@ -46,6 +53,10 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 	else if (type == EnemyType::HIDEGONS)
 	{
 		enemy = new Zenchan(pos, ENEMY_PHYSICAL_WIDTH, ENEMY_PHYSICAL_HEIGHT, ENEMY_FRAME_SIZE, ENEMY_FRAME_SIZE);
+	}
+	else if (type == EnemyType::MONSTA)
+	{
+ 		enemy = new Monsta(pos, ENEMY_PHYSICAL_WIDTH, ENEMY_PHYSICAL_HEIGHT, ENEMY_FRAME_SIZE, ENEMY_FRAME_SIZE);
 	}
 	else
 	{

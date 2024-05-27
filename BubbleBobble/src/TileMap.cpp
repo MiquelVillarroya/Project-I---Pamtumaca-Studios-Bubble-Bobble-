@@ -182,13 +182,20 @@ bool TileMap::IsTileSolid(Tile tile) const
 {
 	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST);
 }
-bool TileMap::IsTilePlat(Tile tile) const {
+bool TileMap::IsTilePlat(Tile tile) const
+{
 	return (Tile::PLAT_FIRST <= tile && tile <= Tile::PLAT_LAST);
 }
-bool TileMap::IsTilePlatRight(Tile tile) const {
+bool TileMap::IsTilePlatSide(Tile tile) const
+{
+	return (Tile::PLAT_RIGHT_FIRST <= tile && tile <= Tile::PLAT_LEFT_LAST);
+}
+bool TileMap::IsTilePlatRight(Tile tile) const
+{
 	return (Tile::PLAT_RIGHT_FIRST <= tile && tile <= Tile::PLAT_RIGHT_LAST);
 }
-bool TileMap::IsTilePlatLeft(Tile tile) const {
+bool TileMap::IsTilePlatLeft(Tile tile) const
+{
 	return (Tile::PLAT_LEFT_FIRST <= tile && tile <= Tile::PLAT_LEFT_LAST);
 }
 bool TileMap::TestCollisionWallLeft(const AABB& box) const
@@ -198,6 +205,28 @@ bool TileMap::TestCollisionWallLeft(const AABB& box) const
 bool TileMap::TestCollisionWallRight(const AABB& box) const
 {
 	return CollisionX(box.pos + Point(box.width - 1, 0), box.height);
+}
+bool TileMap::TestCollisionPlatLeft(const AABB& box) const
+{
+	return CollisionXPlat(box.pos, box.height);
+}
+bool TileMap::TestCollisionPlatRight(const AABB& box) const
+{
+	return CollisionXPlat(box.pos + Point(box.width - 1, 0), box.height);
+}
+bool TileMap::TestCollisionCeiling(const AABB& box, int* py) const
+{
+	Point p (box.pos.x, *py - box.height);	//control point
+	int tile_y;
+
+	if (CollisionYCeiling(p, box.width))
+	{
+		tile_y = p.y / TILE_SIZE;
+
+		*py = tile_y * TILE_SIZE + 1;
+		return true;
+	}
+	return false;
 }
 bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 {
@@ -235,6 +264,24 @@ bool TileMap::CollisionX(const Point& p, int distance) const
 	}
 	return false;
 }
+bool TileMap::CollisionXPlat(const Point& p, int distance) const
+{
+	int x, y, y0, y1;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	x = p.x / TILE_SIZE;
+	y0 = p.y / TILE_SIZE;
+	y1 = (p.y + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the vertical range
+	for (y = y0; y <= y1; ++y)
+	{
+		//One solid tile is sufficient
+		if (IsTilePlatSide(GetTileIndex(x, y)))
+			return true;
+	}
+	return false;
+}
 bool TileMap::CollisionY(const Point& p, int distance) const
 {
 	int x, y, x0, x1;
@@ -246,6 +293,27 @@ bool TileMap::CollisionY(const Point& p, int distance) const
 	x1 = (p.x + distance - 1) / TILE_SIZE;
 
 	//Iterate over the tiles within the horizontal range
+	for (x = x0; x <= x1; ++x)
+	{
+		tile = GetTileIndex(x, y);
+
+		//One solid or laddertop tile is sufficient
+		if (IsTileSolid(tile) || IsTilePlat(tile))
+			return true;
+	}
+	return false;
+}
+bool TileMap::CollisionYCeiling(const Point& p, int distance) const
+{
+	int x, y, x0, x1;
+	Tile tile;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	y = (p.y + 1)/ TILE_SIZE;
+	x0 = p.x / TILE_SIZE;
+	x1 = (p.x + distance - 1) / TILE_SIZE;
+
+ 	//Iterate over the tiles within the horizontal range
 	for (x = x0; x <= x1; ++x)
 	{
 		tile = GetTileIndex(x, y);

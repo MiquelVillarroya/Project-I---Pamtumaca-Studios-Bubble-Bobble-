@@ -26,25 +26,25 @@ enum class Tile {
 
 	PLAT_RIGHT_LVL1 = 40,PLAT_RIGHT_LVL2 = 41, PLAT_RIGHT_LVL3 = 42, PLAT_RIGHT_LVL4 = 43, PLAT_RIGHT_LVL5 = 44, PLAT_RIGHT_SR = 45,
 
-	PLAT_LEFT_LVL1=46, PLAT_LEFT_LVL2=47, PLAT_LEFT_LVL3 = 48, PLAT_LEFT_LVL4 = 49, PLAT_LEFT_LVL5 = 50, PLAT_LEFT_SR=51,
+	PLAT_LEFT_LVL1=46, PLAT_LEFT_LVL2=47, PLAT_LEFT_LVL3 = 48, PLAT_LEFT_LVL4 = 49, PLAT_LEFT_LVL5 = 50, PLAT_LEFT_SR = 51,
 
 	
 	
 
-	// 50 <= id < 100: special tiles (mainly objects)
+	// 60 <= id < 100: special tiles (mainly objects)
 	FOOD_MUSHROOM = 60, FOOD_BANANA, FOOD_CHERRY, FOOD_ICE_CREAM, FOOD_FLAM, FOOD_CAKE,
 
 
 	// id >= 100: entities' initial locations
-	PLAYER = 100, ZENCHAN, HIDEGONS,
+	PLAYER = 100, ZENCHAN, HIDEGONS, MONSTA, BANEBOU,
 
 	//Intervals
 	STATIC_FIRST = BLOCK_LVL1,
-	STATIC_LAST = PLAT_LEFT_LVL5,
+	STATIC_LAST = PLAT_LEFT_SR,
 	SOLID_FIRST = BLOCK_LVL1,
 	SOLID_LAST = NUMBER_BLOC_LVL5_4,
 	PLAT_FIRST = PLAT_LVL1,
-	PLAT_LAST = PLAT_SR,
+	PLAT_LAST = PLAT_LEFT_SR,
 	PLAT_RIGHT_FIRST=PLAT_RIGHT_LVL1,
 	PLAT_RIGHT_LAST=PLAT_RIGHT_SR,
 	PLAT_LEFT_FIRST=PLAT_LEFT_LVL1,
@@ -53,7 +53,7 @@ enum class Tile {
 	OBJECT_FIRST = FOOD_MUSHROOM ,
 	OBJECT_LAST = FOOD_CAKE ,
 	ENTITY_FIRST = PLAYER,
-	ENTITY_LAST = HIDEGONS
+	ENTITY_LAST = BANEBOU
 };
 
 class TileMap
@@ -76,10 +76,14 @@ public:
 	//Test for collisions with walls
 	bool TestCollisionWallLeft(const AABB& box) const;
 	bool TestCollisionWallRight(const AABB& box) const;
+	bool TestCollisionPlatRight(const AABB& box) const;
+	bool TestCollisionPlatLeft(const AABB& box) const;
+
 	
 	//Test collision with the ground and update 'py' with the maximum y-position to prevent
 	//penetration of the grounded tile, that is, the pixel y-position above the grounded tile.
 	//Grounded tile = solid tile (blocks) or ladder tops.
+	bool TestCollisionCeiling(const AABB& box, int *py) const;
 	bool TestCollisionGround(const AABB& box, int *py) const;
 	
 	//Test if there is a ground tile one pixel below the given box
@@ -94,10 +98,13 @@ private:
 	Tile GetTileIndex(int x, int y) const;
 	bool IsTileSolid(Tile tile) const;
 	bool IsTilePlat(Tile tile) const;
+	bool IsTilePlatSide(Tile tile) const;
 	bool IsTilePlatRight(Tile  tile) const;
 	bool IsTilePlatLeft(Tile  tile) const;
 	bool CollisionX(const Point& p, int distance) const;
+	bool CollisionXPlat(const Point& p, int distance) const;
 	bool CollisionY(const Point& p, int distance) const;
+	bool CollisionYCeiling(const Point& p, int distance) const;
 
 	//Tile map
 	Tile *map;

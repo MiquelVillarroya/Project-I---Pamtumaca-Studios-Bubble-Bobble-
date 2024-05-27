@@ -9,7 +9,7 @@
 #include "Text.h"
 
 //LAST STAGE
-#define MAX_STAGE   2
+#define MAX_STAGE   4
 
 enum class DebugMode { OFF, SPRITES_AND_HITBOXES, ONLY_HITBOXES, SIZE };
 

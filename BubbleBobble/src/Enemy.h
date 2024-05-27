@@ -8,7 +8,7 @@
 #define ENEMY_PHYSICAL_WIDTH	16
 #define ENEMY_PHYSICAL_HEIGHT	16
 
-enum class EnemyType { NONE, ZENCHAN, HIDEGONS };
+enum class EnemyType { NONE, ZENCHAN, HIDEGONS, MONSTA};
 
 class Enemy : public Entity
 {

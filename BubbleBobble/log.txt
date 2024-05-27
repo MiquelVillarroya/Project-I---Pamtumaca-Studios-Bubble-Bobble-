@@ -1,2 +1,19 @@
-Project executed on 05-05-2024 at 14:18:19.
+Project executed on 27-05-2024 at 23:21:04.
 main.cpp(13): Application start
+EnemyManager.cpp(86): Internal error while computing hitbox for an invalid enemy type
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+EnemyManager.cpp(86): Internal error while computing hitbox for an invalid enemy type
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+EnemyManager.cpp(86): Internal error while computing hitbox for an invalid enemy type
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(385): Internal error loading scene: invalid entity or object tile id
+main.cpp(38): Application finish
+main.cpp(44): Bye :)

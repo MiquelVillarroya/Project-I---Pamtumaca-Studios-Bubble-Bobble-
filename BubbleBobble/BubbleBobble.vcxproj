@@ -148,6 +148,7 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Globals.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Monsta.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\PlayerBubble.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Globals.h" />
     <ClInclude Include="src\MemLeaks.h" />
+    <ClInclude Include="src\Monsta.h" />
     <ClInclude Include="src\Object.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\PlayerBubble.h" />

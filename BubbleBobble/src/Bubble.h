@@ -51,6 +51,7 @@ private:
 	void BubbleCounter(EnemyType& flag);
 
 	//Animation Management
+	BubbleAnim GetAnimation();
 	void SetAnimations();
 
 	//BubbleTimer

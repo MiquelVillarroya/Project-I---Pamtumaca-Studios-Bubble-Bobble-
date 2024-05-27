@@ -99,6 +99,9 @@
     <ClCompile Include="src\EnemyBubble.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="src\Monsta.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity.h">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="src\EnemyBubble.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Monsta.h">
+      <Filter>Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -74,29 +74,34 @@ void Bubble::MoveY()
 void Bubble::BubbleCounter(EnemyType& flag)
 {
 bubbleTimer += GetFrameTime();
-if (bubbleTimer >= POP_TIME + 1)
+if (bubbleTimer >= POP_TIME + 0.5)
 	{
 		this->SetAlive(false);
 		if (enemyType != EnemyType::NONE)	flag = enemyType;
 	}
-else if (bubbleTimer >= POP_TIME)
+else if (bubbleTimer >= POP_TIME && GetAnimation() == BubbleAnim::RED_BLINK)
 	{
 		SetAnimation((int)BubbleAnim::POP);
 	}
-else if (bubbleTimer >= BLINK_TIME)
+else if (bubbleTimer >= BLINK_TIME && GetAnimation() == BubbleAnim::RED_START)
 	{
 		state = BubbleState::BLINK_END;
 		SetAnimation((int)BubbleAnim::RED_BLINK);
 	}
-else if (bubbleTimer >= RED_TIME)
+else if (bubbleTimer >= RED_TIME && GetAnimation() == BubbleAnim::IDLE)
 	{
 		state = BubbleState::RED_END;
 		SetAnimation((int)BubbleAnim::RED_START);
 	}
 }
+BubbleAnim Bubble::GetAnimation()
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	return (BubbleAnim)sprite->GetAnimation();
+}
 void Bubble::SetAnimations()
 {
-	int i;
+	int i, k;
 	const int n = BUBBLE_FRAME_SIZE;
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -113,54 +118,29 @@ void Bubble::SetAnimations()
 		sprite->AddKeyFrame((int)BubbleAnim::RED_BLINK, { 6*n, n, n, n });
 		sprite->AddKeyFrame((int)BubbleAnim::RED_BLINK, { 9*n, n, n, n });
 
-		sprite->SetAnimationDelay((int)BubbleAnim::POP, ANIM_DELAY);
-		sprite->AddKeyFrame((int)BubbleAnim::POP, { 0, 0, n, n });
-		sprite->AddKeyFrame((int)BubbleAnim::POP, { 0, 0, n, n });
-
-		SetAnimation((int)BubbleAnim::IDLE);
 	}
-	else if (enemyType == EnemyType::ZENCHAN)
-	{
+	else {
+		if (enemyType == EnemyType::ZENCHAN)		k = 2;
+		else if (enemyType == EnemyType::HIDEGONS)	k = 3;
+		else if (enemyType == EnemyType::MONSTA)	k = 4;
 		sprite->SetAnimationDelay((int)BubbleAnim::IDLE, ANIM_DELAY);
-		for(i = 0; i < 3; ++i)
-			sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (float)i*n, 2*n, n, n });
+		for (i = 0; i < 3; ++i)
+			sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (float)i * n, (float)k * n, n, n });
 
 		sprite->SetAnimationDelay((int)BubbleAnim::RED_START, ANIM_DELAY);
 		for (i = 0; i < 3; ++i)
-			sprite->AddKeyFrame((int)BubbleAnim::RED_START, { (float)i * n + 6*n, 2*n, n, n });
+			sprite->AddKeyFrame((int)BubbleAnim::RED_START, { (float)i * n + 6 * n, (float)k * n, n, n });
 
 		sprite->SetAnimationDelay((int)BubbleAnim::RED_BLINK, ANIM_DELAY);
 		for (i = 0; i < 3; ++i) {
-			sprite->AddKeyFrame((int)BubbleAnim::RED_BLINK, { (float)i*n + 6*n, 2*n, n, n});
-			sprite->AddKeyFrame((int)BubbleAnim::RED_BLINK, { (float)i*n + 9*n, 2*n, n, n });
+			sprite->AddKeyFrame((int)BubbleAnim::RED_BLINK, { (float)i * n + 6 * n, (float)k * n, n, n });
+			sprite->AddKeyFrame((int)BubbleAnim::RED_BLINK, { (float)i * n + 9 * n, (float)k * n, n, n });
 		}
-
-		sprite->SetAnimationDelay((int)BubbleAnim::POP, ANIM_DELAY);
-		sprite->AddKeyFrame((int)BubbleAnim::POP, { 0, 0, n, n });
-		sprite->AddKeyFrame((int)BubbleAnim::POP, { 0, 0, n, n });
-
-		SetAnimation((int)BubbleAnim::IDLE);
 	}
-	else if (enemyType == EnemyType::HIDEGONS)
-	{
-		sprite->SetAnimationDelay((int)BubbleAnim::IDLE, ANIM_DELAY);
-		for (i = 0; i < 3; ++i)
-			sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (float)i * n, 3 * n, n, n });
 
-		sprite->SetAnimationDelay((int)BubbleAnim::RED_START, ANIM_DELAY);
-		for (i = 0; i < 3; ++i)
-			sprite->AddKeyFrame((int)BubbleAnim::RED_START, { (float)i * n + 6 * n, 3 * n, n, n });
+	sprite->SetAnimationDelay((int)BubbleAnim::POP, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::POP, { 0, 0, n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::POP, { n, 0, n, n });
 
-		sprite->SetAnimationDelay((int)BubbleAnim::RED_BLINK, ANIM_DELAY);
-		for (i = 0; i < 3; ++i) {
-			sprite->AddKeyFrame((int)BubbleAnim::RED_BLINK, { (float)i * n + 6 * n, 3 * n, n, n });
-			sprite->AddKeyFrame((int)BubbleAnim::RED_BLINK, { (float)i * n + 9 * n, 3 * n, n, n });
-		}
-
-		sprite->SetAnimationDelay((int)BubbleAnim::POP, ANIM_DELAY);
-		sprite->AddKeyFrame((int)BubbleAnim::POP, { 0, 0, n, n });
-		sprite->AddKeyFrame((int)BubbleAnim::POP, { 0, 0, n, n });
-
-		SetAnimation((int)BubbleAnim::IDLE);
-	}
+	SetAnimation((int)BubbleAnim::IDLE);
 }
