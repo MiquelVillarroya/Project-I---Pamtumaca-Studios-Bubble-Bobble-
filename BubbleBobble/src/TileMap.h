@@ -14,11 +14,18 @@ enum class Tile {
 	AIR = 0,
 
 	// 0 < id < 50: static tiles
-	BLOCK_LVL1 = 1, BLOCK_LVL2 = 2,
-	WALL_LVL2_1 = 3, WALL_LVL2_2 = 4, WALL_LVL2_3 = 5, WALL_LVL2_4 = 6, 
-	NUMBER_BLOCK_LVL1_1 = 7, NUMBER_BLOCK_LVL1_2 = 8, 
+	BLOCK_LVL1 = 1, BLOCK_LVL2 = 2,BLOCK_LVL3=3,BLOCK_LVL4=4,BLOCK_SR=5,BLOCK_LVL5=6,
+
+	WALL_LVL2_1 = 3, WALL_LVL2_2 = 4, WALL_LVL2_3 = 5, WALL_LVL2_4 = 6,WALL_SR_1,WALL_SR_2,WALL_SR_3,WALL_SR_4,
+
+	NUMBER_BLOCK_LVL1_1 = 7, NUMBER_BLOCK_LVL1_2 = 8, NUMER_BLOCK_LVL2_1,NUMBER_BLOCK_LVL2_2,NUMBER_BLOCK_LVL2_3,NUMBER_BLOCK_LVL2_4,NUMBER_BLOC_LVL3_1, NUMBER_BLOC_LVL3_2,
+	NUMBER_BLOC_LVL3_3, NUMBER_BLOC_LVL3_4, NUMBER_BLOC_LVL4_1, NUMBER_BLOC_LVL4_2, NUMBER_BLOC_LVL4_3, NUMBER_BLOC_LVL4_4, NUMBER_BLOC_LVL5_1, NUMBER_BLOC_LVL5_2,
+	NUMBER_BLOC_LVL5_3, NUMBER_BLOC_LVL5_4,
+
 	PLAT_LVL1 = 9,  PLAT_LVL2=10, 
+
 	PLAT_RIGHT_LVL1=11,PLAT_RIGHT_LVL2=12, 
+
 	PLAT_LEFT_LVL1=13, PLAT_LEFT_LVL2=14,
 
 	// 50 <= id < 100: special tiles (mainly objects)
@@ -84,6 +91,8 @@ private:
 	Tile GetTileIndex(int x, int y) const;
 	bool IsTileSolid(Tile tile) const;
 	bool IsTilePlat(Tile tile) const;
+	bool IsTilePlatRight(Tile  tile) const;
+	bool IsTilePlatLeft(Tile  tile) const;
 	bool CollisionX(const Point& p, int distance) const;
 	bool CollisionY(const Point& p, int distance) const;
 
