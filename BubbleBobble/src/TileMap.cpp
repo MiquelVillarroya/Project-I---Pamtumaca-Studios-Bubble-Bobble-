@@ -48,8 +48,20 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::WALL_LVL2_2] = {3*n,  2*n, n + sx, n + sy};
 	dict_rect[(int)Tile::WALL_LVL2_3] = { 5 * n,  2 * n, n + sx, n + sy };
 	dict_rect[(int)Tile::WALL_LVL2_4] = { 6 * n,  2 * n, n + sx, n + sy };
-	dict_rect[(int)Tile::NUMBER_BLOCK_LVL1_1] = { 2 * n,  0, n + sx, n + sy };
-	dict_rect[(int)Tile::NUMBER_BLOCK_LVL1_2] = { 4 * n,  0, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOCK_LVL2_1] = { 8 * n,  2 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOCK_LVL2_2] = { 9 * n,  2 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOCK_LVL2_3] = { 11 * n,  2 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOCK_LVL2_4] = { 12 * n,  2 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_RIGHT_LVL2] = { 0,  2 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_LEFT_LVL2] = { 0,  2 * n, n + sx, n + sy };
+
+
+	dict_rect[(int)Tile::BLOCK_LVL3] = { 0,  2 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::PLAT_LVL3] = { 0,  2 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_1] = { 2 * n,  0, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_2] = { 4 * n,  0, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_3] = { 4 * n,  0, n + sx, n + sy };
+	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_4] = { 4 * n,  0, n + sx, n + sy };
 	dict_rect[(int)Tile::PLAT_RIGHT_LVL2] = { 0,  2 * n, n + sx, n + sy };
 	dict_rect[(int)Tile::PLAT_LEFT_LVL2] = { 0,  2 * n, n + sx, n + sy };
 
@@ -146,6 +158,12 @@ bool TileMap::IsTileSolid(Tile tile) const
 }
 bool TileMap::IsTilePlat(Tile tile) const {
 	return (Tile::PLAT_FIRST <= tile && tile <= Tile::PLAT_LAST);
+}
+bool TileMap::IsTilePlatRight(Tile tile) const {
+	return (Tile::PLAT_RIGHT_FIRST <= tile && tile <= Tile::PLAT_RIGHT_LAST);
+}
+bool TileMap::IsTilePlatLeft(Tile tile) const {
+	return (Tile::PLAT_LEFT_FIRST <= tile && tile <= Tile::PLAT_LEFT_LAST);
 }
 bool TileMap::TestCollisionWallLeft(const AABB& box) const
 {
