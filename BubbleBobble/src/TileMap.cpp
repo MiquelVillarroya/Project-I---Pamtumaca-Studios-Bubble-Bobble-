@@ -237,7 +237,7 @@ bool TileMap::TestCollisionWallRight(const AABB& box, int* px) const
 	{
 		tile_x = p.x / TILE_SIZE;
 
-		*px = tile_x * TILE_SIZE - 1;
+		*px = tile_x * TILE_SIZE;
 		return true;
 	}
 	return false;
@@ -265,7 +265,7 @@ bool TileMap::TestCollisionPlatRight(const AABB& box, int* px) const
 	{
 		tile_x = p.x / TILE_SIZE;
 
-		*px = (tile_x - 1) * TILE_SIZE;
+		*px = tile_x * TILE_SIZE;
 		return true;
 	}
 	return false;
@@ -301,6 +301,29 @@ bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 bool TileMap::TestFalling(const AABB& box) const
 {
 	return !CollisionY(box.pos + Point(0, box.height), box.width);
+}
+bool TileMap::TestCollisionAbovePlatLeft(const AABB& box) const
+{
+	int x1, y1, x2;
+	x1 = box.pos.x / TILE_SIZE;
+	y1 = (box.pos.y + box.height) / TILE_SIZE;
+	x2 = (box.pos.x - 1) / TILE_SIZE;
+
+
+	if (IsTilePlatSide(GetTileIndex(x1, y1)) && !IsTilePlatSide(GetTileIndex(x2, y1)))
+		return true;
+	return false;
+}
+bool TileMap::TestCollisionAbovePlatRight(const AABB& box) const
+{
+	int x1, x2, y1, y2;
+	x1 = (box.pos.x + box.width) / TILE_SIZE;
+	y1 = (box.pos.y + box.height) / TILE_SIZE;
+	x2 = (box.pos.x + box.width + 1)/ TILE_SIZE;
+
+	if (IsTilePlatSide(GetTileIndex(x1, y1)) && !IsTilePlatSide(GetTileIndex(x2, y1)))
+		return true;
+	return false;
 }
 bool TileMap::CollisionX(const Point& p, int distance) const
 {
@@ -395,7 +418,7 @@ AABB TileMap::GetSweptAreaX(const AABB& hitbox) const
 
 	//Compute left tile index
 	collision = false;
-	x = column - 1;
+	x = column; //May be missing a "-1" that can be causing errors
 	while (!collision && x >= 0)
 	{
 		//Iterate over the tiles within the vertical range
@@ -407,6 +430,11 @@ AABB TileMap::GetSweptAreaX(const AABB& hitbox) const
 				collision = true;
 				break;
 			}
+			else if (IsTilePlatSide(GetTileIndex(x, y + 1)))
+			{
+				collision = true;
+				break;
+			}
 		}
 		if (!collision) x--;
 	}
@@ -414,7 +442,7 @@ AABB TileMap::GetSweptAreaX(const AABB& hitbox) const
 
 	//Compute right tile index
 	collision = false;
-	x = column + 1;
+	x = column; //May be missing a "+1" that can be causing errors
 	while (!collision && x < LEVEL_WIDTH)
 	{
 		//Iterate over the tiles within the vertical range
@@ -424,6 +452,12 @@ AABB TileMap::GetSweptAreaX(const AABB& hitbox) const
 			if (IsTileSolid(GetTileIndex(x, y)))
 			{
 				collision = true;
+				break;
+			}
+			else if (IsTilePlatSide(GetTileIndex(x, y + 1)))
+			{
+				collision = true;
+				x++;
 				break;
 			}
 		}

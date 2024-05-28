@@ -81,6 +81,16 @@ AABB EnemyManager::GetEnemyHitBox(const Point& pos, EnemyType type) const
 		width = ENEMY_PHYSICAL_WIDTH;
 		height = ENEMY_PHYSICAL_WIDTH;
 	}
+	else if (type == EnemyType::MONSTA)
+	{
+		width = ENEMY_PHYSICAL_WIDTH;
+		height = ENEMY_PHYSICAL_WIDTH;
+	}
+	else if (type == EnemyType::BANEBOU)
+	{
+		width = ENEMY_PHYSICAL_WIDTH;
+		height = ENEMY_PHYSICAL_WIDTH;
+	}
 	else
 	{
 		LOG("Internal error while computing hitbox for an invalid enemy type");

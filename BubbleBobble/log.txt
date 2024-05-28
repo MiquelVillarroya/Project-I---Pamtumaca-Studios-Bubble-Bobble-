@@ -1,17 +1,11 @@
-Project executed on 28-05-2024 at 13:05:00.
+Project executed on 28-05-2024 at 18:08:26.
 main.cpp(13): Application start
-EnemyManager.cpp(86): Internal error while computing hitbox for an invalid enemy type
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-EnemyManager.cpp(86): Internal error while computing hitbox for an invalid enemy type
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-EnemyManager.cpp(86): Internal error while computing hitbox for an invalid enemy type
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(395): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(398): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(398): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(398): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(398): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(398): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(398): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(398): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(398): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(398): Internal error loading scene: invalid entity or object tile id

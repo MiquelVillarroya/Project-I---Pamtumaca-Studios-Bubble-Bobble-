@@ -36,8 +36,9 @@ public:
 private:
 
 	//Movement
-	void MoveX();
-	void MoveY();
+	void MoveX(const AABB& box);
+	void MoveY(const AABB& box);
+	void StartFalling();
 
 	ZenchanState state;
 
