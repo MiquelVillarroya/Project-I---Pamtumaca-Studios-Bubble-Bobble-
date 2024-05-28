@@ -35,6 +35,7 @@ public:
     AppStatus Update();
     void Render();
     void Cleanup();
+    void CinematicBubBob();
     
     Music GetCurrentTrack() const;
     void ChangeTrack(MusicTrack track);
@@ -51,13 +52,15 @@ private:
 
     GameState state;
     Scene *scene;
-    const Texture2D* img_menu, * img_intro1, * img_intro2, * game_over, * transition, * stage2, * stage1;
+    const Texture2D* img_menu, * img_intro1, * img_intro2, * game_over, * transition, * stage2, * stage1, *cinematic_complete;
     float introTimer;;
 
     //Temporary (for transition)
     float totalTime = 1.5f;
     float timeSpent = 0.0;
 
+    Entity* CinematicBub;
+    Entity* CinematicBob;
 
     //To work with original game units and then scale the result
     RenderTexture2D target;

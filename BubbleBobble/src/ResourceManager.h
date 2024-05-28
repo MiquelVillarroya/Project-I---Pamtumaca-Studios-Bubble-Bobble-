@@ -18,6 +18,7 @@ enum class Resource {
     IMG_MONSTA,
     GAME_OVER,
     IMG_FONT,
+    CINEMATIC_BACKGROUND,
 
     //The next images are temporary (for the transition)
     TRANSITION,

@@ -56,7 +56,10 @@ enum class PlayerAnim {
 	FALLING_LEFT, FALLING_RIGHT,
 	SHOT_RIGHT, SHOT_LEFT,
 	DEATH,
+	
 	NUM_ANIMATIONS
+	
+
 };
 
 class Player: public Entity

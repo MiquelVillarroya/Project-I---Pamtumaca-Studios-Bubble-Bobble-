@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include <cmath>
 #include "Globals.h"
+#include "Sprite.h"
 
 Entity::Entity() :
 	pos({ 0,0 }), dir({ 0,0 }), width(0), height(0), frame_width(0), frame_height(0), render(nullptr)
@@ -31,6 +32,52 @@ Entity::~Entity()
 		render = nullptr;
 	}
 }
+
+AppStatus Entity::Animations() {
+
+
+	float i;
+	const int n = 16;
+	ResourceManager& data = ResourceManager::Instance();
+	if (data.LoadTexture(Resource::IMG_PLAYER, "images/bubMove.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	render = new Sprite(data.GetTexture(Resource::IMG_PLAYER));
+	if (render == nullptr)
+	{
+		LOG("Failed to allocate memory for player sprite");
+		return AppStatus::ERROR;
+	}
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetNumberAnimations((int)EntityAnim::NUM_ANIMATIONS);
+
+	/*sprite->SetAnimationDelay((int)EntityAnim::BUBCINEMATIC, ANIM_DELAY);
+	for (i = 0;i <3;++i) {
+
+		sprite->AddKeyFrame((int)EntityAnim::BUBCINEMATIC, { i * n, 16 * n, 2 * n, 2 * n });
+
+	}*/
+	
+	sprite->SetAnimationDelay((int)EntityAnim::BUBCINEMATIC, ANIM_DELAY);
+	sprite->AddKeyFrame((int)EntityAnim::BUBCINEMATIC, { 0 * n, 16 * n, 2 * n, 2 * n });
+	sprite->AddKeyFrame((int)EntityAnim::BUBCINEMATIC, { 2 * n, 16 * n, 2 * n, 2 * n });
+	sprite->AddKeyFrame((int)EntityAnim::BUBCINEMATIC, { 4 * n, 16 * n, 2 * n, 2 * n });
+}
+void Entity::SetAnimationEntity(int id)
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetAnimation(id);
+	sprite->Update();
+	Draw();
+}
+void Entity::Spriteset()
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->Update();
+	Draw();
+}
+
 void Entity::SetPos(const Point& p)
 {
 	pos = p;

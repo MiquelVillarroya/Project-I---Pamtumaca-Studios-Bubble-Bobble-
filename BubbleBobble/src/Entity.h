@@ -7,7 +7,16 @@
 #include "AABB.h"
 
 enum class Look { RIGHT, LEFT };
+enum class EntityAnim {
+	
+	BUBCINEMATIC,
+	BOBCINEMATIC,
+	NUM_ANIMATIONS
 
+	
+
+
+};
 class Entity
 {
 public:
@@ -20,6 +29,9 @@ public:
 	void Set(const Point& p, const Point& d, int w, int h, int framew, int frameh);
 	void SetPos(const Point& p);
 	void Update();
+	AppStatus Animations();
+	void SetAnimationEntity(int id);
+	void Spriteset();
 	AABB GetHitbox() const;
 	Point GetPos() const;
 	Point GetDir() const;

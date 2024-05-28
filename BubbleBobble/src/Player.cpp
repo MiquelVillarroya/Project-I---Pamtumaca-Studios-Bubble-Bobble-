@@ -103,6 +103,8 @@ AppStatus Player::Initialise()
 	}
 		
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
+	
+	
 
 	return AppStatus::OK;
 }

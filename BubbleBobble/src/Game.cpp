@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "Player.h"
 #include "Scene.h"
+#include "Entity.h"
 
 Sound sounds[10];
 
@@ -39,6 +40,9 @@ Game::Game()
     target = {};
     src = {};
     dst = {};
+
+    CinematicBub = new Entity();
+    CinematicBob = new Entity();
 }
 Game::~Game()
 {
@@ -123,7 +127,19 @@ AppStatus Game::LoadResources()
     }
     stage2 = data.GetTexture(Resource::STAGE2);
 
-  
+    if (data.LoadTexture(Resource::CINEMATIC_BACKGROUND, "images/cinematic_complete.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    cinematic_complete= data.GetTexture(Resource::CINEMATIC_BACKGROUND);
+
+
+
+
+    CinematicBubBob();
+
+
+
     tracks[GAME_MUS].looping = true;
     tracks[GAME_OVER_MUS].looping = false;
 
@@ -154,6 +170,20 @@ void Game::FinishPlay()
     delete scene;
     scene = nullptr;
 }
+
+void Game::CinematicBubBob() {
+
+
+    Point p(80, 130);
+    CinematicBub->Set(p, p, 32, 32, 32, 32);
+    CinematicBub->Animations();
+    CinematicBub->SetAnimationEntity((int)EntityAnim::BUBCINEMATIC);
+
+  
+
+}
+
+
 AppStatus Game::Update()
 {
     //Check if user attempts to close the window, either by clicking the close button or by pressing Alt+F4
@@ -179,7 +209,22 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_SPACE))
             {
                 if(BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
+                state = GameState::CINEMATIC;
+                
+            }
+            break;
+        case GameState::CINEMATIC:
+            if (IsKeyPressed(KEY_ESCAPE)) {
+
+                state=GameState::MAIN_MENU;
+                
+
+            }
+            if (IsKeyPressed(KEY_P)) {
+
+
                 state = GameState::PLAYING;
+
             }
             break;
 
@@ -241,8 +286,10 @@ void Game::Render()
             DrawTexture(*img_menu, 0, 0, WHITE);
             break;
 
-
-
+        case GameState::CINEMATIC:
+            DrawTexture(*cinematic_complete, 0, 0, WHITE);
+            CinematicBub->Spriteset();
+            break;
 
         case GameState::PLAYING:
             scene->Render();
