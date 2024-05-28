@@ -1,6 +1,7 @@
 #pragma once
 #include "Shot.h"
 #include "EnemyManager.h"
+#include "ParticleManager.h"
 #include <array>
 
 class EnemyManager;
@@ -18,6 +19,9 @@ public:
 
 	//Set the TileMap reference for each shot for managing shot collisions
 	void SetTileMap(TileMap* tilemap);
+	//Set the TileMap reference for the Particle Manager
+	void SetParticleManager(ParticleManager* particles);
+
 
 	//Add a new shot with the given position and direction
 	void Add(const Point& pos, const Point& dir, ShotType type, EnemyType enemyType = EnemyType::NONE);
@@ -42,6 +46,7 @@ private:
 	//This class does not own the object, it only holds a reference to it
 	EnemyManager* enemies;
 	TileMap* map;
+	ParticleManager* particles;
 
 };
 

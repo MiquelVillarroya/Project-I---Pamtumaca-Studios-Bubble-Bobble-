@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Shot.h"
 #include "Enemy.h"
+#include "ParticleManager.h"
 
 //#defines here
 
@@ -61,5 +62,7 @@ private:
 
 	//Enemy Management
 	EnemyType enemyType;
-	void SpawnEnemy();
+
+	//Particle Manager reference
+	ParticleManager* particles;
 };

@@ -418,24 +418,6 @@ void Player::LogicJumping()
 		}
 	}
 }
-//bool Player::CheckBubbleCollision(const AABB& enemy_box)
-//{
-//	AABB bubl_box;
-//
-//	auto it = bubbles.begin();
-//	while (it != bubbles.end())
-//	{
-//		bubl_box = (*it)->GetHitbox();
-//		if (bubl_box.TestAABB(enemy_box))
-//		{
-//			delete* it;
-//			it = bubbles.erase(it);
-//			return true;
-//		}
-//		++it;
-//	}
-//	return false;
-//}
 void Player::DrawDebug(const Color& col) const
 {	
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);

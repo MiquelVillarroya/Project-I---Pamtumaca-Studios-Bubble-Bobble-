@@ -15,7 +15,7 @@
 #define BUBBLE_FORCE_DELAY		2
 
 //Movement advance
-#define HORIZONTAL_ADVANCE		10
+#define HORIZONTAL_ADVANCE		7
 
 class PlayerBubble : public Shot {
 public:

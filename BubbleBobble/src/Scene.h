@@ -56,6 +56,7 @@ private:
 
     //Shots thrown by enemies
     ShotManager* shots;
+    ParticleManager* particles;
 
     Camera2D camera;
     DebugMode debug;

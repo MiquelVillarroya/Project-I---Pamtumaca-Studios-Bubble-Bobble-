@@ -78,6 +78,10 @@ public:
 	bool TestCollisionWallRight(const AABB& box) const;
 	bool TestCollisionPlatRight(const AABB& box) const;
 	bool TestCollisionPlatLeft(const AABB& box) const;
+	bool TestCollisionWallLeft(const AABB& box, int* px) const;
+	bool TestCollisionWallRight(const AABB& box, int* px) const;
+	bool TestCollisionPlatRight(const AABB& box, int* px) const;
+	bool TestCollisionPlatLeft(const AABB& box, int* px) const;
 
 	
 	//Test collision with the ground and update 'py' with the maximum y-position to prevent

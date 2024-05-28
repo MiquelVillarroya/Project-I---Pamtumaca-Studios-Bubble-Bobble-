@@ -43,7 +43,6 @@ bool PlayerBubble::Update()
 	int finishFlag = false;
 
 	AABB box;
-	int prev_x = pos.x;
 	forceDelay--;
 	if (forceDelay == 0)
 	{
@@ -52,9 +51,8 @@ bool PlayerBubble::Update()
 		forceDelay = BUBBLE_FORCE_DELAY;
 		forceMax++;
 		box = GetHitbox();
-		if (pos.x < 16 || pos.x > 226 || forceMax == BUBBLE_MAX_FORCE)
+		if (forceMax == BUBBLE_MAX_FORCE || map->TestCollisionWallLeft(box, &pos.x) || map->TestCollisionPlatLeft(box, &pos.x) || map->TestCollisionWallRight(box, &pos.x) || map->TestCollisionPlatRight(box, &pos.x))
 		{
-			//map->TestCollisionWallLeft();
 			finishFlag = true;
 		}
 	}

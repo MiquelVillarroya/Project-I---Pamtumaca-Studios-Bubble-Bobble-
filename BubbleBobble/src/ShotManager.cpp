@@ -6,6 +6,7 @@ ShotManager::ShotManager()
 {
 	enemies = nullptr;
 	map = nullptr;
+	particles = nullptr;
 }
 ShotManager::~ShotManager()
 {
@@ -28,6 +29,10 @@ void ShotManager::SetEnemyManager(EnemyManager* enemies)
 void ShotManager::SetTileMap(TileMap* tilemap)
 {
 	map = tilemap;
+}
+void ShotManager::SetParticleManager(ParticleManager* particles)
+{
+	this->particles = particles;
 }
 void ShotManager::Add(const Point& pos, const Point& dir, ShotType type, EnemyType enemyType)
 {
@@ -111,23 +116,36 @@ void ShotManager::Update(const AABB& temp_hitbox)
 			playerHit = box.TestAABB(temp_hitbox);
 
 			//Add enemy
-			if (enemyHit != EnemyType::NONE)
+			if (enemyHit != EnemyType::_NULL)
 			{
-				Look look = Look::LEFT;
-				AABB enemy_box, area;
 				Point p;
 
-				p = shot->GetPos();
-				enemy_box = enemies->GetEnemyHitBox(p, enemyHit);
-				area = map->GetSweptAreaX(enemy_box);
-				if (p.x <= LEVEL_WIDTH / 2) look = Look::RIGHT;
-				else if (p.y > LEVEL_WIDTH / 2) look = Look::LEFT;
+				if (enemyHit != EnemyType::NONE)
+				{
+					Look look = Look::LEFT;
+					AABB enemy_box, area;
 
-				enemies->Add(p, enemyHit, area, look);
+					p = shot->GetPos();
+					enemy_box = enemies->GetEnemyHitBox(p, enemyHit);
+					area = map->GetSweptAreaX(enemy_box);
+					if (p.x <= LEVEL_WIDTH / 2) look = Look::RIGHT;
+					else if (p.y > LEVEL_WIDTH / 2) look = Look::LEFT;
+
+					enemies->Add(p, enemyHit, area, look);
+				}
+
+				shot->SetAlive(false);
+				p.x = box.pos.x;
+				p.y = box.pos.y;
+				particles->Add(p);
 			}
 			else if (playerHit)
 			{
 				shot->SetAlive(false);
+				Point p;
+				p.x = box.pos.x;
+				p.y = box.pos.y;
+				particles->Add(p);
 			}
 		}
 	}

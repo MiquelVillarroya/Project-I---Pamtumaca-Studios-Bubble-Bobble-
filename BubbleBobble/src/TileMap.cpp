@@ -214,6 +214,62 @@ bool TileMap::TestCollisionPlatRight(const AABB& box) const
 {
 	return CollisionXPlat(box.pos + Point(box.width - 1, 0), box.height);
 }
+bool TileMap::TestCollisionWallLeft(const AABB& box, int* px) const
+{
+	Point p(*px, box.pos.y);	//control point
+	int tile_x;
+
+	if (CollisionX(box.pos, box.height))
+	{
+		tile_x = p.x / TILE_SIZE;
+		 
+		*px = (tile_x + 1)* TILE_SIZE;
+		return true;
+	}
+	return false;
+}
+bool TileMap::TestCollisionWallRight(const AABB& box, int* px) const
+{
+	Point p(*px, box.pos.y);	//control point 
+	int tile_x;
+
+   	if (CollisionX(box.pos + Point(box.width - 1, 0), box.height))
+	{
+		tile_x = p.x / TILE_SIZE;
+
+		*px = tile_x * TILE_SIZE - 1;
+		return true;
+	}
+	return false;
+}
+bool TileMap::TestCollisionPlatLeft(const AABB& box, int* px) const
+{
+	Point p(*px, box.pos.y);	//control point
+	int tile_x;
+
+	if (CollisionXPlat(box.pos, box.height))
+	{
+		tile_x = p.x / TILE_SIZE;
+
+		*px = (tile_x + 1) * TILE_SIZE;
+		return true;
+	}
+	return false;
+}
+bool TileMap::TestCollisionPlatRight(const AABB& box, int* px) const
+{
+	Point p(*px, box.pos.y);	//control point
+	int tile_x;
+
+	if (CollisionXPlat(box.pos + Point(box.width - 1, 0), box.height))
+	{
+		tile_x = p.x / TILE_SIZE;
+
+		*px = (tile_x - 1) * TILE_SIZE;
+		return true;
+	}
+	return false;
+}
 bool TileMap::TestCollisionCeiling(const AABB& box, int* py) const
 {
 	Point p (box.pos.x, *py - box.height);	//control point

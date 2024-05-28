@@ -102,6 +102,12 @@
     <ClCompile Include="src\Monsta.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="src\ParticleManager.cpp">
+      <Filter>Entities\Shots</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle.cpp">
+      <Filter>Entities\Shots</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity.h">
@@ -181,6 +187,12 @@
     </ClInclude>
     <ClInclude Include="src\Monsta.h">
       <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle.h">
+      <Filter>Entities\Shots</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleManager.h">
+      <Filter>Entities\Shots</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

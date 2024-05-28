@@ -12,6 +12,7 @@ Bubble::Bubble(const Point& p, const Point& d, int width, int height, int frame_
 	state = BubbleState::NORMAL;
 	enemyType = type;
 	bubbleTimer = 0;
+	particles = nullptr;
 }
 Bubble::~Bubble()
 {
@@ -31,7 +32,7 @@ AppStatus Bubble::Initialise()
 }
 EnemyType Bubble::Update(const AABB& box)
 {
-	EnemyType popFlag = EnemyType::NONE;;
+	EnemyType popFlag = EnemyType::_NULL;
 	MoveX();
 	MoveY();
 	BubbleCounter(popFlag);
@@ -73,22 +74,18 @@ void Bubble::MoveY()
 }
 void Bubble::BubbleCounter(EnemyType& flag)
 {
-bubbleTimer += GetFrameTime();
-if (bubbleTimer >= POP_TIME + 0.5)
+	bubbleTimer += GetFrameTime();
+
+	if (bubbleTimer >= POP_TIME && GetAnimation() == BubbleAnim::RED_BLINK)
 	{
-		this->SetAlive(false);
-		if (enemyType != EnemyType::NONE)	flag = enemyType;
+		if (enemyType != EnemyType::_NULL)	flag = enemyType;
 	}
-else if (bubbleTimer >= POP_TIME && GetAnimation() == BubbleAnim::RED_BLINK)
-	{
-		SetAnimation((int)BubbleAnim::POP);
-	}
-else if (bubbleTimer >= BLINK_TIME && GetAnimation() == BubbleAnim::RED_START)
+	else if (bubbleTimer >= BLINK_TIME && GetAnimation() == BubbleAnim::RED_START)
 	{
 		state = BubbleState::BLINK_END;
 		SetAnimation((int)BubbleAnim::RED_BLINK);
 	}
-else if (bubbleTimer >= RED_TIME && GetAnimation() == BubbleAnim::IDLE)
+	else if (bubbleTimer >= RED_TIME && GetAnimation() == BubbleAnim::IDLE)
 	{
 		state = BubbleState::RED_END;
 		SetAnimation((int)BubbleAnim::RED_START);
@@ -101,7 +98,7 @@ BubbleAnim Bubble::GetAnimation()
 }
 void Bubble::SetAnimations()
 {
-	int i, k;
+	int i, k = 2;
 	const int n = BUBBLE_FRAME_SIZE;
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);

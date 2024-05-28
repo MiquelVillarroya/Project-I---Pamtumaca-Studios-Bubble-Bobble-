@@ -108,6 +108,14 @@ AppStatus Scene::Init()
 		return AppStatus::ERROR;
 	}
 
+	//Create particle manager 
+	particles = new ParticleManager();
+	if (particles == nullptr)
+	{
+		LOG("Failed to allocate memory for Particle Manager");
+		return AppStatus::ERROR;
+	}
+
 	//Create level 
     level = new TileMap();
     if (level == nullptr)
@@ -136,6 +144,8 @@ AppStatus Scene::Init()
 	enemies->SetShotManager(shots);
 	//Assign the shot manager reference to the enemy manager to manage enemy collisions
 	shots->SetEnemyManager(enemies);
+	//Assign the particle manager reference to the shot manager to add particles when shots collide
+	shots->SetParticleManager(particles);
 
 	//Create text font
 	font = new Text();
@@ -435,6 +445,7 @@ void Scene::Update()
 	hitbox = player->GetHitbox();
 	enemies->Update(hitbox, hit);
 	shots->Update(hitbox);
+	particles->Update();
 
 	if (hit) player->MinusLife();
 }
@@ -457,6 +468,7 @@ void Scene::Render()
 		player->DrawDebug(GREEN);
 		shots->DrawDebug(GRAY);
 	}
+	particles->Draw();
 
 	EndMode2D();
 
