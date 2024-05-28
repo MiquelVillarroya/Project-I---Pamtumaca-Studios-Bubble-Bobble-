@@ -241,6 +241,9 @@ void Game::Render()
             DrawTexture(*img_menu, 0, 0, WHITE);
             break;
 
+
+
+
         case GameState::PLAYING:
             scene->Render();
             if (GetMusicTimePlayed(currentTrack) >= 100) SeekMusicStream(currentTrack, 45);

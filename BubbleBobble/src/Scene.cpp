@@ -419,8 +419,8 @@ void Scene::Update()
 	//Debug levels instantly
 	if (IsKeyPressed(KEY_ONE))		{LoadLevel(1); stage = 1;}
 	else if (IsKeyPressed(KEY_TWO))	{LoadLevel(2); stage = 2;}
-	else if (IsKeyPressed(KEY_THREE)) { LoadLevel(3); stage = 3; }
-	else if (IsKeyPressed(KEY_FOUR)) { LoadLevel(4); stage = 4; }
+	else if (IsKeyPressed(KEY_F3)) { LoadLevel(3); stage = 3; }
+	else if (IsKeyPressed(KEY_F4)) { LoadLevel(4); stage = 4; }
 
 
 	if (enemies->IsEmpty() == true)
