@@ -288,7 +288,7 @@ void Game::Render()
 
         case GameState::CINEMATIC:
             DrawTexture(*cinematic_complete, 0, 0, WHITE);
-            CinematicBub->Spriteset();
+            CinematicBub->DrawAnimation();
             break;
 
         case GameState::PLAYING:

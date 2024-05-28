@@ -68,10 +68,9 @@ void Entity::SetAnimationEntity(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetAnimation(id);
-	sprite->Update();
-	Draw();
+
 }
-void Entity::Spriteset()
+void Entity::DrawAnimation()
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();

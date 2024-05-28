@@ -31,7 +31,7 @@ public:
 	void Update();
 	AppStatus Animations();
 	void SetAnimationEntity(int id);
-	void Spriteset();
+	void DrawAnimation();
 	AABB GetHitbox() const;
 	Point GetPos() const;
 	Point GetDir() const;
