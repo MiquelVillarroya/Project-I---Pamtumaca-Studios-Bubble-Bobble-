@@ -433,6 +433,7 @@ AABB TileMap::GetSweptAreaX(const AABB& hitbox) const
 			else if (IsTilePlatSide(GetTileIndex(x, y + 1)))
 			{
 				collision = true;
+				x--
 				break;
 			}
 		}
