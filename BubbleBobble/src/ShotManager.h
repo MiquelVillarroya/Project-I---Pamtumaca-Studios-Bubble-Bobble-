@@ -2,6 +2,7 @@
 #include "Shot.h"
 #include "EnemyManager.h"
 #include "ParticleManager.h"
+#include "ObjectManager.h"
 #include <array>
 
 class EnemyManager;
@@ -21,7 +22,8 @@ public:
 	void SetTileMap(TileMap* tilemap);
 	//Set the TileMap reference for the Particle Manager
 	void SetParticleManager(ParticleManager* particles);
-
+	//Set the objects for each enemy to manage collisions and logic
+	void SetObjectManager(ObjectManager* objects);
 
 	//Add a new shot with the given position and direction
 	void Add(const Point& pos, const Point& dir, ShotType type, EnemyType enemyType = EnemyType::NONE);
@@ -47,6 +49,7 @@ private:
 	EnemyManager* enemies;
 	TileMap* map;
 	ParticleManager* particles;
+	ObjectManager* objects;
 
 };
 

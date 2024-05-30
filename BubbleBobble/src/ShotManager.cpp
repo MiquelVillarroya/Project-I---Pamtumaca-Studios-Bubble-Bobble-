@@ -7,6 +7,7 @@ ShotManager::ShotManager()
 	enemies = nullptr;
 	map = nullptr;
 	particles = nullptr;
+	objects = nullptr;
 }
 ShotManager::~ShotManager()
 {
@@ -25,6 +26,10 @@ AppStatus ShotManager::Initialise()
 void ShotManager::SetEnemyManager(EnemyManager* enemies)
 {
 	this->enemies = enemies;
+}
+void ShotManager::SetObjectManager(ObjectManager* objects)
+{
+	this->objects = objects;
 }
 void ShotManager::SetTileMap(TileMap* tilemap)
 {
@@ -141,6 +146,10 @@ void ShotManager::Update(const AABB& temp_hitbox)
 			}
 			else if (playerHit)
 			{
+				if (enemyHit!=EnemyType::NONE)
+				{
+					objects->Add({ 100,100 }, ObjectType::BANANA);
+				}
 				shot->SetAlive(false);
 				Point p;
 				p.x = box.pos.x;

@@ -5,6 +5,8 @@
 
 //Function return values
 enum class AppStatus { OK = 0, ERROR, QUIT };
+enum class ObjectType { MUSHROOM, BANANA, CHERRY, ICE_CREAM, FLAM, CAKE, YELLOW_CANDY, SHOES };
+
 
 //Main return values
 #define EXIT_SUCCESS	0

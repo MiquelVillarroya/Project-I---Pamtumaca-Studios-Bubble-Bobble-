@@ -11,6 +11,8 @@ Scene::Scene()
 	shots = nullptr;
 	particles = nullptr;
 	font = nullptr;
+	objects = nullptr;
+	scoreParticles = nullptr;
 
 	//Temporary for killing the scene
 	stage = 1;
@@ -43,11 +45,12 @@ Scene::~Scene()
         delete level;
         level = nullptr;
     }
-	for (Entity* obj : objects)
+	if (objects != nullptr)
 	{
-		delete obj;
+		objects->Release();
+		delete objects;
+		objects = nullptr;
 	}
-	objects.clear();
 	if (enemies != nullptr)
 	{
 		enemies->Release();
@@ -63,6 +66,11 @@ Scene::~Scene()
 	{
 		delete font;
 		font = nullptr;
+	}
+	if (scoreParticles != nullptr)
+	{
+		delete scoreParticles;
+		scoreParticles = nullptr;
 	}
 }
 AppStatus Scene::Init()
@@ -116,7 +124,20 @@ AppStatus Scene::Init()
 		LOG("Failed to allocate memory for Particle Manager");
 		return AppStatus::ERROR;
 	}
-
+	//Create object manager 
+	objects = new ObjectManager();
+	if (objects == nullptr)
+	{
+		LOG("Failed to allocate memory for Particle Manager");
+		return AppStatus::ERROR;
+	}
+	//Create particle manager 
+	scoreParticles = new ParticleScoreManager();
+	if (scoreParticles == nullptr)
+	{
+		LOG("Failed to allocate memory for Particle Manager");
+		return AppStatus::ERROR;
+	}
 	//Create level 
     level = new TileMap();
     if (level == nullptr)
@@ -143,12 +164,16 @@ AppStatus Scene::Init()
 	player->SetShotManager(shots);
 	//Assign the bubble manager reference to the enemy manager so enemies can add shots
 	enemies->SetShotManager(shots);
+	//Assign the object manager reference to the enemy manager so enemies can add shots
+	shots->SetObjectManager(objects);
 	//Assign the shot manager reference to the enemy manager to manage enemy collisions
 	shots->SetEnemyManager(enemies);
 	//Assign the particle manager reference to the shot manager to add particles when shots collide
 	shots->SetParticleManager(particles);
 	//Assign the enemy manager reference to the player for enemy AI and tracking
 
+	//Assign the Score Particle Manager to the objects
+	objects->SetParticleScoreManager(scoreParticles);
 
 	//Create text font
 	font = new Text();
@@ -343,36 +368,6 @@ AppStatus Scene::LoadLevel(int stage)
 				{
 					player->SetPos(pos);
 				}
-				else if (tile == Tile::FOOD_MUSHROOM)
-				{
-					obj = new Object(pos, ObjectType::MUSHROOM);
-					objects.push_back(obj);
-				}
-				else if (tile == Tile::FOOD_BANANA)
-				{
-					obj = new Object(pos, ObjectType::BANANA);
-					objects.push_back(obj);
-				}
-				else if (tile == Tile::FOOD_CHERRY)
-				{
-					obj = new Object(pos, ObjectType::CHERRY);
-					objects.push_back(obj);
-				}
-				else if (tile == Tile::FOOD_ICE_CREAM)
-				{
-					obj = new Object(pos, ObjectType::ICE_CREAM);
-					objects.push_back(obj);
-				}
-				else if (tile == Tile::FOOD_FLAM)
-				{
-					obj = new Object(pos, ObjectType::FLAM);
-					objects.push_back(obj);
-				}
-				else if (tile == Tile::FOOD_CAKE)
-				{
-					obj = new Object(pos, ObjectType::CAKE);
-					objects.push_back(obj);
-				}
 				else if (tile == Tile::ZENCHAN)
 				{
 					pos.x += (ENEMY_FRAME_SIZE - ENEMY_PHYSICAL_WIDTH) / 2;
@@ -439,16 +434,30 @@ void Scene::Update()
 		}
 	}
 
-	//Level, player and objects
+	//Level, player
 	level->Update();
 	player->Update();
-	CheckObjectCollisions();
 
-	//Bubbles & Enemies
+	//Bubbles & Enemies & Objects
 	hitbox = player->GetHitbox();
 	enemies->Update(hitbox, hit);
 	shots->Update(hitbox);
+	int score = objects->Update(hitbox);
 	particles->Update();
+
+	//Update score
+	if (score > 0)
+	{
+		player->IncrScore(score);
+	}
+	else if (score == -1)
+	{
+
+	}
+	else if (score == -2)
+	{
+		//player->IncreaseSpeed();
+	}
 
 	if (hit) player->MinusLife();
 }
@@ -459,19 +468,20 @@ void Scene::Render()
     level->Render();
 	if (debug == DebugMode::OFF || debug == DebugMode::SPRITES_AND_HITBOXES)
 	{
-		RenderObjects();
 		enemies->Draw();
 		player->Draw();
 		shots->Draw();
+		objects->Draw();
 	}
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
 	{
-		RenderObjectsDebug(YELLOW);
 		enemies->DrawDebug();
 		player->DrawDebug(GREEN);
 		shots->DrawDebug(GRAY);
+		objects->DrawDebug(ORANGE);
 	}
 	particles->Draw();
+	scoreParticles->Draw();
 
 	EndMode2D();
 
@@ -483,50 +493,11 @@ void Scene::Release()
 	player->Release();
 	ClearLevel();
 }
-void Scene::CheckObjectCollisions()
-{
-	AABB player_box, obj_box;
-
-	player_box = player->GetHitbox();
-	auto it = objects.begin();
-	while (it != objects.end())
-	{
-		obj_box = (*it)->GetHitbox();
-		if (player_box.TestAABB(obj_box))
-		{
-			player->IncrScore((*it)->Points());
-
-			//Delete the object
-			delete* it;
-			//Erase the object from the vector and get the iterator to the next valid element
-			it = objects.erase(it);
-		}
-		else
-		{
-			//Move to the next object
-			++it;
-		}
-	}
-}
 void Scene::ClearLevel()
 {
-	for (Object* obj : objects)
-	{
-		delete obj;
-	}
-	objects.clear();
+	objects->Release();
 	enemies->Release();
 	shots->Release();
-}
-void Scene::RenderObjects() const
-{
-	for (Object* obj : objects)
-		obj->Draw();
-}
-void Scene::RenderObjectsDebug(const Color& col) const
-{
-	for (Object* obj : objects)
-		obj->DrawDebug(col);
 }
 void Scene::RenderGUI() const
 {

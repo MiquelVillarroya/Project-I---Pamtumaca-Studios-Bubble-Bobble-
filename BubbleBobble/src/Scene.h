@@ -7,6 +7,7 @@
 #include "EnemyManager.h"
 #include "ShotManager.h"
 #include "Text.h"
+#include "ObjectManager.h"
 
 //LAST STAGE
 #define MAX_STAGE   4
@@ -34,10 +35,7 @@ public:
 
 private:
   
-    void CheckObjectCollisions(); 
     void ClearLevel();
-    void RenderObjects() const;
-    void RenderObjectsDebug(const Color& col) const;
 
     void RenderGUI() const;
 
@@ -48,15 +46,16 @@ private:
     TileMap *level;
     int stage;
 
-    //Dynamic objects of the level: items and collectables
-    std::vector<Object*> objects;
-
     //Enemies present in the level
     EnemyManager* enemies;
 
     //Shots thrown by enemies
     ShotManager* shots;
     ParticleManager* particles;
+
+    //Objects
+    ObjectManager* objects;
+    ParticleScoreManager* scoreParticles;
 
     Camera2D camera;
     DebugMode debug;

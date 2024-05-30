@@ -149,8 +149,11 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Monsta.cpp" />
     <ClCompile Include="src\Object.cpp" />
+    <ClCompile Include="src\ObjectManager.cpp" />
     <ClCompile Include="src\Particle.cpp" />
     <ClCompile Include="src\ParticleManager.cpp" />
+    <ClCompile Include="src\ParticleScore.cpp" />
+    <ClCompile Include="src\ParticleScoreManager.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\PlayerBubble.cpp" />
     <ClCompile Include="src\RenderComponent.cpp" />
@@ -177,8 +180,11 @@
     <ClInclude Include="src\MemLeaks.h" />
     <ClInclude Include="src\Monsta.h" />
     <ClInclude Include="src\Object.h" />
+    <ClInclude Include="src\ObjectManager.h" />
     <ClInclude Include="src\Particle.h" />
     <ClInclude Include="src\ParticleManager.h" />
+    <ClInclude Include="src\ParticleScore.h" />
+    <ClInclude Include="src\ParticleScoreManager.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\PlayerBubble.h" />
     <ClInclude Include="src\Point.h" />

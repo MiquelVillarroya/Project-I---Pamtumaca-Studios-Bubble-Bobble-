@@ -316,7 +316,7 @@ bool TileMap::TestCollisionAbovePlatLeft(const AABB& box) const
 }
 bool TileMap::TestCollisionAbovePlatRight(const AABB& box) const
 {
-	int x1, x2, y1, y2;
+	int x1, x2, y1;
 	x1 = (box.pos.x + box.width) / TILE_SIZE;
 	y1 = (box.pos.y + box.height) / TILE_SIZE;
 	x2 = (box.pos.x + box.width + 1)/ TILE_SIZE;

@@ -4,7 +4,7 @@
 
 
 Shot::Shot(const Point& p, const Point& d, int width, int heigth, int frame_width, int frame_height) :
-	Entity (p, d, width, heigth, frame_width, frame_height)
+	Entity(p, d, width, heigth, frame_width, frame_height)
 {
 	map = nullptr;
 }

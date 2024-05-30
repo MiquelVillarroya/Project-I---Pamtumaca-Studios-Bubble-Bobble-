@@ -25,6 +25,9 @@
     <Filter Include="Entities\Shots">
       <UniqueIdentifier>{8d47d7b9-0c4f-4e3c-bcd1-77e1e0addae8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entities\Objects">
+      <UniqueIdentifier>{39455084-1ce6-48b8-bd08-a8b74699b0e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Globals.cpp">
@@ -58,9 +61,6 @@
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="src\Entity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Object.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="src\Player.cpp">
@@ -105,12 +105,21 @@
     <ClCompile Include="src\Particle.cpp">
       <Filter>Entities\Shots</Filter>
     </ClCompile>
+    <ClCompile Include="src\ParticleScoreManager.cpp">
+      <Filter>Entities\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Object.cpp">
+      <Filter>Entities\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleScore.cpp">
+      <Filter>Entities\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ObjectManager.cpp">
+      <Filter>Entities\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Object.h">
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="src\Player.h">
@@ -187,6 +196,18 @@
     </ClInclude>
     <ClInclude Include="src\ParticleManager.h">
       <Filter>Entities\Shots</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Object.h">
+      <Filter>Entities\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleScoreManager.h">
+      <Filter>Entities\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleScore.h">
+      <Filter>Entities\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ObjectManager.h">
+      <Filter>Entities\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
