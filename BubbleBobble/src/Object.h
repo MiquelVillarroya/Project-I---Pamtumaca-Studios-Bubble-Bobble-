@@ -21,6 +21,7 @@ public:
 	Object(const Point& p, ObjectType t);
 	~Object();
 
+	void Initialise();
 	//Set ParticleScoreManager reference
 	void SetScoreParticles(ParticleScoreManager* part);
 

@@ -8,17 +8,20 @@ ParticleScore::ParticleScore()
 
 	ResourceManager& data = ResourceManager::Instance();
 	render = new Sprite(data.GetTexture(Resource::IMG_SCORES));
+	if (render == nullptr)
+	{
+		LOG("failed to allocate memory for score sprite");
+	}
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetNumberAnimations(1);
-
+	sprite->SetNumberAnimations(5);
 	sprite->SetAnimationDelay(0, PARTICLE_ANIM_DELAY);
-	if (type == ObjectType::MUSHROOM)		sprite->AddKeyFrame(0, { 0, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
-	else if (type == ObjectType::BANANA) 	sprite->AddKeyFrame(1, { n, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
-	else if (type == ObjectType::CHERRY)	sprite->AddKeyFrame(2, { 2 * n, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
-	else if (type == ObjectType::ICE_CREAM)	sprite->AddKeyFrame(3, { 3 * n, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
-	else if (type == ObjectType::FLAM)		sprite->AddKeyFrame(4, { 4 * n, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
-	else if (type == ObjectType::CAKE)		sprite->AddKeyFrame(4, { 4 * n, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
+
+	sprite->AddKeyFrame(0, { 0, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
+	sprite->AddKeyFrame(1, { n, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
+	sprite->AddKeyFrame(2, { 2 * n, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
+	sprite->AddKeyFrame(3, { 3 * n, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
+	sprite->AddKeyFrame(4, { 4 * n, 0, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
 
 	sprite->SetAnimation(0);
 
@@ -26,6 +29,7 @@ ParticleScore::ParticleScore()
 
 	finished = false;
 	timer = 0;
+	type = ObjectType::MUSHROOM;
 }
 ParticleScore::~ParticleScore()
 {
@@ -34,10 +38,18 @@ void ParticleScore::Init(const Point& p)
 {
 	//Set position
 	Set(p, { 0,0 }, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE);
+	finished = false;
+	timer = 0;
 
 	//Initialise animation
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetAnimation(0);
+	if (type == ObjectType::MUSHROOM)		sprite->SetAnimation(0);
+	else if (type == ObjectType::BANANA) 	sprite->SetAnimation(1);
+	else if (type == ObjectType::CHERRY)	sprite->SetAnimation(2);
+	else if (type == ObjectType::ICE_CREAM)	sprite->SetAnimation(3);
+	else if (type == ObjectType::FLAM)		sprite->SetAnimation(4);
+	else if (type == ObjectType::CAKE)		sprite->SetAnimation(4);
+	else sprite->SetAnimation(0);
 
 }
 void ParticleScore::SetType(const ObjectType& type)
@@ -49,9 +61,10 @@ bool ParticleScore::Update()
 {
 	pos.y--;
 	timer += GetFrameTime();
-	if (timer >= 0.4)
+	if (timer >= 0.5)
 	{
 		finished = true;
+		timer = 0;
 	}
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();

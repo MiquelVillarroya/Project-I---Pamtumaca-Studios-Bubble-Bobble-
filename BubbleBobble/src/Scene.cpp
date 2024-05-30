@@ -124,6 +124,7 @@ AppStatus Scene::Init()
 		LOG("Failed to allocate memory for Particle Manager");
 		return AppStatus::ERROR;
 	}
+
 	//Create object manager 
 	objects = new ObjectManager();
 	if (objects == nullptr)
@@ -131,6 +132,13 @@ AppStatus Scene::Init()
 		LOG("Failed to allocate memory for Particle Manager");
 		return AppStatus::ERROR;
 	}
+	//Initialise shot manager
+	if (objects->Initialise() != AppStatus::OK)
+	{
+		LOG("Failed to initialise Object Manager");
+		return AppStatus::ERROR;
+	}
+
 	//Create particle manager 
 	scoreParticles = new ParticleScoreManager();
 	if (scoreParticles == nullptr)
@@ -138,6 +146,13 @@ AppStatus Scene::Init()
 		LOG("Failed to allocate memory for Particle Manager");
 		return AppStatus::ERROR;
 	}
+	//Initialise shot manager
+	if (scoreParticles->Initialise() != AppStatus::OK)
+	{
+		LOG("Failed to initialise Particle Score Manager");
+		return AppStatus::ERROR;
+	}
+
 	//Create level 
     level = new TileMap();
     if (level == nullptr)
@@ -233,7 +248,7 @@ AppStatus Scene::LoadLevel(int stage)
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
-			 1,   1,   0, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
+			 1,   1,   0, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 101,   0,   0,   0,	  0,   0,   0,   0,   0,   0,   0,   0,   0,   1,   1,
 			 1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1
 		};
 		player->InitScore();
@@ -444,6 +459,7 @@ void Scene::Update()
 	shots->Update(hitbox);
 	int score = objects->Update(hitbox);
 	particles->Update();
+	scoreParticles->Update();
 
 	//Update score
 	if (score > 0)

@@ -146,15 +146,18 @@ void ShotManager::Update(const AABB& temp_hitbox)
 			}
 			else if (playerHit)
 			{
-				if (enemyHit!=EnemyType::NONE)
-				{
-					objects->Add({ 100,100 }, ObjectType::BANANA);
-				}
 				shot->SetAlive(false);
 				Point p;
 				p.x = box.pos.x;
 				p.y = box.pos.y;
 				particles->Add(p);
+
+				if (enemyHit != EnemyType::NONE || enemyHit!= EnemyType::_NULL)
+				{
+					int rand;
+					rand = GetRandomValue(0,4);
+					objects->Add(p, (ObjectType)rand);
+				}
 			}
 		}
 	}

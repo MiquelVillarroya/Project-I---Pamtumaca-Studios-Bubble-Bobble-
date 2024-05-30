@@ -11,7 +11,7 @@ ObjectManager::~ObjectManager()
 AppStatus ObjectManager::Initialise()
 {
 	ResourceManager& data = ResourceManager::Instance();
-	if (data.LoadTexture(Resource::IMG_BUBBLE, "images/scores.png") != AppStatus::OK)
+	if (data.LoadTexture(Resource::IMG_SCORES, "images/scores.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
 	}
@@ -25,8 +25,9 @@ void ObjectManager::SetParticleScoreManager(ParticleScoreManager* part)
 void ObjectManager::Add(const Point& pos, ObjectType type)
 {
 	Object* object;
-
 	object = new Object(pos, type);
+
+	object->Initialise();
 	object->SetScoreParticles(scoreParticles);
 	objects.push_back(object);
 }
@@ -35,26 +36,18 @@ int ObjectManager::Update(const AABB& player_hitbox)
 	AABB obj_box;
 	int score = 0;
 
-	auto it = objects.begin();
-	while (it != objects.end())
+	for (Object* obj : objects)
 	{
-		obj_box = (*it)->GetHitbox();
-		if (player_hitbox.TestAABB(obj_box))
+		if (obj->IsAlive())
 		{
-			score = (*it)->Points();
-
-			//Delete the object
-			delete* it;
-			//Erase the object from the vector and get the iterator to the next valid element
-			it = objects.erase(it);
-		}
-		else
-		{
-			//Move to the next object
-			++it;
+			obj_box = obj->GetHitbox();
+			if (player_hitbox.TestAABB(obj_box))
+			{
+				score = obj->Points();
+				obj->SetAlive(false);
+			}
 		}
 	}
-
 	return score;
 }
 void ObjectManager::Draw() const

@@ -6,8 +6,14 @@ Sound objectsound[10];
 
 Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
 {
-	type = t; 
-	
+	type = t;
+	scoreParticles = nullptr;
+}
+Object::~Object()
+{
+}
+void Object::Initialise()
+{	
 	Rectangle rc;
 	const int n = 2*TILE_SIZE;
 	switch (type)
@@ -26,9 +32,6 @@ Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, O
 
 	ResourceManager& data = ResourceManager::Instance();
 	render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
-}
-Object::~Object()
-{
 }
 void Object::SetScoreParticles(ParticleScoreManager* part)
 {

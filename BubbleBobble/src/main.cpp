@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "MemLeaks.h"
 #include "Globals.h"
+#include "time.h"
 
 int main()
 {
@@ -11,6 +12,7 @@ int main()
     int main_return = EXIT_SUCCESS;
 
     LOG("Application start");
+    SetRandomSeed(time(NULL));
 
     InitAudioDevice();
     if (!IsAudioDeviceReady()) LOG("Failed to initialise Audio Device");

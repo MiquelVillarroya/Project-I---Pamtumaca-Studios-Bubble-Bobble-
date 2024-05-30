@@ -8,8 +8,11 @@ ParticleScoreManager::~ParticleScoreManager()
 }
 AppStatus ParticleScoreManager::Initialise()
 {
-	//Nothing needs to be done because the texture is located within the enemy sprites
-	//and loaded by the EnemyManager
+	ResourceManager& data = ResourceManager::Instance();
+	if (data.LoadTexture(Resource::IMG_SCORES, "images/scores.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
 
 	return AppStatus::OK;
 }
@@ -20,8 +23,8 @@ void ParticleScoreManager::Add(const Point& pos, const ObjectType& type)
 	{
 		if (!particle.IsAlive())
 		{
-			particle.Init(pos);
 			particle.SetType(type);
+			particle.Init(pos);
 			found = true;
 			break;
 		}
