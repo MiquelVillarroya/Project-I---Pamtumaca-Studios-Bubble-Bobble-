@@ -64,6 +64,7 @@ bool Zenchan::Update(const AABB& box)
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
+	Warp();
 
 	return false;
 }

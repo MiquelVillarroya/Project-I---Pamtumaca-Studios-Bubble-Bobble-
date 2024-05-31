@@ -62,7 +62,7 @@ bool Monsta::Update(const AABB& box)
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
-
+	Warp();
 	return false;
 }
 void Monsta::MoveX()

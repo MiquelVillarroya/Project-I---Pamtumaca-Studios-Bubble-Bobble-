@@ -240,23 +240,24 @@ AppStatus Game::Update(float scale)
             if (IsKeyPressed(KEY_SPACE))
             {
                 if(BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
+                Sound cinematic_sound;
+                cinematic_sound = LoadSound("audio/Music/1_Introduction_Main_Theme.ogg");
+                PlaySound(cinematic_sound);
                 state = GameState::CINEMATIC;
                 
             }
             break;
         case GameState::CINEMATIC:
-            if (IsKeyPressed(KEY_ESCAPE)) {
+       
+       
 
-                state=GameState::MAIN_MENU;
-                
+            cinematicTimer += GetFrameTime();
+            if (cinematicTimer >= CINEMATIC_TIME|| IsKeyPressed(KEY_SPACE)) {
 
-            }
-            if (IsKeyPressed(KEY_P)) {
-
-
+                Sound& Stop();
                 state = GameState::PLAYING;
-
             }
+            
             break;
 
         case GameState::PLAYING:  

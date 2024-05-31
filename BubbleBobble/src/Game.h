@@ -8,6 +8,7 @@
 #define INTRO_FIRST_IMAGE   INTRO_TIME * 0.1
 #define INTRO_SECOND_IMAGE   INTRO_TIME * 0.5
 #define INTRO_SECOND_FADE   INTRO_TIME * 0.6
+#define CINEMATIC_TIME  3.0
 
 
 
@@ -60,6 +61,7 @@ private:
     Scene *scene;
     const Texture2D* img_menu, * img_intro1, * img_intro2, * game_over, * transition, * stage2, * stage1, *cinematic_complete,*lives;
     float introTimer;;
+    float cinematicTimer;
 
     //Temporary (for transition)
     float totalTime = 1.5f;
