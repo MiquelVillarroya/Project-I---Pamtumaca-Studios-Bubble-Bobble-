@@ -23,6 +23,7 @@ Scene::Scene()
 	state = SceneState::NORMAL;
 	timeSpent = 0;
 	totalTime = 1.5;
+	levelTimer = 0;
 
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
@@ -364,6 +365,7 @@ AppStatus Scene::LoadLevel(int stage)
 	//Set the tilemaps of the managers to further assign the reference to entities (enemies and shots)
 	shots->SetTileMap(level);
 	enemies->SetTileMap(level);
+	objects->SetObjectsTileMap(level);
 
 	//Entities and objects
 	i = 0;
@@ -432,16 +434,21 @@ void Scene::Update()
 	//Debug levels instantly
 	if (IsKeyPressed(KEY_ONE))		{LoadLevel(1); stage = 1;}
 	else if (IsKeyPressed(KEY_TWO))	{LoadLevel(2); stage = 2;}
-	else if (IsKeyPressed(KEY_F3)) { LoadLevel(3); stage = 3; }
-	else if (IsKeyPressed(KEY_F4)) { LoadLevel(4); stage = 4; }
+	else if (IsKeyPressed(KEY_THREE)) { LoadLevel(3); stage = 3; }
+	else if (IsKeyPressed(KEY_FOUR)) { LoadLevel(4); stage = 4; }
 
 
-	if (enemies->IsEmpty() == true)
+	if (enemies->IsEmpty() && shots->NoEnemies())
 	{
 		if (stage != MAX_STAGE)
 		{
-			stage++;
-			LoadLevel(stage);
+			levelTimer += GetFrameTime();
+			if (levelTimer >= 1.5)
+			{
+				levelTimer = 0;
+				stage++;
+				LoadLevel(stage);
+			}
 		}
 		//Need to rework scene kill
 		else {

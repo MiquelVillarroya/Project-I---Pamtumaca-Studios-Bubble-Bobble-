@@ -96,6 +96,10 @@ BubbleAnim Bubble::GetAnimation()
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	return (BubbleAnim)sprite->GetAnimation();
 }
+EnemyType Bubble::GetEnemy() const
+{
+	return enemyType;
+}
 void Bubble::SetAnimations()
 {
 	int i, k = 2;

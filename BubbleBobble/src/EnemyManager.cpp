@@ -102,8 +102,9 @@ AABB EnemyManager::GetEnemyHitBox(const Point& pos, EnemyType type) const
 }
 bool EnemyManager::IsEmpty() const
 {
-	if (enemies.empty()) return true;
-	return false;
+	for (Enemy* enemy : enemies)
+		if (enemy->IsAlive())	return false;
+	return true;
 }
 void EnemyManager::Update(const AABB& player_hitbox, bool& hit)
 {

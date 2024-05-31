@@ -38,3 +38,8 @@ bool Shot::IsMovingRight() const
 {
 	return dir.x > 0;
 }
+EnemyType Shot::GetEnemy() const {
+	LOG("ERROR: Should not be accessed")
+		return EnemyType::_NULL;
+}
+

@@ -44,6 +44,8 @@ public:
 
 	EnemyType Update(const AABB& box) override;
 
+	EnemyType GetEnemy() const override;
+
 private:
 
 	//Bubble Mechanics

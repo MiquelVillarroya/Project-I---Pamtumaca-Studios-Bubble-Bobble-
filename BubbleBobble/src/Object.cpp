@@ -97,3 +97,17 @@ int Object::Points() const
 		return 0;
 	}
 }
+void Object::Update()
+{
+	AABB box;
+
+	box = GetHitbox();
+	if (!map->TestCollisionGround(box, &pos.y))
+	{
+		pos.y++;
+	}
+}
+void Object::SetTileMap(TileMap* tilemap)
+{
+	map = tilemap;
+}

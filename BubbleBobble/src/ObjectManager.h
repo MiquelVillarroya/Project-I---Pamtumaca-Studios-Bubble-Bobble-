@@ -11,6 +11,7 @@ public:
 
 	//Set the object reference to the Particle Score Manager
 	void SetParticleScoreManager(ParticleScoreManager* part);
+	void SetObjectsTileMap(TileMap* tilemap);
 
 	void Add(const Point& pos, ObjectType type);
 
@@ -29,4 +30,5 @@ private:
 	std::vector<Object*> objects;
 
 	ParticleScoreManager* scoreParticles;
+	TileMap* map;
 };
