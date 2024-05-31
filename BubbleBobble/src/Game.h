@@ -32,8 +32,8 @@ public:
     ~Game();
 
     AppStatus Initialise(float scale);
-    AppStatus Update();
-    void Render();
+    AppStatus Update(float scale);
+    void Render(float scale);
     void Cleanup();
     void CinematicBubBob();
     void renderLives();
@@ -50,6 +50,11 @@ private:
 
     AppStatus LoadResources();
     void UnloadResources();
+
+    //Fullscreen
+    void Fullscreen(int windowWidth, int windowHeight);
+    int GetDisplayWidth();
+    int GetDisplayHeight();
 
     GameState state;
     Scene *scene;
