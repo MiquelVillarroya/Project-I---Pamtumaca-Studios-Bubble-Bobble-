@@ -61,7 +61,7 @@ AppStatus Game::Initialise(float scale)
     h = WINDOW_HEIGHT * scale;
 
     //Initialise window
-    InitWindow((int)w, (int)h, "Bubble Bobble");
+    InitWindow(w, h, "Bubble Bobble");
 
     //Render texture initialisation, used to hold the rendering result so we can easily resize it
     target = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -214,10 +214,11 @@ void Game::renderLives() {
 
 
 }
-AppStatus Game::Update()
+AppStatus Game::Update(float scale)
 {
     //Check if user attempts to close the window, either by clicking the close button or by pressing Alt+F4
-    if(WindowShouldClose()) return AppStatus::QUIT;
+    if (WindowShouldClose()) return AppStatus::QUIT;
+
 
     switch (state)
     {
@@ -287,12 +288,21 @@ AppStatus Game::Update()
     }
     return AppStatus::OK;
 }
-void Game::Render()
+void Game::Render(float scale)
 {
+    //Fullscreen
+    float w, h;
+    w = WINDOW_WIDTH * scale;
+    h = WINDOW_HEIGHT * scale;
+    if (IsKeyPressed(KEY_F))
+    {
+        Fullscreen(w, h);
+    }
+
     //Draw everything in the render texture, note this will not be rendered on screen, yet
     BeginTextureMode(target);
     ClearBackground(BLACK);
-    
+
     switch (state)
     {
          case GameState::INTRO:
@@ -361,6 +371,7 @@ void Game::Render()
     //Draw render texture to screen, properly scaled
     BeginDrawing();
     DrawTexturePro(target.texture, src, dst, { 0, 0 }, 0.0f, WHITE);
+    EndScissorMode();
     EndDrawing();
 }
 void Game::Cleanup()
@@ -387,4 +398,42 @@ Music Game::GetCurrentTrack() const {
 }
 void Game::ChangeTrack(MusicTrack track) {
     currentTrack = tracks[track];
+}
+void Game::Fullscreen(int windowWidth, int windowHeight)
+{
+    if (!IsWindowFullscreen())
+    {
+        ToggleFullscreen();
+        int monitor = GetCurrentMonitor();
+        SetWindowSize(GetMonitorWidth(monitor) + 150, GetMonitorHeight(monitor) + 280);
+    }
+    else
+    {
+        ToggleFullscreen();
+        SetWindowSize(windowWidth, windowHeight);
+    }
+}
+int Game::GetDisplayWidth()
+{
+    if (IsWindowFullscreen())
+    {
+        int monitor = GetCurrentMonitor();
+        return GetMonitorWidth(monitor);
+    }
+    else
+    {
+        return GetScreenWidth();
+    }
+}
+int Game::GetDisplayHeight()
+{
+    if (IsWindowFullscreen())
+    {
+        int monitor = GetCurrentMonitor();
+        return GetMonitorHeight(monitor);
+    }
+    else
+    {
+        return GetScreenHeight();
+    }
 }

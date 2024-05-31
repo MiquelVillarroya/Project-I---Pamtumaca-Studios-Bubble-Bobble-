@@ -27,6 +27,8 @@ public:
 	bool IsMovingLeft() const;
 	bool IsMovingRight() const;
 
+	virtual EnemyType GetEnemy() const;
+
 protected:
 
 	//Animation Management

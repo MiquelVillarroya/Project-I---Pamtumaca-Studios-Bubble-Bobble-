@@ -31,6 +31,8 @@ public:
 	//Update shot positions and check for collisions with the level and player
 	void Update(const AABB& player_hitbox);
 
+	int NoEnemies() const;
+
 	//Draw all active shots
 	void Draw() const;
 

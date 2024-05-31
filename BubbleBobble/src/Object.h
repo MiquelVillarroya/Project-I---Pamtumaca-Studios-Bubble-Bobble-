@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "ParticleScoreManager.h"
 #include "Globals.h"
+#include "Tilemap.h"
 
 #define OBJECT_PHYSICAL_SIZE	16
 #define OBJECT_FRAME_SIZE		16
@@ -24,8 +25,10 @@ public:
 	void Initialise();
 	//Set ParticleScoreManager reference
 	void SetScoreParticles(ParticleScoreManager* part);
+	void SetTileMap(TileMap* tilemap);
 
 	int Points() const;
+	void Update();
 
 	void DrawDebug(const Color& col) const;
 
@@ -33,5 +36,6 @@ private:
 
 	ObjectType type;
 	ParticleScoreManager* scoreParticles;
+	TileMap* map;
 };
 

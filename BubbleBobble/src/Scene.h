@@ -71,6 +71,8 @@ private:
     float timeSpent;
     float totalTime;
 
+    float levelTimer;
+
     Text* font;
 };
 

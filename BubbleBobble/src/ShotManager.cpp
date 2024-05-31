@@ -152,7 +152,7 @@ void ShotManager::Update(const AABB& temp_hitbox)
 				p.y = box.pos.y;
 				particles->Add(p);
 
-				if (enemyHit != EnemyType::NONE || enemyHit!= EnemyType::_NULL)
+				if (shot->GetEnemy() != EnemyType::_NULL && shot->GetEnemy() != EnemyType::NONE)
 				{
 					int rand;
 					rand = GetRandomValue(0,4);
@@ -161,6 +161,18 @@ void ShotManager::Update(const AABB& temp_hitbox)
 			}
 		}
 	}
+}
+int ShotManager::NoEnemies() const
+{
+	for (Shot* shot : shots)
+	{
+		if (shot->GetEnemy() != EnemyType::_NULL && shot->GetEnemy() != EnemyType::NONE)
+		{
+			if (shot->IsAlive())
+				return false;
+		}
+	}
+	return true;
 }
 void ShotManager::Draw() const
 {

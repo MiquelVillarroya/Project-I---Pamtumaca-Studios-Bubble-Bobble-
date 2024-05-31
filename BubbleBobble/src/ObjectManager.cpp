@@ -22,12 +22,17 @@ void ObjectManager::SetParticleScoreManager(ParticleScoreManager* part)
 {
 	this->scoreParticles = part;
 }
+void  ObjectManager::SetObjectsTileMap(TileMap* tilemap)
+{
+	map = tilemap;
+}
 void ObjectManager::Add(const Point& pos, ObjectType type)
 {
 	Object* object;
 	object = new Object(pos, type);
 
 	object->Initialise();
+	object->SetTileMap(map);
 	object->SetScoreParticles(scoreParticles);
 	objects.push_back(object);
 }
@@ -40,6 +45,7 @@ int ObjectManager::Update(const AABB& player_hitbox)
 	{
 		if (obj->IsAlive())
 		{
+			obj->Update();
 			obj_box = obj->GetHitbox();
 			if (player_hitbox.TestAABB(obj_box))
 			{
