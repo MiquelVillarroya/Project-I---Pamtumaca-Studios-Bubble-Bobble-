@@ -36,6 +36,7 @@ public:
     void Render();
     void Cleanup();
     void CinematicBubBob();
+    void renderLives();
     
     Music GetCurrentTrack() const;
     void ChangeTrack(MusicTrack track);
@@ -52,7 +53,7 @@ private:
 
     GameState state;
     Scene *scene;
-    const Texture2D* img_menu, * img_intro1, * img_intro2, * game_over, * transition, * stage2, * stage1, *cinematic_complete;
+    const Texture2D* img_menu, * img_intro1, * img_intro2, * game_over, * transition, * stage2, * stage1, *cinematic_complete,*lives;
     float introTimer;;
 
     //Temporary (for transition)

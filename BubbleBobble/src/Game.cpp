@@ -133,6 +133,11 @@ AppStatus Game::LoadResources()
     }
     cinematic_complete= data.GetTexture(Resource::CINEMATIC_BACKGROUND);
 
+    if (data.LoadTexture(Resource::LIVES, "images/life.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    lives = data.GetTexture(Resource::LIVES);
 
 
 
@@ -183,7 +188,32 @@ void Game::CinematicBubBob() {
 
 }
 
+void Game::renderLives() {
 
+        if (scene->player->GetLives() == 3) {
+
+            DrawTexture(*lives, 0, WINDOW_HEIGHT-8, WHITE);
+            DrawTexture(*lives, 8, WINDOW_HEIGHT-8, WHITE);
+            DrawTexture(*lives, 16, WINDOW_HEIGHT-8, WHITE);
+
+        }
+        else if (scene->player->GetLives() == 2) {
+
+            DrawTexture(*lives, 0, WINDOW_HEIGHT - 8, WHITE);
+            DrawTexture(*lives, 8, WINDOW_HEIGHT - 8, WHITE);
+
+
+        }
+        else if (scene->player->GetLives() == 1) {
+
+            DrawTexture(*lives, 0, WINDOW_HEIGHT - 8, WHITE);
+
+
+        }
+    
+
+
+}
 AppStatus Game::Update()
 {
     //Check if user attempts to close the window, either by clicking the close button or by pressing Alt+F4
@@ -295,6 +325,7 @@ void Game::Render()
             scene->Render();
             if (GetMusicTimePlayed(currentTrack) >= 100) SeekMusicStream(currentTrack, 45);
             UpdateMusicStream(currentTrack);
+            renderLives();
             break;
 
         case GameState::GAME_OVER:

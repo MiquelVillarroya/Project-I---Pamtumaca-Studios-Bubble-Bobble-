@@ -20,8 +20,7 @@ enum class Resource {
     IMG_FONT,
     IMG_SCORES,
     CINEMATIC_BACKGROUND,
-
-    //The next images are temporary (for the transition)
+    LIVES,
     TRANSITION,
     STAGE2,
     STAGE1

@@ -32,6 +32,7 @@ public:
     //Maybe rework?
     bool IsPlayerAlive();
     bool IsSceneAlive();
+    Player* player;
 
 private:
   
@@ -39,7 +40,7 @@ private:
 
     void RenderGUI() const;
 
-    Player *player;
+    
     bool playerAlive;
     
     //Level structure that contains all the static tile
