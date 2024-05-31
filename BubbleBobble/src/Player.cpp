@@ -264,7 +264,7 @@ void Player::Update()
 
 	sprite->Update();
 
-	//Warp();
+	Warp();
 }
 void Player::GodMode() {
 	if (IsKeyPressed(KEY_F3))

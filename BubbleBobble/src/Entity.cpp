@@ -76,6 +76,16 @@ void Entity::DrawAnimation()
 	sprite->Update();
 	Draw();
 }
+void Entity::Warp() {
+
+	if (pos.y > WINDOW_HEIGHT) {
+
+		pos.y = TILE_SIZE;
+
+	}
+
+
+}
 
 void Entity::SetPos(const Point& p)
 {
