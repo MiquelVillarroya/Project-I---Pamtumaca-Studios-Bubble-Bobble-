@@ -1,22 +1,58 @@
-Project executed on 01-06-2024 at 19:30:02.
+Project executed on 01-06-2024 at 20:24:56.
 main.cpp(14): Application start
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
-Scene.cpp(410): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 26)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 27)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 28)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 28)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (10, 28)
+TileMap.cpp(168): Error: Index out of bounds. Tile map dimensions: 32x26. Given index: (11, 28)
+main.cpp(40): Application finish
+main.cpp(46): Bye :)

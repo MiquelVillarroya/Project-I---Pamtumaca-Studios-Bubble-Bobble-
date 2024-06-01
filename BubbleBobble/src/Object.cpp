@@ -26,7 +26,7 @@ void Object::Initialise()
 		case ObjectType::FLAM: rc = { 8*n, 3*n, n, n }; break;
 		case ObjectType::CAKE: rc = { 8*n, 4*n, n, n }; break;
 		case ObjectType::YELLOW_CANDY: rc = { 6*n, 6*n, n, n }; break;
-		case ObjectType::SHOES: rc = { 6*n, 6*n, n, n }; break;
+		case ObjectType::SHOES: rc = { 7*n, 6*n, n, n }; break;
 
 		default: LOG("Internal error: object creation of invalid type");
 	}
@@ -101,11 +101,12 @@ int Object::Points() const
 void Object::Update()
 {
 	AABB box;
+	int prev_y;
 
 	box = GetHitbox();
-	if (!map->TestCollisionGround(box, &pos.y))
+	pos.y++;
+	if (map->TestCollisionGround(box, &pos.y))
 	{
-		pos.y++;
 	}
 }
 void Object::SetTileMap(TileMap* tilemap)

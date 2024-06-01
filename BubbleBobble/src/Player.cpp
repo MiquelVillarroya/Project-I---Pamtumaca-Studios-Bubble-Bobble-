@@ -285,6 +285,7 @@ void Player::MoveX()
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 	{
 		pos.x += -PLAYER_SPEED;
+		if(shoesFlag) 	pos.x += -PLAYER_SPEED;
 		if (state == State::IDLE) StartWalkingLeft();
 		else
 		{
@@ -301,6 +302,7 @@ void Player::MoveX()
 	else if (IsKeyDown(KEY_RIGHT))
 	{
 		pos.x += PLAYER_SPEED;
+		if (shoesFlag) 	pos.x += PLAYER_SPEED;
 		if (state == State::IDLE) StartWalkingRight();
 		else
 		{

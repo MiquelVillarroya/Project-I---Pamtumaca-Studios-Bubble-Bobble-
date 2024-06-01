@@ -74,5 +74,7 @@ private:
     float levelTimer;
 
     Text* font;
+
+    bool win;
 };
 

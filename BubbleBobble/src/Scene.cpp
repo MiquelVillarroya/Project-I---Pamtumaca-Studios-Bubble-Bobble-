@@ -14,6 +14,7 @@ Scene::Scene()
 	objects = nullptr;
 	scoreParticles = nullptr;
 
+	win = false;
 	//Temporary for killing the scene
 	stage = 1;
 	alive = true;
@@ -452,7 +453,13 @@ void Scene::Update()
 		}
 		//Need to rework scene kill
 		else {
-			alive = false;
+			levelTimer += GetFrameTime();
+			win = true;
+			if (levelTimer >= 3)
+			{
+				levelTimer = 0;
+				alive = false;
+			}
 		}
 	}
 
@@ -482,7 +489,6 @@ void Scene::Update()
 	}
 
 	//Debug items
-
 
 	if (IsKeyPressed(KEY_Q)) 		objects->Add(pos, ObjectType::MUSHROOM);
 	else if (IsKeyPressed(KEY_W))	objects->Add(pos, ObjectType::BANANA);
@@ -546,6 +552,12 @@ void Scene::Render()
 	EndMode2D();
 
 	RenderGUI();
+	if (win)
+	{
+		DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BLACK);
+		font->Draw(WINDOW_WIDTH /2 - 50, WINDOW_HEIGHT / 2, TextFormat("CONGRATS!!!", 0), WHITE);
+	}
+
 }
 void Scene::Release()
 {

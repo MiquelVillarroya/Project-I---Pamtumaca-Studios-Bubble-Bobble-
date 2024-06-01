@@ -117,6 +117,11 @@ void EnemyManager::Update(const AABB& player_hitbox, bool& hit)
 	{
 		if (enemy->IsAlive()) {
 			shoot = enemy->Update(player_hitbox);
+
+			Point pos;
+			pos = enemy->GetPos();
+			if (pos.x < 0 || pos.x > WINDOW_WIDTH || pos.y < 0 || pos.y > WINDOW_HEIGHT) enemy->SetAlive(false);
+
 			if (shoot)
 			{
 				enemy->GetShootingPosDir(&p, &d);
@@ -147,6 +152,7 @@ EnemyType EnemyManager::CheckBubbleCollisions(const AABB& bubble_hitbox)
 				type = enemy->GetEnemyType();
 				return type;
 			}
+
 		}
 	}
 
