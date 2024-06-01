@@ -254,7 +254,7 @@ AppStatus Game::Update(float scale)
             cinematicTimer += GetFrameTime();
             if (cinematicTimer >= CINEMATIC_TIME|| IsKeyPressed(KEY_SPACE)) {
 
-                Sound& Stop();
+                //Sound& Stop();
                 state = GameState::PLAYING;
             }
             

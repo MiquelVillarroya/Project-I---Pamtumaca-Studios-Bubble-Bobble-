@@ -3,6 +3,7 @@
 ObjectManager::ObjectManager()
 {
 	scoreParticles = nullptr;
+	map = nullptr;
 }
 ObjectManager::~ObjectManager()
 {

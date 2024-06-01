@@ -8,6 +8,7 @@ Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, O
 {
 	type = t;
 	scoreParticles = nullptr;
+	map = nullptr;
 }
 Object::~Object()
 {

@@ -155,7 +155,7 @@ void ShotManager::Update(const AABB& temp_hitbox)
 				if (shot->GetEnemy() != EnemyType::_NULL && shot->GetEnemy() != EnemyType::NONE)
 				{
 					int rand;
-					rand = GetRandomValue(0,4);
+					rand = GetRandomValue(0,7);
 					objects->Add(p, (ObjectType)rand);
 				}
 			}

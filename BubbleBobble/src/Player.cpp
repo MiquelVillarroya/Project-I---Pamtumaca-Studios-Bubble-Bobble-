@@ -16,6 +16,8 @@ Player::Player(const Point& p, State s, Look view) :
 	look = view;
 	shots = nullptr;
 	map = nullptr;
+	candyTimer = 0;
+	shoesTimer = 0;
 
 	jump_delay = PLAYER_JUMP_DELAY;
 	elapsedTimeBubble = 0;
@@ -260,6 +262,7 @@ void Player::Update()
 		MoveX();
 		MoveY();
 		BubbleShot();
+		UpdateItems();
 	}
 
 	sprite->Update();
@@ -343,11 +346,22 @@ void Player::MoveY()
 }
 void Player::BubbleShot()
 {
+	bool shot = false;
 	Point p, d;
 	p = { pos.x, pos.y };
 
 	elapsedTimeBubble += GetFrameTime();
-	if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .25)
+	if (candyFlag)
+	{
+		if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .15) shot = true;
+	}
+	else
+	{
+		if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .25) shot = true;
+	}
+
+
+	if (shot)
 	{
 		PlaySound(playersound[1]);
 		if (IsLookingLeft()) {
@@ -433,4 +447,35 @@ void Player::Release()
 	data.ReleaseTexture(Resource::IMG_PLAYER);
 
 	render->Release();
+}
+void Player::Candy()
+{
+	candyFlag = true;
+}
+void Player::Shoes()
+{
+	shoesFlag = true;
+}
+void Player::UpdateItems()
+{
+	if (candyFlag)
+	{
+		candyTimer += GetFrameTime();
+
+		if (candyTimer >= 15)
+		{
+			candyTimer = 0;
+			candyFlag = false;
+		}
+	}
+	if (shoesFlag)
+	{
+		shoesTimer += GetFrameTime();
+
+		if (shoesTimer >= 15)
+		{
+			shoesTimer = 0;
+			shoesFlag = false;
+		}
+	}
 }

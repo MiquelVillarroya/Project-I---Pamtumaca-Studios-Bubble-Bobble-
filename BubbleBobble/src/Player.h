@@ -83,6 +83,8 @@ public:
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void Release();
+	void Candy();
+	void Shoes();
 
 private:
 	bool IsLookingRight() const;
@@ -94,6 +96,7 @@ private:
 	void MoveY();
 	void LogicJumping();
 	void BubbleShot();
+	void UpdateItems();
 
 	//Animation management
 	void SetAnimation(int id);
@@ -124,5 +127,10 @@ private:
 
 	int score;
 	int lives;
+
+	float candyTimer;
+	bool candyFlag;
+	float shoesTimer;
+	bool shoesFlag;
 };
 

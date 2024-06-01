@@ -215,7 +215,7 @@ AppStatus Scene::LoadLevel(int stage)
 	Tile tile;
 	Point pos;
 	int *map = nullptr;
-	Object *obj;
+	//Object *obj;
 	AABB hitbox, area;
 	Look look;
 
@@ -456,6 +456,41 @@ void Scene::Update()
 		}
 	}
 
+	Point mousePos;
+	mousePos.x = GetMouseX();
+	mousePos.y = GetMouseY();
+
+	//Debug enemies
+	AABB area;
+	Look look;
+	if (IsKeyPressed(KEY_SIX)) {
+		if (mousePos.x <= LEVEL_WIDTH / 2) look = Look::RIGHT;
+		else if (mousePos.x > LEVEL_WIDTH / 2) look = Look::LEFT;
+		hitbox = enemies->GetEnemyHitBox(mousePos, EnemyType::ZENCHAN);
+		area = level->GetSweptAreaX(hitbox);
+		enemies->Add(mousePos, EnemyType::ZENCHAN, area, look);
+	}
+	else if (IsKeyPressed(KEY_SEVEN))
+	{
+		if (mousePos.x <= LEVEL_WIDTH / 2) look = Look::RIGHT;
+		else if (mousePos.x > LEVEL_WIDTH / 2) look = Look::LEFT;
+		hitbox = enemies->GetEnemyHitBox(mousePos, EnemyType::MONSTA);
+		area = level->GetSweptAreaX(hitbox);
+		enemies->Add(mousePos, EnemyType::MONSTA, area, look);
+	}
+
+	//Debug items
+
+
+	if (IsKeyPressed(KEY_Q)) 		objects->Add(mousePos, ObjectType::MUSHROOM);
+	else if (IsKeyPressed(KEY_W))	objects->Add(mousePos, ObjectType::BANANA);
+	else if (IsKeyPressed(KEY_E))	objects->Add(mousePos, ObjectType::CHERRY);
+	else if (IsKeyPressed(KEY_R))	objects->Add(mousePos, ObjectType::ICE_CREAM);
+	else if (IsKeyPressed(KEY_T))	objects->Add(mousePos, ObjectType::FLAM);
+	else if (IsKeyPressed(KEY_Y))	objects->Add(mousePos, ObjectType::CAKE);
+	else if (IsKeyPressed(KEY_U))	objects->Add(mousePos, ObjectType::YELLOW_CANDY);
+	else if (IsKeyPressed(KEY_I))	objects->Add(mousePos, ObjectType::SHOES);
+
 	//Level, player
 	level->Update();
 	player->Update();
@@ -473,13 +508,13 @@ void Scene::Update()
 	{
 		player->IncrScore(score);
 	}
-	else if (score == -1)
+	else if (score == -1) //Candy
 	{
-
+		player->Candy();
 	}
-	else if (score == -2)
+	else if (score == -2) //Shoes
 	{
-		//player->IncreaseSpeed();
+		player->Shoes();
 	}
 
 	if (hit) player->MinusLife();
