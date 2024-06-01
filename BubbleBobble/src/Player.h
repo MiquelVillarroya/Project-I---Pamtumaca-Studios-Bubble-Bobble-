@@ -77,6 +77,7 @@ public:
 	int GetScore();
 	int GetLives() const;
 	bool GetGod() const;
+	Look GetLook() const;
 	State GetState() const;
 	void MinusLife();
 

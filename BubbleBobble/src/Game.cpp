@@ -16,7 +16,7 @@ Game::Game()
     img_intro1 = nullptr;
     img_intro2 = nullptr;
     game_over = nullptr;
-
+    cinematicTimer = 0;
     introTimer = 0;
 
     //Temp?
@@ -240,19 +240,14 @@ AppStatus Game::Update(float scale)
             if (IsKeyPressed(KEY_SPACE))
             {
                 if(BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
-                Sound cinematic_sound;
-                cinematic_sound = LoadSound("audio/Music/1_Introduction_Main_Theme.ogg");
-                PlaySound(cinematic_sound);
                 state = GameState::CINEMATIC;
                 
             }
             break;
         case GameState::CINEMATIC:
-       
-       
 
             cinematicTimer += GetFrameTime();
-            if (cinematicTimer >= CINEMATIC_TIME|| IsKeyPressed(KEY_SPACE)) {
+            if (cinematicTimer >= CINEMATIC_TIME || IsKeyPressed(KEY_SPACE)) {
 
                 //Sound& Stop();
                 state = GameState::PLAYING;
@@ -330,6 +325,7 @@ void Game::Render(float scale)
         case GameState::CINEMATIC:
             DrawTexture(*cinematic_complete, 0, 0, WHITE);
             CinematicBub->DrawAnimation();
+            UpdateMusicStream(currentTrack);
             break;
 
         case GameState::PLAYING:

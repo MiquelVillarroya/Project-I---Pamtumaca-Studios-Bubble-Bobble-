@@ -18,6 +18,8 @@ Player::Player(const Point& p, State s, Look view) :
 	map = nullptr;
 	candyTimer = 0;
 	shoesTimer = 0;
+	candyFlag = false;
+	shoesFlag = false;
 
 	jump_delay = PLAYER_JUMP_DELAY;
 	elapsedTimeBubble = 0;
@@ -353,7 +355,7 @@ void Player::BubbleShot()
 	elapsedTimeBubble += GetFrameTime();
 	if (candyFlag)
 	{
-		if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .15) shot = true;
+		if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .10) shot = true;
 	}
 	else
 	{
@@ -478,4 +480,8 @@ void Player::UpdateItems()
 			shoesFlag = false;
 		}
 	}
+}
+Look Player::GetLook() const
+{
+	return look;
 }
