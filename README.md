@@ -2,24 +2,29 @@
 
 Link to the Github repository: https://github.com/MiquelVillarroya/Project-I---Pamtumaca-Studios-Bubble-Bobble-
 
-Video of the implemented features:https://youtu.be/eap9LcwI_Nw
+Link to our webpage: https://miquelvillarroya.github.io/Project-I---Pamtumaca-Studios-Bubble-Bobble-/
 
-Miquel's Github account:https://github.com/MiquelVillarroya
+Video of the implemented features: https://youtu.be/eap9LcwI_Nw
 
-Noa's Github account:https://github.com/noapont
+Miquel's Github account: https://github.com/MiquelVillarroya
+
+Noa's Github account: https://github.com/noapont
 
 
-Our Project is a tribute of the arcade game Bubble Bobble, released in 1986 by TAITO. Bubble Bobble is a platform game in where the two main characters, Bub and Bob, have to surpass all the levels killing the enemies with their bubbles in order to rescue their girlfriends. 
+
+
+Our Project is a tribute to the arcade game Bubble Bobble, released in 1986 by TAITO. Bubble Bobble is a platform game where the two main characters, Bub and Bob, have to surpass all the levels killing the enemies with their bubbles to rescue their girlfriends. 
 
 CONTOLS: 
-Move right             -   Right arrow
-Move left              -   Left arrow
-Jump                   -   Up arrow
-Release Bubble         -   Space
-Return to the menu     -   Esc
-God Mode               -   F3
-Force level transition -   N
-Pass to different levels- 1,2,3,4
+Move right                - Right arrow
+Move left                 - Left arrow
+Jump                      - Up arrow
+Shot  Bubble              - Space
+Alternate Fullscreen      - F
+Return to the menu        - Esc
+God Mode                  - F3
+Force Win                 - 9
+Pass to different levels  - 1,2,3,4
 
 Spawn ZenChan          -   6
 Spawn Monsta           -   7
@@ -33,17 +38,24 @@ Spawn Yellow Candy     -   U
 Spawn Shoes            -   I
 
 
-We are still developing the project but so far we have implemented this features:
+For the 1.0 release we have implemented the following features:
+- All of the features of version 0.5 
+- Full music and audio effects
+- Fullscreen mode
+- Items now spawn from enemies randomly
+- Added 2 new power-ups, boots (increased speed) and yellow candies (increased attack speed)
+- 2 enemies: Zenchan and Monsta
+- Functional UI: lives and score
+- Full debug functionalities (enemy and items spawn, win/lose conditions, change level, god mode, etc.)
+- Initial Game Animation
+
+Changelog of version 0.5
 - Basic player movement
 - Win/Loose condition
-- Workflow of the menus+initial cinematics
-- Items with score dropped randomly by enemies
-- Special items (shoes:increase speed, yellow candy:increase attack speed)
-- Two different enemies with different behaviour
+- Workflow of the menus
+- Items with score
+- Two different enemies
 - Bubble mechanic
-- Four different levels (some of them with top bottom connected holes)
-- -Music and sound effects
-- Functional UI (lifes, score, etc)
-- -Debug functionality and god mode
+- Two different levels
 
 
