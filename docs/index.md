@@ -10,7 +10,7 @@ Pamtumaca Studios is conformed by Miquel Villarroya and Noa Pont. Here's our log
 We have both worked very hard in order to release this short version of the arcade game Bubble Bobble. During this project, Miquel delved into the hard work behind player and enemy physics, collisions, and enemy artificial intelligence, among many other things. Meanwhile, Noa focused more on level design, UI and animations, and music and sound effects.
 
 Here is the video where you can see all the features implemented in the game:
-_LINK_TO_THE_VIDEO_
+https://youtu.be/Lqo6eIjuFMA
 
 And here is the link where you can download the game and play it:
 _LINK_TO_THE_GAME_
