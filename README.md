@@ -19,8 +19,18 @@ Release Bubble         -   Space
 Return to the menu     -   Esc
 God Mode               -   F3
 Force level transition -   N
-Force Game Over stage  -   F
 Pass to different levels- 1,2,3,4
+
+Spawn ZenChan          -   6
+Spawn Monsta           -   7
+Spawn Mushroom         -   Q
+Spawn Banana           -   W
+Spawn Cherry           -   E
+Spawn IceCream         -   R
+Spawn Flam             -   T
+Spawn Cake             -   Y
+Spawn Yellow Candy     -   U
+Spawn Shoes            -   I
 
 
 We are still developing the project but so far we have implemented this features:
