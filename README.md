@@ -20,14 +20,19 @@ Return to the menu     -   Esc
 God Mode               -   F3
 Force level transition -   N
 Force Game Over stage  -   F
+Pass to different levels- 1,2,3,4
+
 
 We are still developing the project but so far we have implemented this features:
 - Basic player movement
 - Win/Loose condition
-- Workflow of the menus
+- Workflow of the menus+initial cinematics
 - Items with score
-- Two different enemies
+- Two different enemies with different behaviour
 - Bubble mechanic
-- Two different levels
+- Four different levels
+- -Music and sound effects
+- Functional UI (lifes, score, etc)
+- -Debug functionality and god mode
 
 
