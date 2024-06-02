@@ -12,5 +12,8 @@ We have both worked very hard in order to release this short version of the arca
 Here is the video where you can see all the features implemented in the game:
 https://youtu.be/Lqo6eIjuFMA
 
-And here is the link where you can download the game and play it:
-_LINK_TO_THE_GAME_
+Here is the link where you can download the game and play it:
+https://github.com/MiquelVillarroya/Project-I---Pamtumaca-Studios-Bubble-Bobble-/releases/download/v1.0-release/PamtumacaStudios_BubbleBobble_v1.0.zip
+
+And here is the link to the release: 
+https://github.com/MiquelVillarroya/Project-I---Pamtumaca-Studios-Bubble-Bobble-/releases/tag/v1.0-release
