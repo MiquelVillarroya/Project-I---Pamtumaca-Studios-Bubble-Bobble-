@@ -1,6 +1,8 @@
-Project executed on 02-06-2024 at 12:36:26.
+Project executed on 02-06-2024 at 20:07:39.
 main.cpp(14): Application start
 Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
 Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
 Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
 Scene.cpp(411): Internal error loading scene: invalid entity or object tile id
+main.cpp(40): Application finish
+main.cpp(46): Bye :)

@@ -463,6 +463,17 @@ void Scene::Update()
 		}
 	}
 
+	if (IsKeyPressed(KEY_NINE) || win == true)
+	{
+		levelTimer += GetFrameTime();
+		win = true;
+		if (levelTimer >= 3)
+		{
+			levelTimer = 0;
+			alive = false;
+		}
+	}
+	
 	Point pos;
 	Look look;
 	look = player->GetLook();
