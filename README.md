@@ -4,7 +4,7 @@ Link to the Github repository: https://github.com/MiquelVillarroya/Project-I---P
 
 Link to our webpage: https://miquelvillarroya.github.io/Project-I---Pamtumaca-Studios-Bubble-Bobble-/
 
-Video of the implemented features: https://youtu.be/eap9LcwI_Nw
+Video of the 1.0 release: https://youtu.be/Lqo6eIjuFMA
 
 Miquel's Github account: https://github.com/MiquelVillarroya
 
@@ -15,16 +15,19 @@ Noa's Github account: https://github.com/noapont
 
 Our Project is a tribute to the arcade game Bubble Bobble, released in 1986 by TAITO. Bubble Bobble is a platform game where the two main characters, Bub and Bob, have to surpass all the levels killing the enemies with their bubbles to rescue their girlfriends. 
 
-CONTOLS: 
+CONTROLS: 
 Move right                - Right arrow
 Move left                 - Left arrow
 Jump                      - Up arrow
 Shot  Bubble              - Space
 Alternate Fullscreen      - F
 Return to the menu        - Esc
+
+DEBUG:
+Alternate colliders       - F1
 God Mode                  - F3
-Force Win                 - 9
 Pass to different levels  - 1,2,3,4
+Force Win                 - 9
 
 Spawn ZenChan          -   6
 Spawn Monsta           -   7
