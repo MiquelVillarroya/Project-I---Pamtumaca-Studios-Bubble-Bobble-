@@ -4,8 +4,12 @@ Our Project is a tribute of the arcade game Bubble Bobble, released in 1986 by T
 
 Pamtumaca Studios is conformed by Miquel Villarroya and Noa Pont. Here's our logo and team photo:
 
+![](https://github.com/MiquelVillarroya/Project-I---Pamtumaca-Studios-Bubble-Bobble-/blob/main/wikiResources/homeImages/logo%20pantumaca%20studios.png)
+![](https://github.com/MiquelVillarroya/Project-I---Pamtumaca-Studios-Bubble-Bobble-/blob/main/wikiResources/homeImages/TeamPhoto.jpeg)
 
-<img src="https://github.com/MiquelVillarroya/Project-I---Pamtumaca-Studios-Bubble-Bobble-/blob/main/wikiResources/homeImages/logo%20pantumaca%20studios.png" width="250">          <img src="https://github.com/MiquelVillarroya/Project-I---Pamtumaca-Studios-Bubble-Bobble-/blob/main/wikiResources/homeImages/TeamPhoto.jpeg" width="300">
+
+
+
 
 We have both worked very hard in order to release this short version of the arcade game Bubble Bobble. During this project, Miquel delved into the hard work behind player and enemy physics, collisions, and enemy artificial intelligence, among many other things. Meanwhile, Noa focused more on level design, UI and animations, and music and sound effects.
 
