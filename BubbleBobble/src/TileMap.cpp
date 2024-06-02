@@ -36,6 +36,7 @@ void TileMap::InitTileDictionary()
 	const int sy = SHADOW_OFFSET_Y;
 
 	dict_rect[(int)Tile::BLOCK_LVL1] = { 0,  0, n + sx, n + sy};
+	dict_rect[(int)Tile::TOP_LVL1] = { 0,  0, n + sx, n + sy};
 	dict_rect[(int)Tile::PLAT_LVL1] = { 0,  0, n + sx, n + sy};
 	dict_rect[(int)Tile::NUMBER_BLOCK_LVL1_1] = { 2*n,  0, n + sx, n + sy };
 	dict_rect[(int)Tile::NUMBER_BLOCK_LVL1_2] = { 4 * n,  0, n + sx, n + sy };
@@ -43,6 +44,7 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::PLAT_LEFT_LVL1] = { 0,  0, n + sx, n + sy };
 
 	dict_rect[(int)Tile::BLOCK_LVL2] = { 0,  2*n, n + sx, n + sy };
+	dict_rect[(int)Tile::TOP_LVL2] = { 0,  2*n, n + sx, n + sy };
 	dict_rect[(int)Tile::PLAT_LVL2] = { 0,  2*n, n + sx, n + sy };
 	dict_rect[(int)Tile::WALL_LVL2_1] = { 2*n,  2*n, n + sx, n + sy };
 	dict_rect[(int)Tile::WALL_LVL2_2] = {3*n,  2*n, n + sx, n + sy};
@@ -57,6 +59,7 @@ void TileMap::InitTileDictionary()
 
 
 	dict_rect[(int)Tile::BLOCK_LVL3] = { 0,  4 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::TOP_LVL3] = { 0,  4 * n, n + sx, n + sy };
 	dict_rect[(int)Tile::PLAT_LVL3] = { 0,  4 * n, n + sx, n + sy };
 	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_1] = { 2 * n,  4 * n, n + sx, n + sy };
 	dict_rect[(int)Tile::NUMBER_BLOC_LVL3_2] = { 3 * n,  4 * n, n + sx, n + sy };
@@ -66,6 +69,7 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::PLAT_LEFT_LVL3] = { 0,  4 * n, n + sx, n + sy };
 
 	dict_rect[(int)Tile::BLOCK_LVL4] = { 0,  6 * n, n + sx, n + sy };
+	dict_rect[(int)Tile::TOP_LVL4] = { 0,  6 * n, n + sx, n + sy };
 	dict_rect[(int)Tile::PLAT_LVL4] = { 0,  6 * n, n + sx, n + sy };
 	dict_rect[(int)Tile::NUMBER_BLOC_LVL4_1] = { 2 * n,  6 * n, n + sx, n + sy };
 	dict_rect[(int)Tile::NUMBER_BLOC_LVL4_2] = { 3 * n,  6 * n, n + sx, n + sy };
@@ -185,6 +189,10 @@ bool TileMap::IsTileSolid(Tile tile) const
 bool TileMap::IsTilePlat(Tile tile) const
 {
 	return (Tile::PLAT_FIRST <= tile && tile <= Tile::PLAT_LAST);
+}
+bool TileMap::IsTileTop(Tile tile) const
+{
+	return (Tile::TOP_FIRST <= tile && tile <= Tile::TOP_LAST);
 }
 bool TileMap::IsTilePlatSide(Tile tile) const
 {
@@ -398,7 +406,7 @@ bool TileMap::CollisionYCeiling(const Point& p, int distance) const
 		tile = GetTileIndex(x, y);
 
 		//One solid or laddertop tile is sufficient
-		if (IsTileSolid(tile) || IsTilePlat(tile))
+		if (IsTileSolid(tile) || IsTilePlat(tile) || IsTileTop(tile))
 			return true;
 	}
 	return false;
@@ -418,7 +426,7 @@ AABB TileMap::GetSweptAreaX(const AABB& hitbox) const
 
 	//Compute left tile index
 	collision = false;
-	x = column; //May be missing a "-1" that can be causing errors
+	x = column - 1;
 	while (!collision && x >= 0)
 	{
 		//Iterate over the tiles within the vertical range
@@ -430,12 +438,6 @@ AABB TileMap::GetSweptAreaX(const AABB& hitbox) const
 				collision = true;
 				break;
 			}
-			else if (IsTilePlatSide(GetTileIndex(x, y + 1)))
-			{
-				collision = true;
-				x--;
-				break;
-			}
 		}
 		if (!collision) x--;
 	}
@@ -443,7 +445,7 @@ AABB TileMap::GetSweptAreaX(const AABB& hitbox) const
 
 	//Compute right tile index
 	collision = false;
-	x = column; //May be missing a "+1" that can be causing errors
+	x = column + 1;
 	while (!collision && x < LEVEL_WIDTH)
 	{
 		//Iterate over the tiles within the vertical range
@@ -453,12 +455,6 @@ AABB TileMap::GetSweptAreaX(const AABB& hitbox) const
 			if (IsTileSolid(GetTileIndex(x, y)))
 			{
 				collision = true;
-				break;
-			}
-			else if (IsTilePlatSide(GetTileIndex(x, y + 1)))
-			{
-				collision = true;
-				x++;
 				break;
 			}
 		}

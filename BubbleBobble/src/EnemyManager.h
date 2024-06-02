@@ -47,5 +47,8 @@ private:
 	//This class does not own the object, it only holds a reference to it
 	ShotManager* shots;
 	TileMap* map;
+
+	bool dead;
+	float deadTimer;
 };
 

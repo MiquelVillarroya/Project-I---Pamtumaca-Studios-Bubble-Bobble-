@@ -8,6 +8,8 @@ EnemyManager::EnemyManager()
 {
 	shots = nullptr;
 	map = nullptr;
+	dead = false;
+	deadTimer = 0;
 }
 EnemyManager::~EnemyManager()
 {
@@ -131,6 +133,20 @@ void EnemyManager::Update(const AABB& player_hitbox, bool& hit)
 			if (!hit) hit = box.TestAABB(player_hitbox);
 		}
 	}
+	if (dead) {
+		hit = false;
+		deadTimer += GetFrameTime();
+
+		if (deadTimer >= 3)
+		{
+			dead = false;
+			deadTimer = 0;
+		}
+	}
+	if (hit)
+	{
+		dead = true;
+	}
 }
 EnemyType EnemyManager::CheckBubbleCollisions(const AABB& bubble_hitbox)
 {
@@ -168,7 +184,7 @@ void EnemyManager::DrawDebug() const
 	for (const Enemy* enemy : enemies)
 	{
 		if (enemy->IsAlive()) {
-			enemy->DrawVisibilityArea(DARKGRAY);
+			//enemy->DrawVisibilityArea(DARKGRAY);
 			enemy->DrawHitbox(RED);
 		}
 	}

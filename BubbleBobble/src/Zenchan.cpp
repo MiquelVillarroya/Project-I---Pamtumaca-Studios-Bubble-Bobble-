@@ -6,6 +6,7 @@ Zenchan::Zenchan(const Point& p, int width, int height, int frame_width, int fra
 	Enemy(p, ENEMY_PHYSICAL_WIDTH, ENEMY_PHYSICAL_HEIGHT, ENEMY_FRAME_SIZE, ENEMY_FRAME_SIZE)
 {
 	state = ZenchanState::ROAMING;
+	jump_delay = 0;
 }
 Zenchan::~Zenchan()
 {
@@ -74,67 +75,135 @@ void Zenchan::MoveX(const AABB& player_hitbox)
 	Point player_pos;
 	int prev_x = pos.x;
 	box = GetHitbox();
-
 	sweptArea = map->GetSweptAreaX(box);
-	if (sweptArea.TestAABB(player_hitbox)) {
-		player_pos.x = player_hitbox.pos.x;
-		if (player_pos.x < pos.x) {
-			pos.x += -ZENCHAN_SPEED;
 
-		}
-		else if (player_pos.x >= pos.x) {
-			pos.x += ZENCHAN_SPEED;
-
-		}
-	}
-	else
+	if (state == ZenchanState::ROAMING)
 	{
-		if (look == Look::RIGHT)
-		{
-			pos.x += ZENCHAN_SPEED;
-			if (map->TestCollisionWallRight(box) || map->TestCollisionAbovePlatRight(box))
-			{
-				pos.x = prev_x;
-				look = Look::LEFT;
-				SetAnimation((int)ZenchanAnim::WALKING_LEFT);
+		if (sweptArea.TestAABB(player_hitbox)) {
+			player_pos.x = player_hitbox.pos.x;
+			if (player_pos.x < pos.x) {
+				pos.x += -ZENCHAN_SPEED;
+				if (look == Look::RIGHT)
+				{
+					look = Look::LEFT;
+					SetAnimation((int)ZenchanAnim::WALKING_LEFT);
+				}
+
+			}
+			else if (player_pos.x >= pos.x) {
+				pos.x += ZENCHAN_SPEED;
+				if (look == Look::LEFT)
+				{
+					look = Look::RIGHT;
+					SetAnimation((int)ZenchanAnim::WALKING_RIGHT);
+				}
 			}
 		}
-		else if (look == Look::LEFT)
+		else
 		{
-			pos.x += -ZENCHAN_SPEED;
-			if (map->TestCollisionWallLeft(box) || map->TestCollisionAbovePlatLeft(box))
+			if (look == Look::RIGHT)
 			{
-				pos.x = prev_x;
-				look = Look::RIGHT;
-				SetAnimation((int)ZenchanAnim::WALKING_RIGHT);
+				pos.x += ZENCHAN_SPEED;
+				if (map->TestCollisionWallRight(box))
+				{
+					pos.x = prev_x;
+					look = Look::LEFT;
+					SetAnimation((int)ZenchanAnim::WALKING_LEFT);
+				}
+			}
+			else if (look == Look::LEFT)
+			{
+				pos.x += -ZENCHAN_SPEED;
+				if (map->TestCollisionWallLeft(box))
+				{
+					pos.x = prev_x;
+					look = Look::RIGHT;
+					SetAnimation((int)ZenchanAnim::WALKING_RIGHT);
+				}
 			}
 		}
+
 	}
 }
 void Zenchan::MoveY(const AABB& player_hitbox)
 {
-	//AABB box;
+	AABB box;
 
-	//if (state == ZenchanState::JUMPING)
-	//{
-	//}
-	//else //roaming, falling
-	//{
-	//	pos.y += ZENCHAN_SPEED;
-	//	box = GetHitbox();
-	//	if (map->TestCollisionGround(box, &pos.y))
-	//	{
-	//		if (state == ZenchanState::FALLING);// Stop();
-	//	}
-	//	else
-	//	{
-	//		if (state != ZenchanState::FALLING) StartFalling();
-	//	}
-	//}
+	if (state == ZenchanState::JUMPING)
+	{
+		LogicJumping();
+	}
+	else //roaming, falling
+	{
+		pos.y += ZENCHAN_SPEED;
+		box = GetHitbox();
+		if (map->TestCollisionGround(box, &pos.y))
+		{
+			if (state == ZenchanState::FALLING)	Stop();
+			else if (GetRandomValue(1, 180) == 1)
+			{
+				StartJumping();
+			}
+		}
+		else
+		{
+			if (state != ZenchanState::FALLING) StartFalling();
+		}
+	}
 }
-
 void Zenchan::StartFalling()
 {
 	dir.y = ZENCHAN_SPEED;
 	state = ZenchanState::FALLING;
 }
+void Zenchan::Stop()
+{
+	dir = { 0,0 };
+	state = ZenchanState::ROAMING;
+}
+void Zenchan::LogicJumping()
+{
+	AABB box, prev_box;
+	int prev_y;
+
+	jump_delay--;
+	if (jump_delay == 0)
+	{
+
+		prev_y = pos.y;
+		prev_box = GetHitbox();
+
+		pos.y += dir.y;
+		dir.y ++;
+		jump_delay = ZENCHAN_JUMP_DELAY;
+
+		//Is the jump finished?
+		if (dir.y > ZENCHAN_JUMP_FORCE)
+		{
+			dir.y = ZENCHAN_SPEED;
+			StartFalling();
+		}
+
+		if (dir.y >= 0)
+		{
+			box = GetHitbox();
+
+			//A ground collision occurs if we were not in a collision state previously.
+			//This prevents scenarios where, after levitating due to a previous jump, we found
+			//ourselves inside a tile, and the entity would otherwise be placed above the tile,
+			//crossing it.
+			if (!map->TestCollisionGround(prev_box, &prev_y) &&
+				map->TestCollisionGround(box, &pos.y))
+			{
+				Stop();
+			}
+		}
+	}
+}
+void Zenchan::StartJumping()
+{
+	dir.y = -ZENCHAN_JUMP_FORCE;
+	state = ZenchanState::JUMPING;
+	jump_delay = ZENCHAN_JUMP_DELAY;
+}
+

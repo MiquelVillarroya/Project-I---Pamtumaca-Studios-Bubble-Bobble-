@@ -5,6 +5,9 @@
 #define ZENCHAN_SPEED			1
 //Logical model size
 #define	ZENCHAN_ANIM_DELAY		ANIM_DELAY
+//Jumping
+#define ZENCHAN_JUMP_FORCE		9
+#define ZENCHAN_JUMP_DELAY		2
 
 enum class ZenchanState { ROAMING, JUMPING, FALLING };
 enum class ZenchanAnim {
@@ -39,6 +42,11 @@ private:
 	void MoveX(const AABB& box);
 	void MoveY(const AABB& box);
 	void StartFalling();
+	void Stop();
+	void StartJumping();
+	void LogicJumping();
+
+	int jump_delay;
 
 	ZenchanState state;
 
