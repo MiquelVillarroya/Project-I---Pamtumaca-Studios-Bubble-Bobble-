@@ -37,10 +37,11 @@ We are still developing the project but so far we have implemented this features
 - Basic player movement
 - Win/Loose condition
 - Workflow of the menus+initial cinematics
-- Items with score
+- Items with score dropped randomly by enemies
+- Special items (shoes:increase speed, yellow candy:increase attack speed)
 - Two different enemies with different behaviour
 - Bubble mechanic
-- Four different levels
+- Four different levels (some of them with top bottom connected holes)
 - -Music and sound effects
 - Functional UI (lifes, score, etc)
 - -Debug functionality and god mode
